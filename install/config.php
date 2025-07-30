@@ -1,7 +1,7 @@
 <?php
   /**
    * -------------------------------------------------------------------------------------------------------------------
-   * Project name:        Store
+   * Project name:        My Store
    * Project description: Selection process skills assessment.
    * Version:             1.0.0
    * File type:           Config file
