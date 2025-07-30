@@ -14,8 +14,6 @@
   require_once (__DIR__ . '/install/config.php');
   require_once (__DIR__ . '/router.php');
   require_once (__DIR__ . '/php/includes/functions.php');
-  
-  session_start ();
 
 ?>
 

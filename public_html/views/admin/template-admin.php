@@ -1,8 +1,4 @@
-<?php
-
-  $myObject = new Functions();
-  $myObject->test ();
-?>
+<?php ?>
 
 <h1>Template Admin</h1>
 
