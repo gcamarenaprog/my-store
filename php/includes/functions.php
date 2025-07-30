@@ -32,6 +32,21 @@
     # General Functions ------------------------------------------------------------------------------------------------
     
     /**
+     * Shows the user's image if it exists, otherwise shows a default image.
+     *
+     * @return void
+     */
+    static function showUserImage (): void
+    {
+      # If no exists user image
+      if (!isset($_SESSION['user_image'])) {
+        echo 'public_html/resources/dist/img/users/no_image.jpg';
+      } else {
+        echo $_SESSION['user_image'];
+      }
+    }
+    
+    /**
      * Clean strings by cleaning them of whitespace, forward slashes, and special characters.
      *
      * @param string $string String to clean.
@@ -43,6 +58,30 @@
       $string = trim ($string); // Clean start and end string of blanks
       $string = stripslashes ($string); // Remove slashes from a string with escaped quotes e.g. \'
       return htmlspecialchars ($string); // Convert special characters to HTML entities
+    }
+    
+    # Menu functions ---------------------------------------------------------------------------------------------------
+    
+    /**
+     * This functions set class active, if is selected.
+     *
+     * @param string $function Is the class name to activate for function in the menu.
+     * @param string $string   URL captured.
+     * @param string $namePage Name of page.
+     *
+     * @return void
+     */
+    static function menuActive (string $function, string $string, string $namePage): void
+    {
+      $pos = strpos ($string, $namePage);
+      if ($pos === false) {
+      } else {
+        if ($function === 'menuActiveItem' || $function === 'menuOpenedActive') {
+          echo "active";
+        } elseif ($function === 'menuOpened') {
+          echo "menu-is-opening menu-open";
+        }
+      }
     }
     
     # Session functions ------------------------------------------------------------------------------------------------

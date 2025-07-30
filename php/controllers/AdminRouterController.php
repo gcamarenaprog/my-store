@@ -13,10 +13,6 @@
   
   /**
    * This class defines the administration controller class.
-   * Its methods are:
-   *
-   * - selectMethod
-   * - home
    */
   class AdminRouterController
   {
@@ -32,8 +28,8 @@
       
       switch ($nameOfMethod) {
         
-        case ($nameOfMethod === 'home'):
-          $this->home ();
+        case ($nameOfMethod === 'admin'):
+          $this->admin ();
           break;
         
         case ($nameOfMethod === 'login'):
@@ -41,7 +37,7 @@
           break;
         
         default:
-          $this->home ();
+          $this->admin ();
       }
     }
     
@@ -52,7 +48,27 @@
      */
     public function home (): void
     {
-      include "public_html/views/admin/template-admin.php";
+      include "public_html/views/admin/view-home.php";
+    }
+    
+    /**
+     * Load the home view
+     *
+     * @return void
+     */
+    public function admin (): void
+    {
+      include "public_html/views/admin/view-home.php";
+    }
+    
+    /**
+     * Load the home view
+     *
+     * @return void
+     */
+    public function login (): void
+    {
+      header ("Location: login.php");
     }
     
   }

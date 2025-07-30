@@ -1,0 +1,643 @@
+<?php
+  /**
+   * -------------------------------------------------------------------------------------------------------------------
+   * Project name:        Store
+   * Project description: Selection process skills assessment.
+   * Version:             1.0.0
+   * File type:           Controller file
+   * File description:    Product categories controller
+   * Module:              Controllers
+   */
+  
+  # Required files
+  require_once (dirname (__DIR__, 1) . '/includes/functions.php');
+  require_once (dirname (__DIR__, 1) . '/models/ProductCategory.php');
+  require_once (dirname (__DIR__, 1) . '/models/Product.php');
+  require_once (dirname (__DIR__, 1) . '/controllers/ProductCategoriesController.php');
+  
+  # VIEW category via Ajax
+  if (isset($_POST['categoryIdView'])) {
+    
+    $objectProductCategory = new ProductCategoriesController();
+    
+    $dataFile = array();
+    $categoryId = $_POST['categoryIdView'];
+    
+    $categoryData = $objectProductCategory->getProductCategory ($categoryId);
+    
+    $data['product_category_id'] = $categoryData['product_category_id'];
+    $data['product_category_name'] = $categoryData['product_category_name'];
+    $data['product_category_description'] = $categoryData['product_category_description'];
+    $data['product_category_parent'] = $categoryData['product_category_parent'];
+    $data['product_category_date_last_change'] = $categoryData['product_category_date_last_change'];
+    $data['product_category_date_creation'] = $categoryData['product_category_date_creation'];
+    
+    $totalProducts = $objectProductCategory->getTotalProductsCategoryByIdCategory ($categoryData['product_category_id']);
+    $data['product_category_number_of_products'] = $totalProducts;
+    
+    echo json_encode ($data);
+  }
+  
+  # GET ALL product categories via Ajax for DataTable
+  if (isset($_GET['getAllProductCategories'])) {
+    $objectProductCategory = new ControllerProductCategories();
+    $language = $_GET['language'];
+    $objectProductCategory->getAllProductCategoriesForDataTables ($language);
+  }
+  
+  # DELETE product categories via Ajax
+  if (isset($_POST['categoryIdDelete'])) {
+    $productCategoriesObject = new ControllerProductCategories();
+    $categoryId = $_POST['categoryIdDelete'];
+    
+    $totalProducts = $_POST['number_products'];
+    $totalChild = $_POST['number_child'];
+    
+    $response = array();
+    
+    if ($totalProducts != 0) {
+      $response['response'] = 'error-exists-products';
+    } elseif ($totalChild != 0) {
+      $response['response'] = 'error-exists-child';
+    } else {
+      $request = $productCategoriesObject->deleteProductCategoryById ($categoryId);
+      if ($request == 1) {
+        $response['response'] = 'successful';
+      } else {
+        $response['response'] = 'error';
+      }
+    }
+    echo json_encode ($response);
+    
+  }
+  
+  # UPDATE product categories  via Ajax
+  if (isset($_POST['updateCategory'])) {
+    
+    # JSON encode
+    header ('Content-Type: application/json');
+    
+    $objectProductCategory = new ControllerProductCategories();
+    
+    $data = null;
+    $dataFile = array();
+    
+    $dataFile['product_category_id'] = $categoryId = $_POST['inputCategoryIdEditForm'];
+    $dataFile['product_category_name'] = $categoryName = $_POST['inputCategoryNameEditForm'];
+    $dataFile['product_category_description'] = $categoryDescription = $_POST['textAreaCategoryDescriptionEditForm'];
+    $dataFile['product_category_parent'] = $categoryParent = $_POST['selectCategoryParentNameEditForm'];
+    $dataFile['product_category_date_last_change'] = $categoryLastChange = date ("Y-m-d H:i:s");
+    
+    // $categoryLastChange = date ("Y-m-d H:i:s");
+    $data .= 'product_category_id = ' . '\'' . $categoryId . '\',';
+    $data .= 'product_category_name = ' . '\'' . $categoryName . '\',';
+    $data .= 'product_category_description = ' . '\'' . $categoryDescription . '\',';
+    $data .= 'product_category_parent = ' . '\'' . $categoryParent . '\',';
+    $data .= 'product_category_date_last_change = ' . '\'' . $categoryLastChange . '\'';
+    
+    $queryResult = $objectProductCategory->updateProductCategory ($categoryId, $data);
+    
+    if ($queryResult) {
+      $dataFile['message'] = 'success';
+    } else {
+      $dataFile['message'] = 'error';
+    }
+    
+    echo json_encode ($dataFile);
+  }
+  
+  # ADD new product categories via Ajax
+  if (isset($_POST['addCategory'])) {
+    
+    # JSON encode
+    header ('Content-Type: application/json');
+    
+    $objectProductCategory = new ControllerProductCategories();
+    
+    $data = null;
+    $dataFile = array();
+    
+    $dataFile['product_category_name'] = $categoryName = $_POST['inputCategoryNameAddForm'];
+    $dataFile['product_category_description'] = $categoryDescription = $_POST['textAreaCategoryDescriptionAddForm'];
+    $dataFile['product_category_parent'] = $categoryParent = $_POST['selectCategoryParentNameAddForm'];
+    $dataFile['product_category_date_last_change'] = $categoryLastChange = date ("Y-m-d H:i:s");
+    
+    $data .= 'product_category_name = ' . '\'' . $categoryName . '\',';
+    $data .= 'product_category_description = ' . '\'' . $categoryDescription . '\',';
+    $data .= 'product_category_parent = ' . '\'' . $categoryParent . '\',';
+    $data .= 'product_category_date_last_change = ' . '\'' . $categoryLastChange . '\'';
+    
+    $data = " ('$categoryName', '$categoryDescription', '$categoryParent', '$categoryLastChange') ";
+    
+    $columns = '(product_category_name, product_category_description, product_category_parent, product_category_date_last_change)';
+    
+    $queryResult = $objectProductCategory->insertProductCategory ($columns, $data);
+    
+    if ($queryResult) {
+      $dataFile['message'] = 'success';
+    } else {
+      $dataFile['message'] = 'error';
+    }
+    
+    echo json_encode ($dataFile);
+  }
+  
+  /**
+   * This class defines the product categories controller class.
+   *
+   * - getTotalProductCategories
+   * - getAllProductCategories
+   * - getProductCategory
+   * - deleteProductCategoryById
+   * - updateProductCategory
+   * - insertProduct
+   * - getAllProductCategoriesForDataTables
+   */
+  class ProductCategoriesController
+  {
+    private ModelProductCategory $model;
+    
+    
+    /**
+     * ControllerProductCategories class constructor
+     */
+    function __construct ()
+    {
+      $this->model = new ModelProductCategory();
+    }
+    
+    /**
+     * Return the total number of categories.
+     *
+     * @return int
+     */
+    function getTotalProductCategories (): int
+    {
+      return $this->model->getTotal ();
+    }
+    
+    /**
+     * Get all the records from a table, if you want them sorted you must use the field and order parameters.
+     *
+     * @param string $order ASC | DESC | NONE
+     * @param string $field Field to order, the field should exist on table.
+     * @return array|bool
+     */
+    public function getAllProductCategories (string $order = 'NONE', string $field = 'NONE'): array|bool
+    {
+      return $this->model->getAll ($order);
+    }
+    
+    /**
+     * _Return the category data with the id category
+     *
+     * @param int $categoryId A number id of the product category.
+     * @return array|bool The name of the category or false.
+     */
+    public function getProductCategory (int $categoryId): array|bool
+    {
+      return $this->model->getById ($categoryId);
+    }
+    
+    /**
+     * Delete a product category with the category id.
+     *
+     * @param int $categoryId The id of the category.
+     * @return int Returns 1 if there was deleted and 0 if there was no deleted.
+     */
+    public function deleteProductCategoryById (int $categoryId): int
+    {
+      return $this->model->deleteById ($categoryId);
+    }
+    
+    /**
+     * Update a product category.
+     *
+     * @param string $categoryId   Category id.
+     * @param string $categoryData Data of product category to update.
+     * @return int Returns 1 if there was updated and 0 if there was no updated.
+     */
+    public function updateProductCategory (string $categoryId, string $categoryData): int
+    {
+      return $this->model->updateById ($categoryId, $categoryData);
+    }
+    
+    /**
+     * Insert a new product category.
+     *
+     * @param string $dataColumns Names of columns.
+     * @param string $data        Data of new record.
+     * @return int Returns 1 if there was updated and 0 if there was no updated.
+     */
+    function insertProductCategory (string $dataColumns, string $data): int
+    {
+      return $this->model->insert ($dataColumns, $data);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * REVISED
+     * Get total products category by id category
+     *
+     * @param $categoryId
+     * @return string
+     */
+    public function getTotalProductsCategoryByIdCategory ($categoryId): string
+    {
+      return $this->model->getTotalProductsCategoryByIdCategory ($categoryId);
+    }
+    
+    /**
+     * REVISED
+     * Gets total child categories by id category.
+     *
+     * @param $categoryId Category id.
+     * @return mixed
+     */
+    public function getTotalChildCategoriesByIdCategory ($categoryId): int
+    {
+      return $this->model->getTotalChildCategoriesByIdCategory ($categoryId);
+    }
+    
+    
+    /**
+     * REVISED
+     * Get category name by id
+     *
+     * @param int $categoryId Category id
+     * @return string
+     */
+    public function getCategoryNameById (int $categoryId): string
+    {
+      return $this->model->getCategoryNameById ($categoryId);
+    }
+    
+    /**
+     * Get all categories names by ids
+     *
+     * @param string   $categoriesIds String with categories id numbers.
+     * @param stdClass $languageObject
+     * @param string   $separator     Character to separate the list of categories.
+     * @return string
+     */
+    public function getAllCategoriesNamesById (string $categoriesIds, stdClass $languageObject, string $separator = ','): string
+    {
+      
+      if ($categoriesIds == 'no-data') {
+        $categoriesNames = $languageObject->NO_DATA;
+      } else {
+        $categoriesOfProduct = explode (",", $categoriesIds);
+        $categoriesNames = '';
+        $categoriesArraySize = count ($categoriesOfProduct);
+        if ($categoriesArraySize != 1) {
+          for ($index1 = 0; $index1 < $categoriesArraySize; $index1++) {
+            $productId = $categoriesOfProduct[$index1];
+            $productId = intval ($productId);
+            $categoryName = $this->getCategoryNameById ($productId);
+            if ($index1 == $categoriesArraySize - 1) {
+              $categoriesNames .= $categoryName;
+            } else {
+              $categoriesNames .= $categoryName . ' ' . $separator . ' ';
+            }
+          }
+        } else {
+          $productId = intval ($categoriesOfProduct[0]);
+          $categoryName = $this->getCategoryNameById ($productId);
+          $categoriesNames = $categoryName;
+        }
+      }
+      return $categoriesNames;
+    }
+    
+    
+    /**
+     * _Returns categories that have the same parent category, sorted in ascending or descending order.
+     *
+     * @param string $parenCategoryId <p>Parent category Id.</p>
+     * @param string $order           <p>Order ASC | DESC.</p>
+     * @return array <p>Array with categories or empty array.</p>
+     */
+    public function getAllProductCategoriesWithParentCategoryId (string $parenCategoryId, string $order = 'ASC'): array
+    {
+      return $this->model->getAllProductCategoriesWithParentCategoryId ($parenCategoryId, $order);
+    }
+    
+    
+    /**
+     * _Check if the category has child categories
+     *
+     * @param int $idCategory <p>Id category.</p>
+     * @return int <p>Returns an int number with the existing column numbers.</p>
+     */
+    public function verifyExistsChildCategories (int $idCategory): int
+    {
+      return $this->model->verifyExistsChildCategories ($idCategory);
+    }
+    
+    
+    /**
+     * Get all parent categories
+     *
+     * @return array
+     */
+    public function getAllParentCategories (): array
+    {
+      $result = $this->model->getAllParentCategories ();
+      $categories = array();
+      
+      while ($row = $result->fetch_assoc ()) {
+        $categories[] = array(
+          'product_category_id' => $row['product_category_id'],
+          'product_category_parent' => $row['product_category_parent'],
+          'product_category_name' => $row['product_category_name'],
+          'subcategory' => $this->getAllSubcategories ($row['product_category_id']),
+        );
+        
+      }
+      return $categories;
+      $this->model->closeConnectionMysqli ();
+    }
+    
+    
+    /**
+     * Get all subcategories
+     *
+     * @param $product_category_id
+     * @return array
+     */
+    public function getAllSubcategories ($product_category_id): array
+    {
+      $result = $this->model->getAllSubcategories ($product_category_id);
+      
+      $categories = array();
+      
+      while ($row = $result->fetch_assoc ()) {
+        $categories[] = array(
+          'product_category_id' => $row['product_category_id'],
+          'product_category_parent' => $row['product_category_parent'],
+          'product_category_name' => $row['product_category_name'],
+          'subcategory' => $this->getAllSubcategories ($row['product_category_id']),
+        );
+      }
+      return $categories;
+      $this->model->closeConnectionMysqli ();
+    }
+    
+    
+    /**
+     * View subcategories in html format.
+     *
+     * @param $categories <p>Array categories.</p>
+     * @param $pixels     <p>Pixel size for left margin.</p>
+     * @return string
+     */
+    public function viewSubcategories ($categories, $pixels): string
+    {
+      $html = ' <ul style="margin-bottom: 0px"><div style="  position: relative;  display: block;  padding-left: ' . $pixels . 'rem;">
+                ';
+      
+      foreach ($categories as $category) {
+        $html .= ' <li>
+                     <input type="checkbox" id="' . $category['product_category_id'] . '" name="' . $category['product_category_id'] . '">
+                     <label style="font-weight: normal; margin-bottom: 0px;" for="' . $category['product_category_id'] . '">' . $category['product_category_name'] . ' </label>
+                   </li>';
+        
+        if (!empty($category['subcategory'])) {
+          $html .= $this->viewSubcategories ($category['subcategory'], $pixels + 1);
+        }
+      }
+      $html .= '</div></ul>';
+      
+      return $html;
+    }
+    
+    
+    public function viewSubcategories_ ($categories, $pixels): string
+    {
+      $html = '
+                ';
+      
+      foreach ($categories as $category) {
+        $html .= '
+                     <option type="checkbox" id="' . $category['product_category_id'] . '" name="' . $category['product_category_id'] . '">' . $category['product_category_name'] . '</option>
+                    
+                   ';
+        
+        if (!empty($category['subcategory'])) {
+          $html .= $this->viewSubcategories_ ($category['subcategory'], $pixels + 1);
+        }
+      }
+      $html .= '';
+      
+      return $html;
+    }
+    
+    
+    public function viewSubcategoriesOnCatalog ($categories, $pixels): string
+    {
+      $html = ' <ul style="margin-bottom: 0px;     ">
+                  <div style="  position: relative;  display: block;  padding-left: ' . $pixels . 'px;">
+                ';
+      
+      foreach ($categories as $category) {
+        
+        
+        if ($category['product_category_parent'] == '0') {
+          $textStyle = 'bold';
+        } else {
+          $textStyle = 'normal';
+        }
+        
+        $html .= ' <li>
+                     <input type="checkbox" id="' . $category['product_category_id'] . '" name="' . $category['product_category_id'] . '">
+                     <label style="font-weight: ' . $textStyle . '; margin-bottom: 0px;" for="' . $category['product_category_id'] . '">' . $category['product_category_name'] . ' </label>
+                   </li>';
+        
+        if (!empty($category['subcategory'])) {
+          $html .= $this->viewSubcategoriesOnCatalog ($category['subcategory'], $pixels + 1);
+        }
+      }
+      $html .= '</div></ul>';
+      
+      return $html;
+    }
+    
+    
+    /**
+     * View subcategories in html format for catalog module.
+     *
+     * @param $categories <p>Array categories.</p>
+     * @param $pixels     <p>Pixel size for left margin.</p>
+     * @return string
+     */
+    public function viewSubcategoriesOnCatalog_ ($categories, $pixels): string
+    {
+      $html = ' <ul style="margin-bottom: 0px; margin-left: -10px;     ">
+                  <div style="  position: relative;  display: block;  padding-left: ' . $pixels . 'px;">
+                ';
+      
+      foreach ($categories as $category) {
+        
+        
+        if ($category['product_category_parent'] == '0') {
+          $textStyle = 'bold';
+        } else {
+          $textStyle = 'normal';
+        }
+        
+        $html .= ' <li>
+                     
+                     <label style="font-weight: ' . $textStyle . '; margin-bottom: 0px;" for="' . $category['product_category_id'] . '">' . $category['product_category_name'] . ' </label>
+                   </li>';
+        
+        if (!empty($category['subcategory'])) {
+          $html .= $this->viewSubcategoriesOnCatalog_ ($category['subcategory'], $pixels + 1);
+        }
+      }
+      $html .= '</div></ul>';
+      
+      return $html;
+    }
+    
+    
+    
+    
+    
+    /** ------------------------ */
+    
+    
+    /**
+     * Get all product categories for DataTables format.
+     *
+     * @param $language
+     * @return void
+     */
+    public function getAllProductCategoriesForDataTables ($language): void
+    {
+      $productCategoryObject = new ModelProductCategory();
+      
+      $allCategories = $productCategoryObject->getAllProductsCategoriesForDataTables ();
+      $categoriesArray = array();
+      
+      # The data is sorted to create a new array
+      while ($data = $allCategories->fetch_object ()) {
+        $categoriesArray[] = array(
+          $data->product_category_id,               // [0] | #
+          $data->product_category_id,               // [1] | Tools
+          $data->product_category_name,             // [2] | Name
+          $data->product_category_description,      // [3] | Description
+          'number_of_products',                     // [4] | Number of products
+          $data->product_category_parent,           // [5] | Parent category
+          $data->product_category_date_last_change, // [6] | Last change date
+          $data->product_category_date_creation,    // [7] | Creation date
+        );
+      }
+      
+      # Select language of the buttons
+      if ($language == 'es_MX') {
+        $lang['VIEW'] = 'Ver';
+        $lang['EDIT'] = 'Editar';
+        $lang['DELETE'] = 'Eliminar';
+        $lang['NO_DATA'] = 'No disponible';
+        $lang['NO_HAS'] = 'No tiene';
+      } else {
+        $lang['VIEW'] = 'View';
+        $lang['EDIT'] = 'Edit';
+        $lang['DELETE'] = 'Delete';
+        $lang['NO_DATA'] = 'No available';
+        $lang['NO_HAS'] = 'No has';
+      }
+      
+      $indexNumber = 1;
+      $categoriesArrayOrdered[] = array();
+      foreach ($categoriesArray as $index => $item) {
+        
+        # No. [COLUMN] -------------------------------------------------------------------------------------------------
+        $categoriesArrayOrdered[$index][0] = $indexNumber++;
+        
+        # Tools [COLUMN] -----------------------------------------------------------------------------------------------
+        $totalProducts = $this->getTotalProductsCategoryByIdCategory ($item[1]);
+        $totalChild = $this->getTotalChildCategoriesByIdCategory ($item[1]);
+        
+        $categoriesArrayOrdered[$index][1] = '
+          <div class="btn-group" style="padding: 10px;">
+          
+            <!-- View button /-->
+            <button type = "button"
+                    class="btn btn-primary btn-flat ininsys-tools-buttons"
+                    title = "' . $lang['VIEW'] . '"
+                    onclick = "viewViewCategoryForm(' . $item[1] . ')" >
+              <i class="fa-solid fa-eye"></i>
+            </button>
+           
+            <!-- Edit buttons /-->
+            <button type = "button"
+                    class="btn btn-success btn-flat ininsys-tools-buttons"
+                    title = "' . $lang['EDIT'] . '"
+                    onclick = "viewEditCategoryForm(' . $item[1] . ')" >
+              <i class="fas fa-pen-to-square"></i>
+            </button>
+            
+            <!-- Delete button /-->
+            <button type = "button"
+                    class="btn btn-danger btn-flat ininsys-tools-buttons"
+                    title = "' . $lang['DELETE'] . '"
+                    onclick = "modalDeleteCategory(' . $item[1] . ',\'' . $item[2] . '\', \'' . $totalProducts . '\', \'' . $totalChild . '\')" >
+              <i class="fas fa-trash-can" ></i>
+            </button>
+            
+          </div>
+          
+         ';
+        
+        # Name [COLUMN] ------------------------------------------------------------------------------------------------
+        $categoriesArrayOrdered[$index][2] = $item[2];
+        
+        # Description [COLUMN] -----------------------------------------------------------------------------------------
+        $categoriesArrayOrdered[$index][3] = $item[3];
+        
+        # Number of products [COLUMN] ----------------------------------------------------------------------------------
+        $totalProducts = $this->getTotalProductsCategoryByIdCategory ($item[1]);
+        $categoriesArrayOrdered[$index][4] = $totalProducts;
+        
+        # Parent category [COLUMN] -------------------------------------------------------------------------------------
+        if ($item[5] == '0') {
+          $categoriesArrayOrdered[$index][5] = $lang['NO_HAS'];
+        } else {
+          $parentCategoryName = $this->getCategoryNameById ($item[5]);
+          $categoriesArrayOrdered[$index][5] = $parentCategoryName;
+        }
+        
+        # Last change date [COLUMN] ------------------------------------------------------------------------------------
+        if ($item[6] == '0000-00-00 00:00:00') {
+          $categoriesArrayOrdered[$index][6] = $lang['NO_DATA'];
+        } else {
+          $categoriesArrayOrdered[$index][6] = $item[6];
+        }
+        
+        # Creation date [COLUMN] ---------------------------------------------------------------------------------------
+        $categoriesArrayOrdered[$index][7] = $item[7];
+        
+      }
+      
+      # An array is created with the data ordered and prepared for the table
+      $new_array = array("data" => $categoriesArrayOrdered);
+      
+      # Print data Json
+      echo json_encode ($new_array);
+    }
+    
+  }

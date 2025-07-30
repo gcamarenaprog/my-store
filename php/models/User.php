@@ -47,28 +47,4 @@
       return $sth->fetch (PDO::FETCH_ASSOC);
     }
     
-    /**
-     * Get all users with user role
-     *
-     * @param $role
-     * @return bool|array
-     */
-    public function getAllUsersWithRole ($role): bool|array
-    {
-      $sql = " SELECT * FROM {$this->table} WHERE user_role = {$role} ";
-      $statement = $this->connectionPDO->prepare ($sql);
-      $statement->execute ();
-      return $statement->fetchAll ();
-    }
-    
-    public function getUserName (int $id): string
-    {
-      $sql = "SELECT * FROM $this->table WHERE user_id = '$id'";
-      $sth = $this->connectionPDO->prepare ($sql);
-      $sth->execute ();
-      $result = $sth->fetch (PDO::FETCH_ASSOC);
-      return $result['user_name'] .' '. $result['user_last_name'];
-    }
-    
-    
   }
