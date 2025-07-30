@@ -1,0 +1,96 @@
+@charset "UTF-8";
+/*
+Project name:         InInSys System Information Inventory
+Project description:  Inventory, catalogue and stock system for the company Cabo Linens, Things And More
+Version:              1.0.1
+Author: 						  Guillermo Camarena
+Author URI: 				  http://gcamarenaprog.com
+File Name: 					  custom.css
+Filepath:             views/resources/dist/css/
+File type:            Style CSS file
+File description:     Custom styles for the project.
+Module:               CSS
+*/
+
+
+/* General styles --------------------------------------------------------------------------------------------------- */
+
+.store-text-025 {
+  font-size: 0.25rem;
+}
+
+.store-text-050 {
+  font-size: 0.50rem;
+}
+
+.store-text-075 {
+  font-size: 0.75rem;
+}
+
+.store-text-100 {
+  font-size: 1.00rem;
+}
+
+.store-text-125 {
+  font-size: 1.25rem;
+}
+
+.store-text-150 {
+  font-size: 1.50rem;
+}
+
+.store-text-175 {
+  font-size: 1.75rem;
+}
+
+.store-text-200 {
+  font-size: 2.000rem;
+}
+
+.store-height {
+  height: 100%;
+}
+
+.store-none {
+  display: none;
+}
+
+a.store-callout {
+  color: #007bff;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a.store-callout:hover {
+  color: #08478c;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+li.store-li {
+  margin-top: 5px;
+  margin-left: 40px;
+  list-style: disc;
+}
+
+.store-border-olive {
+  border-top: 1px solid #3d9970;
+}
+
+.store-border-primary {
+  border-top: 1px solid #007bff;
+}
+
+.store-tools-buttons {
+  margin-right: 5px;
+  height: 40px;
+}
+
+/* Login.php styles ------------------------------------------------------------------------------------------------- */
+.store-login-background {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../../dist/img/backgrounds/background.jpg') center center / cover no-repeat;
+}
