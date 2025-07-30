@@ -1,0 +1,8 @@
+
+# This configuration file redirects all requests for the URL to be redirected to the template-store.php file
+# This way the template-store.php file will always be executed.
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
