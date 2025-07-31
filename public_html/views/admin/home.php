@@ -16,7 +16,6 @@
   # Get total products
   $productObject = new ProductController();
   $totalProducts = $productObject->getTotalProducts ();
-
 ?>
 
 <!-- Header -->
@@ -65,7 +64,7 @@
           <div class="col-lg-12 col-md-12">
             <div class="small-box bg-olive">
               <div class="inner">
-                <h3>1000 dummy</h3>
+                <h3><?php echo $totalProducts; ?></h3>
                 <h4>Productos</h4>
               </div>
               <div class="icon">

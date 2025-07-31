@@ -28,12 +28,37 @@
       
       switch ($nameOfMethod) {
         
+        case ($nameOfMethod === 'test'):
+          $this->test ();
+          break;
+        
+        case ($nameOfMethod === 'home'):
         case ($nameOfMethod === 'admin'):
           $this->admin ();
           break;
         
         case ($nameOfMethod === 'login'):
           $this->login ();
+          break;
+        
+        case ($nameOfMethod === 'product-add'):
+          $this->productAdd ();
+          break;
+        
+        case ($nameOfMethod === 'product-categories'):
+          $this->productCategories ();
+          break;
+        
+        case ($nameOfMethod === 'product-edit'):
+          $this->productEdit ();
+          break;
+        
+        case ($nameOfMethod === 'product-list'):
+          $this->productList ();
+          break;
+        
+        case ($nameOfMethod === 'product-view'):
+          $this->productView ();
           break;
         
         default:
@@ -46,9 +71,19 @@
      *
      * @return void
      */
+    public function test (): void
+    {
+      include 'public_html/views/admin/test.php';
+    }
+    
+    /**
+     * Load the home view
+     *
+     * @return void
+     */
     public function home (): void
     {
-      include "public_html/views/admin/view-home.php";
+      include 'public_html/views/admin/home.php';
     }
     
     /**
@@ -58,8 +93,60 @@
      */
     public function admin (): void
     {
-      include "public_html/views/admin/view-home.php";
+      include 'public_html/views/admin/home.php';
     }
+    
+    
+    /**
+     * Load the add product view
+     *
+     * @return void
+     */
+    public function productAdd (): void
+    {
+      include 'public_html/views/admin/products/product-add.php';
+    }
+    
+    /**
+     * Load the product category view
+     *
+     * @return void
+     */
+    public function productCategories (): void
+    {
+      include 'public_html/views/admin/products/product-categories.php';
+    }
+    
+    /**
+     * Load the edit product view
+     *
+     * @return void
+     */
+    public function productEdit (): void
+    {
+      include 'public_html/views/admin/products/product-edit.php';
+    }
+    
+    /**
+     * Load the product list view
+     *
+     * @return void
+     */
+    public function productList (): void
+    {
+      include 'public_html/views/admin/products/product-list.php';
+    }
+    
+    /**
+     * Load the view to see the product
+     *
+     * @return void
+     */
+    public function productView (): void
+    {
+      include 'public_html/views/admin/products/product-view.php';
+    }
+    
     
     /**
      * Load the home view
@@ -68,7 +155,6 @@
      */
     public function login (): void
     {
-      header ("Location: login.php");
+      header ('Location: login.php');
     }
-    
   }

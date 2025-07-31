@@ -71,8 +71,8 @@
 
             <!-- Product View All /-->
             <li class="nav-item">
-              <a href="productViewAll"
-                 class="nav-link <?php Functions::menuActive ('menuActiveItem', $nameOfTheView, 'productViewAll') ?>">
+              <a href="product-list"
+                 class="nav-link <?php Functions::menuActive ('menuActiveItem', $nameOfTheView, 'product-list') ?>">
                 <i class="far fa-circle nav-icon"></i>
                 <p title="Todos los productos">Todos los productos</p>
               </a>
@@ -80,8 +80,8 @@
 
             <!-- Product Add New /-->
             <li class="nav-item">
-              <a href="productAddNew"
-                 class="nav-link <?php Functions::menuActive ('menuActiveItem', $nameOfTheView, 'productAddNew') ?>">
+              <a href="product-add"
+                 class="nav-link <?php Functions::menuActive ('menuActiveItem', $nameOfTheView, 'product-add') ?>">
                 <i class="far fa-circle nav-icon"></i>
                 <p title="Nuevo producto">Nuevo producto</p>
               </a>
@@ -89,8 +89,8 @@
 
             <!-- Product Categories /-->
             <li class="nav-item">
-              <a href="productCategories"
-                 class="nav-link <?php Functions::menuActive ('menuActiveItem', $nameOfTheView, 'productCategories') ?>">
+              <a href="product-categories"
+                 class="nav-link <?php Functions::menuActive ('menuActiveItem', $nameOfTheView, 'product-categories') ?>">
                 <i class="far fa-circle nav-icon"></i>
                 <p title="Categorías">Categorías</p>
               </a>
