@@ -27,6 +27,44 @@
 }
 
 
+/* Views styles ----------------------------------------------------------------------------------------------------- */
+.store-icon-page {
+  font-size: 35px;
+}
+
+/* Home view */
+.store-icon-counters {
+  font-size: 55px;
+}
+
+h3.store-card-counter-title {
+  font-weight: 400;
+  font-size: 1.5rem !important;
+}
+
+.store-icon-fast {
+  font-size: 45px;
+}
+
+
+/* Add New Product View */
+.store-product-add-new-help-file {
+  list-style: inside;
+  font-size: .875em;
+  margin-top: 1em;
+  margin-left: 1em;
+}
+
+/* View All Product View */
+
+.store-product-view-all-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+}
+
 /* Details Product View */
 .store-product-details-categories {
   text-transform: uppercase;
@@ -47,6 +85,39 @@ h4.store-product-details-data-name {
 .store-product-details-data-info {
   font-size: 90%;
   font-weight: 300;
+}
+
+/* Form styles ------------------------------------------------------------------------------------------------------ */
+.store-silence-form {
+  font-style: italic;
+  text-align: right;
+  font-weight: normal;
+  color: white;
+  margin-top: -15px;
+  margin-bottom: 0;
+}
+
+.store-form-help {
+  margin-top: 0.25rem;
+  font-size: .875em;
+  font-weight: normal;
+  color: var(--bs-secondary-color);
+  display: none;
+}
+
+.store-form-help-visible {
+  margin-top: 0.25rem;
+  font-size: .875em;
+  font-weight: normal;
+  color: var(--bs-secondary-color);
+}
+
+li.store-form {
+  margin-top: 5px;
+  margin-left: 40px;
+  font-weight: normal;
+  font-size: .875em;
+  list-style: disc;
 }
 
 /* Login.php styles ------------------------------------------------------------------------------------------------- */
