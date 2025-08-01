@@ -52,7 +52,7 @@
         <a href="userProfile"
            class="dropdown-item"
            style="text-align: center; font-size: 16px;"
-           title="<?php echo $langTemplate['NAVBAR_USER_PROFILE']; ?>">
+           title="Nombre de usuario">
           <?php echo $_SESSION['user_name'] .' '. $_SESSION['user_lastname'] ?><br>
           <b><?php
               echo $_SESSION['user_role']; ?></b>
