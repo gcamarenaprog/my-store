@@ -1,19 +1,53 @@
 @charset "UTF-8";
 /*
-Project name:         InInSys System Information Inventory
-Project description:  Inventory, catalogue and stock system for the company Cabo Linens, Things And More
-Version:              1.0.1
-Author: 						  Guillermo Camarena
-Author URI: 				  http://gcamarenaprog.com
-File Name: 					  custom.css
-Filepath:             views/resources/dist/css/
-File type:            Style CSS file
-File description:     Custom styles for the project.
-Module:               CSS
+ * Project name:        Store
+ * Project description: Selection process skills assessment.
+ * Version:             1.0.0
+ * File type:           Style CSS file
+ * File description:    Custom styles for the project.
+ * Module:              Styles
 */
 
 
 /* General styles --------------------------------------------------------------------------------------------------- */
+.store-tools-buttons {
+  margin-right: 5px;
+  height: 40px;
+}
+
+.store-icon-page {
+  font-size: 35px;
+}
+
+.store-card-title {
+  float: left;
+  font-weight: normal;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+
+/* Details Product View */
+.store-product-details-categories {
+  text-transform: uppercase;
+  font-weight: normal;
+  color: #6c757d;
+  font-size: 70%;
+}
+h3.store-product-details-title {
+  font-weight: 600;
+  color: #444444;
+}
+
+h4.store-product-details-data-name {
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.store-product-details-data-info {
+  font-size: 90%;
+  font-weight: 300;
+}
 
 /* Login.php styles ------------------------------------------------------------------------------------------------- */
 .store-login-background {
