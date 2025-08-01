@@ -15,7 +15,7 @@
   /**
    * This class defines the product model class. This class inherits from the generic model class. Its methods are:
    *
-   * - getAllProducts
+   * - getAllProductsForDataTables
    */
   class Product extends Generic
   {
@@ -32,15 +32,15 @@
     }
     
     /**
-     * Get all products for DataTables format.
+     * = Get all products for DataTables format. =
      *
-     * @return bool|mysqli_result
+     * @return array|false
      */
-    public function getAllProductsForDataTables (): mysqli_result|bool
+    public function getAllProducts (): false|array
     {
-      $sql = "SELECT * FROM $this->table";
-      $connection = $this->connectionMysqli;
-      return $connection->query ($sql);
+      $stmt = $this->connectionPDO->prepare ("SELECT * FROM {$this->table} ");
+      $stmt->execute ();
+      return $stmt->fetchAll ();
     }
     
   }
