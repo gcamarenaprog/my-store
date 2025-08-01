@@ -17,55 +17,52 @@
   require_once (dirname (__DIR__, 1) . '/controllers/ProductCategoriesController.php');
   require_once (dirname (__DIR__, 1) . '/includes/functions.php');
   
-  # GET ALL products via AJAX for DataTable_
-  if (isset($_GET['getAllProducts'])) {
-    
-    # JSON decode language strings
-    $objectLanguage = json_decode ($_GET['language']);
-    
-    ControllerProduct::getAllProductsFormattedForAllProductsView ($objectLanguage);
+  # = GET ALL products via AJAX for DataTable =
+  if (isset($_GET['product_get_all'])) {
+    ProductController::getProductsForProductList ();
   }
   
   # DELETE product via Ajax for DataTable_
-  if (isset($_POST['deleteProduct'])) {
+  if (isset($_POST['product_delete'])) {
     
-    $productObject = new ControllerProduct();
+    $productObject = new ProductController();
     $productData = array();
     
-    $productData['productId'] = $_POST['productId'];
-    $productData['productName'] = $_POST['productName'];
+    $productID = $_POST['product_id'];
+    
+    $productData['productId'] = $_POST['product_id'];
+    $productData['productName'] = $_POST['product_name'];
     
     # Content-Type: application/json
     header ('Content-Type: application/json');
     
-    # JSON decode language strings
-    $objectLanguage = json_decode ($_POST['language']);
-    
     # Delete product by product id
-    $queryResult = $productObject->deleteProduct ($_POST['productId']);
+    $queryResult = $productObject->deleteProduct ($productID);
     
     if ($queryResult) {
-      $productData['title'] = $objectLanguage->MODAL_PROCESS_SUCCESSFUL_TITLE;
-      $productData['message'] = $objectLanguage->MODAL_PROCESS_SUCCESSFUL_MESSAGE;
-      $productData['confirmButtonText'] = $objectLanguage->MODAL_BUTTON_ACCEPT;
+      $productData['title'] = '¡Proceso correcto!';
+      $productData['message'] = 'El proceso se completó de manera exitosa.';
+      $productData['confirmButtonText'] = 'Aceptar';
       $productData['icon'] = 'success';
       $productData['confirmButtonColor'] = '#3085d6';
       # JSON encode data
       echo json_encode ($productData);
     } else {
-      $productData['title'] = $objectLanguage->MODAL_PROCESS_ERROR_TITLE;
-      $productData['message'] = $objectLanguage->MODAL_PROCESS_ERROR_MESSAGE;
-      $productData['confirmButtonText'] = $objectLanguage->MODAL_BUTTON_ACCEPT;
+      $productData['title'] = '¡Error en el proceso!';
+      $productData['message'] = 'El proceso no se completó correctamente.';
+      $productData['confirmButtonText'] = 'Aceptar';
       $productData['icon'] = 'error';
       $productData['confirmButtonColor'] = '#3085d6';
       # JSON encode data
       echo json_encode ($productData);
     }
     
+    
+    
   }
   
-  # ADD new product via AJAX for DataTable_
-  if (isset($_POST['addNewProduct'])) {
+  # = ADD new product via AJAX for DataTable =
+  if (isset($_POST['product_add'])) {
     
     $objectFunctions = new Functions();
     $productData = array();
@@ -74,9 +71,6 @@
     
     # Content-Type: application/json
     header ('Content-Type: application/json');
-    
-    # JSON decode language strings
-    $objectLanguage = json_decode ($_POST['language']);
     
     # Upload file validation -------------------------------------------------------------------------------------------
     
@@ -93,25 +87,25 @@
      * 7 = UPLOAD_ERR_EXTENSION  => A PHP extension stopped the file upload.
      */
     if ($_FILES['customFile']['error'] == 4) {
-      $productImagePath = 'views/resources/dist/img/modules/no_image.jpg';
+      $productImagePath = 'public_html/resources/dist/img/products/no_image.jpg';
     } elseif (!$_FILES['customFile']['error'] == 0) {
       if ($_FILES['customFile']['error'] == 1) {
-        $productData['message'] = $objectLanguage->MODAL_UPLOAD_ERROR_INI_SIZE;
+        $productData['message'] = 'El archivo cargado excede la directiva upload_max_filesize en php.ini';
       } elseif ($_FILES['customFile']['error'] == 2) {
-        $productData['message'] = $objectLanguage->MODAL_UPLOAD_ERROR_FORM_SIZE;
+        $productData['message'] = 'El archivo cargado excede la directiva MAX_FILE_SIZE que se especificó en el formulario HTML';
       } elseif ($_FILES['customFile']['error'] == 3) {
-        $productData['message'] = $objectLanguage->MODAL_UPLOAD_ERROR_PARTIAL;
+        $productData['message'] = 'El archivo cargado solo se cargó parcialmente.';
       } elseif ($_FILES['customFile']['error'] == 5) {
-        $productData['message'] = $objectLanguage->MODAL_UPLOAD_ERROR_NO_TMP_DIR;
+        $productData['message'] = 'Falta una carpeta temporal.';
       } elseif ($_FILES['customFile']['error'] == 6) {
-        $productData['message'] = $objectLanguage->MODAL_UPLOAD_ERROR_CANT_WRITE;
+        $productData['message'] = 'Error al escribir el archivo en el disco';
       } elseif ($_FILES['customFile']['error'] == 7) {
-        $productData['message'] = $objectLanguage->MODAL_UPLOAD_ERROR_EXTENSION;
+        $productData['message'] = 'Una extensión PHP detuvo la carga del archivo';
       }
       
       # Preparing data for the error modal
-      $productData['title'] = $objectLanguage->MODAL_PROCESS_ERROR_TITLE;
-      $productData['confirmButtonText'] = $objectLanguage->MODAL_BUTTON_ACCEPT;
+      $productData['title'] = '¡Error en el proceso!';
+      $productData['confirmButtonText'] = 'Aceptar';
       $productData['icon'] = 'error';
       $productData['confirmButtonColor'] = '#3085d6';
       
@@ -144,20 +138,20 @@
       if ($resultImageValidation['imageFileProcess'] != 'successful') {
         
         if ($resultImageValidation['imageFileProcess'] == 'error-file-move') {
-          $productData['message'] = $objectLanguage->MODAL_FILE_ERROR_MOVE;
+          $productData['message'] = 'No se pudo mover el archivo.';
         } elseif ($resultImageValidation['imageFileProcess'] == 'error-file-extension') {
-          $productData['message'] = $objectLanguage->MODAL_FILE_ERROR_EXTENSION;
+          $productData['message'] = 'Extensión de archivo incorrecta.';
         } elseif ($resultImageValidation['imageFileProcess'] == 'error-file-size') {
-          $productData['message'] = $objectLanguage->MODAL_FILE_ERROR_SIZE;
+          $productData['message'] ='Error en el tamaño de archivo.';
         } elseif ($resultImageValidation['imageFileProcess'] == 'error-file-mime-type') {
-          $productData['message'] = $objectLanguage->MODAL_FILE_ERROR_FILE;
+          $productData['message'] = 'Archivo no válido.';
         } elseif ($resultImageValidation['imageFileProcess'] == 'error-file-unknown') {
-          $productData['message'] = $objectLanguage->MODAL_FILE_ERROR_UNKNOWN;
+          $productData['message'] = 'No se pudo cargar el archivo.';
         }
         
         # Preparing data for the error modal
-        $productData['title'] = $objectLanguage->MODAL_PROCESS_ERROR_TITLE;
-        $productData['confirmButtonText'] = $objectLanguage->MODAL_BUTTON_ACCEPT;
+        $productData['title'] = '¡Error en el proceso!';
+        $productData['confirmButtonText'] = 'Aceptar';
         $productData['icon'] = 'error';
         $productData['confirmButtonColor'] = '#3085d6';
         
@@ -171,58 +165,41 @@
     }
     
     # If there are no errors in the file validations, then:
-    $productName = $_POST['inputDataName'];
-    $productDescription = $_POST['textAreaDataDescription'];
-    $productAdditionalDescription = $_POST['textAreaDataAdditionalInformation'] ?? 'no-data';
-    $productQuantity = $_POST['inputInventoryQuantity'] ?? 'no-data';
-    $productPriceUSD = $_POST['inputInventoryPriceUSD'] ?? 'no-data';
-    $productPriceComments = $_POST['textAreaInventoryPriceComments'] ?? 'no-data';
-    $productWeightKg = $_POST['inputMeasurementsWeightKg'] ?? 'no-data';
-    $productWeightLb = $_POST['inputMeasurementsWeightLb_'] ?? 'no-data';
-    $productLengthIn = $_POST['inputDimensionsLengthIn'] ?? 'no-data';
-    $productLengthCm = $_POST['inputDimensionsLengthCm_'] ?? 'no-data';
-    $productWidthIn = $_POST['inputDimensionsWidthIn'] ?? 'no-data';
-    $productWidthCm = $_POST['inputDimensionsWidthCm_'] ?? 'no-data';
-    $productHeightIn = $_POST['inputDimensionsHeightIn'] ?? 'no-data';
-    $productHeightCm = $_POST['inputDimensionsHeightCm_'] ?? 'no-data';
-    $productColor = $_POST['inputPropertiesColor'] ?? 'no-data';
-    $productMaterial = $_POST['inputPropertiesMaterial'] ?? 'no-data';
-    $productImageDescription = $_POST['textAreaImageDescription'] ?? 'no-data';
-    $productPublishStatus = $_POST['customSwitchStatus'] ?? 'off';
-    $productPublishCatalog = $_POST['customSwitchVisibility'] ?? 'off';
+    $productName = $_POST['inputName'];
+    $productSpecifications = $_POST['textAreaSpecifications'];
+    $productBrand= $_POST['inputBrand'];
+    $productModel = $_POST['inputModel'];
+    $productPrice = $_POST['inputPrice'];
+    $productQuantity = $_POST['inputQuantity'];
     $productCategories = implode (',', $_POST['selectCategories']);
     $productLastChange = date ("Y-m-d H:i:s");
+    $productViews = 0;
+    $productLikes= 0;
+    $productCommentId = 0;
     
-    $objectProduct = new ControllerProduct();
+    $objectProduct = new ProductController();
     
-    $data = " ('$productName', '$productDescription', '$productAdditionalDescription', '$productQuantity',
-        '$productPriceUSD', '$productPriceComments', '$productWeightKg',
-        '$productWeightLb', '$productLengthIn' , '$productLengthCm', '$productWidthIn', '$productWidthCm',
-        '$productHeightIn', '$productHeightCm', '$productColor', '$productMaterial','$productImagePath',
-        '$productImageDescription', '$productPublishStatus', '$productPublishCatalog', '$productCategories', '$productLastChange') ";
+    $data = " ('$productName', '$productSpecifications', '$productPrice', '$productQuantity',
+        '$productCategories', '$productBrand', '$productModel', '$productViews', '$productLikes', '$productCommentId', '$productImagePath','$productLastChange') ";
     
-    $columns = '(product_general_name, product_general_description, product_general_additional_information, product_inventory_quantity,
-        product_inventory_price_usd, product_inventory_price_comments, product_measures_weight_kg,
-        product_measures_weight_lb, product_measures_length_cm, product_measures_length_in, product_measures_width_cm,
-        product_measures_width_in, product_measures_height_cm, product_measures_height_in, product_properties_color,
-        product_properties_material, product_image, product_image_description, product_publish_status, product_publish_catalog,
-        product_categories, product_date_last_change)';
+    $columns = '(product_name, product_specs, product_price, product_quantity,
+        product_categories, product_brand, product_model, product_views, product_likes, product_comment_id, product_image, product_date_last_change)';
     
     # Insert query
     $queryResult = $objectProduct->insertProduct ($columns, $data);
     
     if ($queryResult) {
-      $productData['title'] = $objectLanguage->MODAL_PROCESS_SUCCESSFUL_TITLE;
-      $productData['message'] = $objectLanguage->MODAL_PROCESS_SUCCESSFUL_MESSAGE;
-      $productData['confirmButtonText'] = $objectLanguage->MODAL_BUTTON_ACCEPT;
+      $productData['title'] = '¡Proceso correcto!';
+      $productData['message'] = 'El proceso se completó de manera exitosa.';
+      $productData['confirmButtonText'] = 'Aceptar';
       $productData['icon'] = 'success';
       $productData['confirmButtonColor'] = '#3085d6';
       # JSON encode data
       echo json_encode ($productData);
     } else {
-      $productData['title'] = $objectLanguage->MODAL_PROCESS_ERROR_TITLE;
-      $productData['message'] = $objectLanguage->MODAL_PROCESS_ERROR_MESSAGE;
-      $productData['confirmButtonText'] = $objectLanguage->MODAL_BUTTON_ACCEPT;
+      $productData['title'] = '¡Error en el proceso!';
+      $productData['message'] = 'El proceso no se completó correctamente.';
+      $productData['confirmButtonText'] = 'Aceptar';
       $productData['icon'] = 'error';
       $productData['confirmButtonColor'] = '#3085d6';
       # JSON encode data
@@ -231,8 +208,8 @@
     
   }
   
-  # UPDATE product via AJAX
-  if (isset($_POST['updateProduct'])) {
+  # = UPDATE product via AJAX =
+  if (isset($_POST['product_edit'])) {
     
     $objectFunctions = new Functions();
     $productData = array();
@@ -241,9 +218,6 @@
     
     # Content-Type: application/json
     header ('Content-Type: application/json');
-    
-    # JSON decode language strings
-    $objectLanguage = json_decode ($_POST['language']);
     
     # Upload file validation -------------------------------------------------------------------------------------------
     
@@ -260,25 +234,25 @@
      * 7 = UPLOAD_ERR_EXTENSION  => A PHP extension stopped the file upload.
      */
     if ($_FILES['customFile']['error'] == 4) {
-      $productImagePath = 'views/resources/dist/img/modules/no_image.jpg';
+      $productImagePath = 'public_html/resources/dist/img/products/no_image.jpg';
     } elseif (!$_FILES['customFile']['error'] == 0) {
       if ($_FILES['customFile']['error'] == 1) {
-        $productData['message'] = $objectLanguage->MODAL_UPLOAD_ERROR_INI_SIZE;
+        $productData['message'] = 'El archivo cargado excede la directiva upload_max_filesize en php.ini';
       } elseif ($_FILES['customFile']['error'] == 2) {
-        $productData['message'] = $objectLanguage->MODAL_UPLOAD_ERROR_FORM_SIZE;
+        $productData['message'] = 'El archivo cargado excede la directiva MAX_FILE_SIZE que se especificó en el formulario HTML';
       } elseif ($_FILES['customFile']['error'] == 3) {
-        $productData['message'] = $objectLanguage->MODAL_UPLOAD_ERROR_PARTIAL;
+        $productData['message'] = 'El archivo cargado solo se cargó parcialmente.';
       } elseif ($_FILES['customFile']['error'] == 5) {
-        $productData['message'] = $objectLanguage->MODAL_UPLOAD_ERROR_NO_TMP_DIR;
+        $productData['message'] = 'Falta una carpeta temporal.';
       } elseif ($_FILES['customFile']['error'] == 6) {
-        $productData['message'] = $objectLanguage->MODAL_UPLOAD_ERROR_CANT_WRITE;
+        $productData['message'] = 'Error al escribir el archivo en el disco';
       } elseif ($_FILES['customFile']['error'] == 7) {
-        $productData['message'] = $objectLanguage->MODAL_UPLOAD_ERROR_EXTENSION;
+        $productData['message'] = 'Una extensión PHP detuvo la carga del archivo';
       }
       
       # Preparing data for the error modal
-      $productData['title'] = $objectLanguage->MODAL_PROCESS_ERROR_TITLE;
-      $productData['confirmButtonText'] = $objectLanguage->MODAL_BUTTON_ACCEPT;
+      $productData['title'] = '¡Error en el proceso!';
+      $productData['confirmButtonText'] = 'Aceptar';
       $productData['icon'] = 'error';
       $productData['confirmButtonColor'] = '#3085d6';
       
@@ -311,20 +285,20 @@
       if ($resultImageValidation['imageFileProcess'] != 'successful') {
         
         if ($resultImageValidation['imageFileProcess'] == 'error-file-move') {
-          $productData['message'] = $objectLanguage->MODAL_FILE_ERROR_MOVE;
+          $productData['message'] = 'No se pudo mover el archivo.';
         } elseif ($resultImageValidation['imageFileProcess'] == 'error-file-extension') {
-          $productData['message'] = $objectLanguage->MODAL_FILE_ERROR_EXTENSION;
+          $productData['message'] = 'Extensión de archivo incorrecta.';
         } elseif ($resultImageValidation['imageFileProcess'] == 'error-file-size') {
-          $productData['message'] = $objectLanguage->MODAL_FILE_ERROR_SIZE;
+          $productData['message'] ='Error en el tamaño de archivo.';
         } elseif ($resultImageValidation['imageFileProcess'] == 'error-file-mime-type') {
-          $productData['message'] = $objectLanguage->MODAL_FILE_ERROR_FILE;
+          $productData['message'] = 'Archivo no válido.';
         } elseif ($resultImageValidation['imageFileProcess'] == 'error-file-unknown') {
-          $productData['message'] = $objectLanguage->MODAL_FILE_ERROR_UNKNOWN;
+          $productData['message'] = 'No se pudo cargar el archivo.';
         }
         
         # Preparing data for the error modal
-        $productData['title'] = $objectLanguage->MODAL_PROCESS_ERROR_TITLE;
-        $productData['confirmButtonText'] = $objectLanguage->MODAL_BUTTON_ACCEPT;
+        $productData['title'] = '¡Error en el proceso!';
+        $productData['confirmButtonText'] = 'Aceptar';
         $productData['icon'] = 'error';
         $productData['confirmButtonColor'] = '#3085d6';
         
@@ -338,77 +312,45 @@
     }
     
     # If there are no errors in the file validations, then:
-    $productName = $_POST['inputDataName'];
-    $productDescription = $_POST['textAreaDataDescription'];
-    $productAdditionalDescription = $_POST['textAreaDataAdditionalInformation'] ?? 'no-data';
-    $productQuantity = $_POST['inputInventoryQuantity'] ?? 'no-data';
-    $productPriceUSD = $_POST['inputInventoryPriceUSD'] ?? 'no-data';
-    $productPriceComments = $_POST['textAreaInventoryPriceComments'] ?? 'no-data';
-    $productWeightKg = $_POST['inputMeasurementsWeightKg'] ?? 'no-data';
-    $productWeightLb = $_POST['inputMeasurementsWeightLb_'] ?? 'no-data';
-    $productLengthIn = $_POST['inputDimensionsLengthIn'] ?? 'no-data';
-    $productLengthCm = $_POST['inputDimensionsLengthCm_'] ?? 'no-data';
-    $productWidthIn = $_POST['inputDimensionsWidthIn'] ?? 'no-data';
-    $productWidthCm = $_POST['inputDimensionsWidthCm_'] ?? 'no-data';
-    $productHeightIn = $_POST['inputDimensionsHeightIn'] ?? 'no-data';
-    $productHeightCm = $_POST['inputDimensionsHeightCm_'] ?? 'no-data';
-    $productColor = $_POST['inputPropertiesColor'] ?? 'no-data';
-    $productMaterial = $_POST['inputPropertiesMaterial'] ?? 'no-data';
-    $productImageDescription = $_POST['textAreaImageDescription'] ?? 'no-data';
-    $productPublishStatus = $_POST['customSwitchStatus'] ?? 'off';
-    $productPublishCatalog = $_POST['customSwitchVisibility'] ?? 'off';
+    $productName = $_POST['inputName'];
+    $productSpecifications = $_POST['textAreaSpecifications'];
+    $productBrand= $_POST['inputBrand'];
+    $productModel = $_POST['inputModel'];
+    $productPrice = $_POST['inputPrice'];
+    $productQuantity = $_POST['inputQuantity'];
     $productCategories = implode (',', $_POST['selectCategories']);
     $productLastChange = date ("Y-m-d H:i:s");
     
-    $objectProduct = new ControllerProduct();
+    $objectProduct = new ProductController();
     
     $productId = $_POST['productId'];
     
     $data = null;
-    $data .= 'product_general_name = ' . '\'' . $productName . '\',';
-    $data .= 'product_general_description = ' . '\'' . $productDescription . '\',';
-    $data .= 'product_general_additional_information = ' . '\'' . $productAdditionalDescription . '\',';
-    $data .= 'product_inventory_quantity = ' . '\'' . $productQuantity . '\',';
-    $data .= 'product_inventory_price_usd = ' . '\'' . $productPriceUSD . '\',';
-    $data .= 'product_inventory_price_comments = ' . '\'' . $productPriceComments . '\',';
-    
-    $data .= 'product_measures_weight_kg = ' . '\'' . $productWeightKg . '\',';
-    $data .= 'product_measures_weight_lb = ' . '\'' . $productWeightLb . '\',';
-    
-    $data .= 'product_measures_length_cm = ' . '\'' . $productLengthCm . '\',';
-    $data .= 'product_measures_length_in = ' . '\'' . $productLengthIn . '\',';
-    
-    $data .= 'product_measures_width_cm = ' . '\'' . $productWidthCm . '\',';
-    $data .= 'product_measures_width_in = ' . '\'' . $productWidthIn . '\',';
-    
-    $data .= 'product_measures_height_cm = ' . '\'' . $productHeightCm . '\',';
-    $data .= 'product_measures_height_in = ' . '\'' . $productHeightIn . '\',';
-    
-    $data .= 'product_properties_color = ' . '\'' . $productColor . '\',';
-    $data .= 'product_properties_material = ' . '\'' . $productMaterial . '\',';
-    
-    $data .= 'product_image = ' . '\'' . $productImagePath . '\',';
-    $data .= 'product_image_description = ' . '\'' . $productImageDescription . '\',';
-    $data .= 'product_publish_status = ' . '\'' . $productPublishStatus . '\',';
-    $data .= 'product_publish_catalog = ' . '\'' . $productPublishCatalog . '\',';
+    $data .= 'product_name = ' . '\'' . $productName . '\',';
+    $data .= 'product_specs = ' . '\'' . $productSpecifications . '\',';
+    $data .= 'product_price = ' . '\'' . $productPrice . '\',';
+    $data .= 'product_quantity = ' . '\'' . $productQuantity . '\',';
     $data .= 'product_categories = ' . '\'' . $productCategories . '\',';
+    $data .= 'product_brand = ' . '\'' . $productBrand . '\',';
+    $data .= 'product_model = ' . '\'' . $productModel . '\',';
+    $data .= 'product_image = ' . '\'' . $productImagePath . '\',';
     $data .= 'product_date_last_change = ' . '\'' . $productLastChange . '\'';
     
     # Update query
     $queryResult = $objectProduct->updateProduct ($productId, $data);
     
     if ($queryResult) {
-      $productData['title'] = $objectLanguage->MODAL_PROCESS_SUCCESSFUL_TITLE;
-      $productData['message'] = $objectLanguage->MODAL_PROCESS_SUCCESSFUL_MESSAGE;
-      $productData['confirmButtonText'] = $objectLanguage->MODAL_BUTTON_ACCEPT;
+      $productData['title'] = '¡Proceso correcto!';
+      $productData['message'] = 'El proceso se completó de manera exitosa.';
+      $productData['confirmButtonText'] = 'Aceptar';
       $productData['icon'] = 'success';
       $productData['confirmButtonColor'] = '#3085d6';
       # JSON encode data
       echo json_encode ($productData);
     } else {
-      $productData['title'] = $objectLanguage->MODAL_PROCESS_ERROR_TITLE;
-      $productData['message'] = $objectLanguage->MODAL_PROCESS_ERROR_MESSAGE;
-      $productData['confirmButtonText'] = $objectLanguage->MODAL_BUTTON_ACCEPT;
+      $productData['title'] = '¡Error en el proceso!';
+      $productData['message'] = 'El proceso no se completó correctamente.';
+      $productData['confirmButtonText'] = 'Aceptar';
       $productData['icon'] = 'error';
       $productData['confirmButtonColor'] = '#3085d6';
       # JSON encode data
@@ -417,16 +359,17 @@
     
   }
   
-  # UPDATE a product_
-  if (isset($_POST['productIdEdit'])) {
+  # = EDIT a product =
+  if (isset($_POST['product_go_to_edit'])) {
     session_start ();
-    $_SESSION['editProductSessionFlag'] = $_POST['productIdEdit'];
+    $_SESSION['editProductSessionFlag'] = $_POST['product_id_edit'];
   }
   
-  # VIEW a product_
-  if (isset($_POST['productIdView'])) {
+  # = VIEW a product =
+  if (isset($_POST['product_go_to_view'])) {
     session_start ();
-    $_SESSION['viewProductSessionFlag'] = $_POST['productIdView'];
+    $_SESSION['viewProductSessionFlag'] = $_POST['product_id_view'];
+    echo 'ok';
   }
   
   /**
@@ -434,13 +377,12 @@
    *
    * - getTotalProducts
    * - getAllProducts
-   * - getAllProductsForDataTables
    * - getProduct
    * - deleteProduct
    * - updateProduct
    * - insertProduct
    * - getProductFormattedForDetailsView
-   * - getAllProductsFormattedForAllProductsView
+   * - getProductsForProductList
    */
   class ProductController
   {
@@ -465,7 +407,7 @@
     }
     
     /**
-     * Get all the records from a table, if you want them sorted you must use the field and order parameters.
+     * = Get all the records from a table, if you want them sorted you must use the field and order parameters. =
      *
      * @param string $order ASC | DESC | NONE
      * @param string $field Field to order, the field should exist on table.
@@ -474,16 +416,6 @@
     function getAllProducts (string $order = 'NONE', string $field = 'NONE'): array|bool
     {
       return $this->model->getAll ();
-    }
-    
-    /**
-     * Get all products for DataTables format.
-     *
-     * @return bool|mysqli_result
-     */
-    public function getAllProductsForDataTables (): mysqli_result|bool
-    {
-      return $this->model->getAllProductsForDataTables ();
     }
     
     /**
@@ -536,139 +468,100 @@
      * Get product data formatted for details view.
      *
      * @param string   $productId Product id.
-     * @param stdClass $language  Object of language strings
      * @return array
      */
-    function getProductFormattedForDetailsView (string $productId, stdClass $language): array
+    function getProductFormattedForDetailsView (string $productId): array
     {
       $objectFunctions = new Functions();
-      $objectCategoriesProduct = new ControllerProductCategories();
+      $objectCategoriesProduct = new ProductCategoriesController();
       
       $productDataToProductDetailsViewArray[] = array();
       
       # Get product data
       $productData = $this->getProduct ($productId);
       
-      $productDataToProductDetailsViewArray['productName'] = $objectFunctions->dataValidationText ($productData['product_general_name'], $language->NO_DATA);
-      $productDataToProductDetailsViewArray['productDescription'] = $objectFunctions->dataValidationText ($productData['product_general_description'], $language->NO_DATA);
-      $productDataToProductDetailsViewArray['productAdditionalInformation'] = $objectFunctions->dataValidationText ($productData['product_general_additional_information'], $language->NO_DATA);
-      $productDataToProductDetailsViewArray['productQuantity'] = $objectFunctions->dataValidationText ($productData['product_inventory_quantity'], $language->NO_DATA);
-      $productDataToProductDetailsViewArray['productPriceUSD'] = number_format ($productData['product_inventory_price_usd'], 2, '.', ',');
-      $productDataToProductDetailsViewArray['productPriceMXN'] = number_format ($productData['product_inventory_price_usd'] * $_COOKIE['dollarValue'], 2, '.', ',');
-      $productDataToProductDetailsViewArray['productPriceComments'] = $objectFunctions->dataValidationText ($productData['product_inventory_price_comments'], $language->NO_DATA);
-      $productDataToProductDetailsViewArray['productWeightKg'] = $objectFunctions->dataValidationText ($productData['product_measures_weight_kg'], '0');
-      $productDataToProductDetailsViewArray['productWeightLb'] = $objectFunctions->dataValidationText ($productData['product_measures_weight_lb'], '0');
-      $productDataToProductDetailsViewArray['productLengthIn'] = $objectFunctions->dataValidationText ($productData['product_measures_length_in'], '0');
-      $productDataToProductDetailsViewArray['productLengthCm'] = $objectFunctions->dataValidationText ($productData['product_measures_length_cm'], '0');
-      $productDataToProductDetailsViewArray['productWidthIn'] = $objectFunctions->dataValidationText ($productData['product_measures_width_in'], '0');
-      $productDataToProductDetailsViewArray['productWidthCm'] = $objectFunctions->dataValidationText ($productData['product_measures_width_cm'], '0');
-      $productDataToProductDetailsViewArray['productHeightIn'] = $objectFunctions->dataValidationText ($productData['product_measures_height_in'], '0');
-      $productDataToProductDetailsViewArray['productHeightCm'] = $objectFunctions->dataValidationText ($productData['product_measures_height_cm'], '0');
-      $productDataToProductDetailsViewArray['productColor'] = $objectFunctions->dataValidationText ($productData['product_properties_color'], $language->NO_DATA);
-      $productDataToProductDetailsViewArray['productMaterial'] = $objectFunctions->dataValidationText ($productData['product_properties_material'], $language->NO_DATA);
-      $productDataToProductDetailsViewArray['productCategories'] = $objectCategoriesProduct->getAllCategoriesNamesById ($productData['product_categories'], $language, '/');
-      $productDataToProductDetailsViewArray['productImage'] = $productData['product_image'];
-      $productDataToProductDetailsViewArray['productImageDescription'] = $objectFunctions->dataValidationText ($productData['product_image_description'], $language->NO_DATA);
-      $productDataToProductDetailsViewArray['productRegistrationDate'] = $objectFunctions->dataValidationText ($productData['product_date_creation'], $language->NO_DATA);
-      $productDataToProductDetailsViewArray['productLastChangeDate'] = $objectFunctions->dataValidationText ($productData['product_date_last_change'], $language->NO_DATA);
-      $productPublishStatus = $objectFunctions->dataValidationText ($productData['product_publish_status'], $language->INACTIVE);
-      
-      if ($productPublishStatus == 'on') {
-        $productPublishStatus = $language->ACTIVE;
-      }
-      
-      $productDataToProductDetailsViewArray['productPublishStatus'] = $productPublishStatus;
-      $productPublishCatalog = $objectFunctions->dataValidationText ($productData['product_publish_catalog'], $language->INACTIVE);
-      
-      
-      if ($productPublishCatalog == 'on') {
-        $productPublishCatalog = $language->ACTIVE;
-      }
-      
-      $productDataToProductDetailsViewArray['productPublishCatalog'] = $productPublishCatalog;
+      $productDataToProductDetailsViewArray['productName'] = $objectFunctions->dataValidationText ($productData['product_name'], 'No hay datos');
+      $productDataToProductDetailsViewArray['productSpecifications'] = $objectFunctions->dataValidationText ($productData['product_specs'], 'No hay datos');
+      $productDataToProductDetailsViewArray['productPrice'] = number_format ($productData['product_price'], 2, '.', ',');
+      $productDataToProductDetailsViewArray['productPriceClean'] =  $objectFunctions->dataValidationText ($productData['product_price'], 'No hay datos');
+      $productDataToProductDetailsViewArray['productQuantity'] = number_format ($productData['product_quantity'], 2, '.', ',');
+      $productDataToProductDetailsViewArray['productCategories'] = $objectCategoriesProduct->getAllCategoriesNamesById ($productData['product_categories'],  '/');
+      $productDataToProductDetailsViewArray['productBrand'] = $objectFunctions->dataValidationText ($productData['product_brand'], 'No hay datos');
+      $productDataToProductDetailsViewArray['productModel'] = $objectFunctions->dataValidationText ($productData['product_model'], 'No hay datos');
+      $productDataToProductDetailsViewArray['productViews'] = $objectFunctions->dataValidationText ($productData['product_views'], 'No hay datos');
+      $productDataToProductDetailsViewArray['productLikes'] = $objectFunctions->dataValidationText ($productData['product_likes'], 'No hay datos');
+      $productDataToProductDetailsViewArray['productCommentId'] = $objectFunctions->dataValidationText ($productData['product_comment_id'], 'No hay datos');
+      $productDataToProductDetailsViewArray['productImage'] = $objectFunctions->dataValidationText ($productData['product_image'], 'No hay datos');
+      $productDataToProductDetailsViewArray['productDateLastChange'] = $objectFunctions->dataValidationText ($productData['product_date_last_change'], 'No hay datos');
+      $productDataToProductDetailsViewArray['productDateCreation'] = $objectFunctions->dataValidationText ($productData['product_date_creation'], 'No hay datos');
       
       return $productDataToProductDetailsViewArray;
     }
     
     /**
-     * Get all products formatted for all products view.
+     * = Get all products formatted for all products view. =
      *
-     * @param stdClass $languageObject Array of text strings of selected language.
      * @return void
      */
-    static function getAllProductsFormattedForAllProductsView (stdClass $languageObject): void
+    static function getProductsForProductList (): void
     {
-      $productObject = new ControllerProduct();
-      $categoriesObject = new ControllerProductCategories();
-      $productsArray = array();
+      $productObject = new ProductController();
+      $categoriesObject = new ProductCategoriesController();
+      $result = $productObject->getAllProducts ();
       
-      $allProducts = $productObject->getAllProductsForDataTables ();
-      
-      # The data is sorted to create a new array
-      while ($data = $allProducts->fetch_object ()) {
-        $productsArray[] = array(
-          $data->product_id,                              // [0]  | Id
-          $data->product_id,                              // [1]  | Tools
-          $data->product_image,                           // [2]  | Image
-          $data->product_general_name,                    // [3]  | Name
-          $data->product_general_description,             // [4]  | Description
-          $data->product_general_additional_information,  // [5]  | Additional information
-          $data->product_categories,                      // [6]  | Categories
-          $data->product_inventory_quantity,              // [7]  | Amount
-          $data->product_inventory_price_usd,             // [8]  | Price USD
-          $data->product_inventory_price_comments,        // [9]  | Price comments
-          $data->product_measures_weight_kg,              // [10] | Weight kg
-          $data->product_measures_weight_lb,              // [11] | Weight lb
-          $data->product_measures_length_cm,              // [12] | Length cm
-          $data->product_measures_length_in,              // [13] | Length in
-          $data->product_measures_width_cm,               // [14] | Width cm
-          $data->product_measures_width_in,               // [15] | Width in
-          $data->product_measures_height_cm,              // [16] | Height cm
-          $data->product_measures_height_in,              // [17] | Height in
-          $data->product_properties_color,                // [18] | Color
-          $data->product_properties_material,             // [19] | Material
-          $data->product_publish_status,                  // [20] | Status
-          $data->product_publish_catalog,                 // [21] | Catalog
-          $data->product_date_last_change,                // [22] | Last change
-          $data->product_date_creation,                   // [23] | Date creation
-          $data->product_image_description                // [24] | Description
+      foreach ($result as $row) {
+        $data[] = array(
+          "product_id" => $row['product_id'],
+          "product_name" => $row['product_name'],
+          "product_specs" => $row['product_specs'],
+          "product_price" => $row['product_price'],
+          "product_quantity" => $row['product_quantity'],
+          "product_categories" => $row['product_categories'],
+          "product_brand" => $row['product_brand'],
+          "product_model" => $row['product_model'],
+          "product_views" => $row['product_views'],
+          "product_likes" => $row['product_likes'],
+          "product_comment_id" => $row['product_comment_id'],
+          "product_image" => $row['product_image'],
+          "product_date_last_change" => $row['product_date_last_change'],
+          "product_date_creation" => $row['product_date_creation']
         );
       }
-      
       $indexNumber = 1;
       $productsArrayOrdered[] = array();
       
+      
       # Sort the data for the DataTables
-      foreach ($productsArray as $index => $item) {
+      foreach ($data as $index => $item) {
         
-        # No. [COLUMN] -------------------------------------------------------------------------------------------------
+        # No. [1. COLUMN] ----------------------------------------------------------------------------------------------
         $productsArrayOrdered[$index][0] = $indexNumber++;
         
-        # Tools [COLUMN] -----------------------------------------------------------------------------------------------
+        # Tools [2. COLUMN] --------------------------------------------------------------------------------------------
         $productsArrayOrdered[$index][1] = '
           <div class="btn-group" style="padding: 10px;">
           
             <!-- View button /-->
             <button type = "button"
-                    class="btn btn-primary btn-flat ininsys-tools-buttons"
-                    title = "' . $languageObject->VIEW . '"
-                    onclick = "viewProduct(' . $item[1] . ')" >
+                    class="btn btn-primary btn-flat store-tools-buttons"
+                    title = "Ver"
+                    onclick = "viewProductAjax(' . $item['product_id'] . ')" >
               <i class="fa-solid fa-eye"></i>
             </button>
             
             <!-- Edit buttons /-->
             <button type = "button"
-                    class="btn btn-success btn-flat ininsys-tools-buttons"
-                    title = "' . $languageObject->EDIT . '"
-                    onclick = "editProduct(' . $item[1] . ')" >
+                    class="btn btn-success btn-flat store-tools-buttons"
+                    title = "Editar"
+                    onclick = "editProductAjax(' . $item['product_id'] . ')" >
               <i class="fas fa-pen-to-square"></i>
             </button>
             
             <!-- Delete button /-->
             <button type = "button"
-                    class="btn btn-danger btn-flat ininsys-tools-buttons"
-                    title = "' . $languageObject->DELETE . '"
-                    onclick = "deleteProduct(' . $item[1] . ',\'' . $item[3] . '\')" >
+                    class="btn btn-danger btn-flat store-tools-buttons"
+                    title = "Eliminar"
+                    onclick = "deleteProductConfirmationModal(' . $item['product_id'] . ',\'' . $item['product_name'] . '\')" >
               <i class="fas fa-trash-can" ></i>
             </button>
             
@@ -676,183 +569,107 @@
           
          ';
         
-        # Image [COLUMN] -----------------------------------------------------------------------------------------------
+        # Image [3. COLUMN] --------------------------------------------------------------------------------------------
         // If there is no product image
-        if (!isset($item[2]) || $item[2] == null || $item[2] == '') {
-          $item[2] = "views/resources/dist/img/products/no_image.jpg";
+        if (!isset($item['product_image']) || $item['product_image'] == null || $item['product_image'] == '') {
+          $item['product_image'] = "public_html/resources/dist/img/products/no_images.jpg";
         }
         $productsArrayOrdered[$index][2] = '
-          <a href = "' . $item[2] . '"
+          <a href = "' . $item['product_image'] . '"
                   data-toggle = "lightbox"
-                  data-title = "' . $item[3] . '"
-                  title = "' . $languageObject->ZOOM_IMAGE . '"
-                  data-footer = "' . $item[24] . '">
-                  <img  src = "' . $item[2] . '"
+                  data-title = "' . $item['product_name'] . '"
+                  title = "Ver imágen"
+                  data-footer = "' . $item['product_name'] . '">
+                  <img  src = "' . $item['product_image'] . '"
                         width = "80px"
                         class="img-thumbnail img-fluid ininsys-product-view-all-image"
-                        alt = "' . $item[3] . '" >
+                        alt = "' . $item['product_name'] . '" >
               </a>
           ';
         
-        # Name [COLUMN] ------------------------------------------------------------------------------------------------
-        if (!$item[3]) {
-          $productsArrayOrdered[$index][3] = $languageObject->NO_DATA;
+        # Name [4. COLUMN] ---------------------------------------------------------------------------------------------
+        if (!$item['product_name']) {
+          $productsArrayOrdered[$index][3] = 'No hay datos.';
         } else {
-          $productsArrayOrdered[$index][3] = $item[3];
+          $productsArrayOrdered[$index][3] = $item['product_name'];
         }
         
-        # Description [COLUMN] -----------------------------------------------------------------------------------------
-        if (!$item[4]) {
-          $productsArrayOrdered[$index][4] = $languageObject->NO_DATA;
+        # Specifications [4. COLUMN] -----------------------------------------------------------------------------------
+        if (!$item['product_specs']) {
+          $productsArrayOrdered[$index][4] = 'No hay dato.';
         } else {
-          $productsArrayOrdered[$index][4] = $item[4];
+          $productsArrayOrdered[$index][4] = $item['product_specs'];
         }
         
-        # Additional information [COLUMN] ------------------------------------------------------------------------------
-        if ($item[5] == 'no-data' || $item[5] == '') {
-          $productsArrayOrdered[$index][5] = $languageObject->NO_DATA;
+        # Price [5. COLUMN] --------------------------------------------------------------------------------------------
+        if ($item['product_price'] == 'no-data' || $item['product_price'] == '') {
+          $productsArrayOrdered[$index][5] = 'No hay dato.';
         } else {
-          $productsArrayOrdered[$index][5] = $item[5];
-        }
-        
-        # Categories [COLUMN] ------------------------------------------------------------------------------------------
-        $categoriesNames = $categoriesObject->getAllCategoriesNamesById ($item[6], $languageObject, ',');
-        $productsArrayOrdered[$index][6] = $categoriesNames;
-        
-        # Quantity [COLUMN] ----------------------------------------------------------------------------------------------
-        if ($item[7] == 'no-data' || $item[7] == '') {
-          $productsArrayOrdered[$index][7] = $languageObject->NO_DATA;
-        } else {
-          $productsArrayOrdered[$index][7] = $item[7];
-        }
-        
-        # Price USD [COLUMN] -------------------------------------------------------------------------------------------
-        if ($item[8] == 'no-data' || $item[8] == '') {
-          $productsArrayOrdered[$index][8] = $languageObject->NO_DATA;
-        } else {
-          //$productsArrayOrdered[$index][8] = $item[8] . ' USD';
-          $usdPrice = floatval ($item[8]);
-          $usdPriceFormatted = number_format ($usdPrice, 2, '.', ',');
-          $productsArrayOrdered[$index][8] = $usdPriceFormatted . ' USD';
-        }
-        
-        # Price MXN [COLUMN] -------------------------------------------------------------------------------------------
-        if ($item[8] == 'no-data' || $item[8] == '') {
-          $productsArrayOrdered[$index][9] = $languageObject->NO_DATA;
-        } else {
-          $mxnPrice = floatval ($_COOKIE["dollarValue"]) * floatval ($item[8]);
+          $mxnPrice = floatval ($item['product_price']);
           $mxnPriceFormatted = number_format ($mxnPrice, 2, '.', ',');
-          $productsArrayOrdered[$index][9] = $mxnPriceFormatted . ' MXN';
+          $productsArrayOrdered[$index][5] = $mxnPriceFormatted . ' MXN';
         }
         
-        # Price comments [COLUMN] --------------------------------------------------------------------------------------
-        if ($item[9] == 'no-data' || $item[9] == '') {
-          $productsArrayOrdered[$index][10] = $languageObject->NO_DATA;
+        # Quantity [6. COLUMN] --------------------------------------------------------------------------------------------
+        if (!$item['product_quantity']) {
+          $productsArrayOrdered[$index][6] = 'No hay dato.';
         } else {
-          $productsArrayOrdered[$index][10] = $item[9];
+          $productsArrayOrdered[$index][6] = $item['product_quantity'];
         }
         
-        # Weight Kg [COLUMN] -------------------------------------------------------------------------------------------
-        if ($item[10] == 'no-data' || $item[10] == '') {
-          $productsArrayOrdered[$index][11] = $languageObject->NO_DATA;
+        # Categories [7. COLUMN] -----------------------------------------------------------------------------------------
+        $categoriesNames = $categoriesObject->getAllCategoriesNamesById ($item['product_categories'], ',');
+        $productsArrayOrdered[$index][7] = $categoriesNames;
+        
+        # Brand [8. COLUMN] --------------------------------------------------------------------------------------------
+        if (!$item['product_brand']) {
+          $productsArrayOrdered[$index][8] = 'No hay datos.';
         } else {
-          $productsArrayOrdered[$index][11] = $item[10] . ' kg';
+          $productsArrayOrdered[$index][8] = $item['product_brand'];
         }
         
-        # Weight Lb [COLUMN] -------------------------------------------------------------------------------------------
-        if ($item[11] == 'no-data' || $item[11] == '') {
-          $productsArrayOrdered[$index][12] = $languageObject->NO_DATA;
+        # Model [9. COLUMN] --------------------------------------------------------------------------------------------
+        if (!$item['product_model']) {
+          $productsArrayOrdered[$index][9] = 'No hay datos.';
         } else {
-          $productsArrayOrdered[$index][12] = $item[11] . ' lb';
+          $productsArrayOrdered[$index][9] = $item['product_model'];
         }
         
-        # Length cm [COLUMN] -------------------------------------------------------------------------------------------
-        if ($item[12] == 'no-data' || $item[12] == '') {
-          $productsArrayOrdered[$index][13] = $languageObject->NO_DATA;
+        # Views [10. COLUMN] --------------------------------------------------------------------------------------------
+        if (!$item['product_views']) {
+          $productsArrayOrdered[$index][10] = 'No hay datos.';
         } else {
-          $productsArrayOrdered[$index][13] = $item[12] . ' cm';
+          $productsArrayOrdered[$index][10] = $item['product_views'];
         }
         
-        # Length in [COLUMN] -------------------------------------------------------------------------------------------
-        if ($item[13] == 'no-data' || $item[13] == '') {
-          $productsArrayOrdered[$index][14] = $languageObject->NO_DATA;
+        # Likes [11. COLUMN] -------------------------------------------------------------------------------------------
+        if (!$item['product_likes']) {
+          $productsArrayOrdered[$index][11] = 'No hay datos.';
         } else {
-          $productsArrayOrdered[$index][14] = $item[13] . ' in';
+          $productsArrayOrdered[$index][11] = $item['product_likes'];
         }
         
-        # Width cm [COLUMN] --------------------------------------------------------------------------------------------
-        if ($item[14] == 'no-data' || $item[14] == '') {
-          $productsArrayOrdered[$index][15] = $languageObject->NO_DATA;
+        # Comments [12. COLUMN] ----------------------------------------------------------------------------------------
+        if (!$item['product_comment_id']) {
+          $productsArrayOrdered[$index][12] = 'No hay datos.';
         } else {
-          $productsArrayOrdered[$index][15] = $item[14] . ' cm';
+          $productsArrayOrdered[$index][12] = $item['product_comment_id'];
         }
         
-        # Width in [COLUMN] --------------------------------------------------------------------------------------------
-        if ($item[15] == 'no-data' || $item[15] == '') {
-          $productsArrayOrdered[$index][16] = $languageObject->NO_DATA;
+        # Product Date Last Change [13. COLUMN] ------------------------------------------------------------------------
+        if (!$item['product_date_last_change']) {
+          $productsArrayOrdered[$index][13] = 'No hay datos.';
         } else {
-          $productsArrayOrdered[$index][16] = $item[15] . ' in';
+          $productsArrayOrdered[$index][13] = $item['product_date_last_change'];
         }
         
-        # Height cm [COLUMN] -------------------------------------------------------------------------------------------
-        if ($item[16] == 'no-data' || $item[16] == '') {
-          $productsArrayOrdered[$index][17] = $languageObject->NO_DATA;
+        
+        # Product Date Creation [14. COLUMN] ---------------------------------------------------------------------------
+        if (!$item['product_date_creation']) {
+          $productsArrayOrdered[$index][14] = 'No hay datos.';
         } else {
-          $productsArrayOrdered[$index][17] = $item[16] . ' cm';
+          $productsArrayOrdered[$index][14] = $item['product_date_creation'];
         }
-        
-        # Height in [COLUMN] -------------------------------------------------------------------------------------------
-        if ($item[17] == 'no-data' || $item[17] == '') {
-          $productsArrayOrdered[$index][18] = $languageObject->NO_DATA;
-        } else {
-          $productsArrayOrdered[$index][18] = $item[17] . ' in';
-        }
-        
-        # Color [COLUMN] -----------------------------------------------------------------------------------------------
-        if ($item[18] == 'no-data' || $item[18] == '') {
-          $productsArrayOrdered[$index][19] = $languageObject->NO_DATA;
-        } else {
-          $productsArrayOrdered[$index][19] = $item[18];
-        }
-        
-        # Material [COLUMN] --------------------------------------------------------------------------------------------
-        if ($item[19] == 'no-data' || $item[19] == '') {
-          $productsArrayOrdered[$index][20] = $languageObject->NO_DATA;
-        } else {
-          $productsArrayOrdered[$index][20] = $item[19];
-        }
-        
-        # Status [COLUMN] ----------------------------------------------------------------------------------------------
-        if (!$item[20]) {
-          $productsArrayOrdered[$index][21] = $languageObject->NO_DATA;
-        } else {
-          if ($item[20] == 'on') {
-            $productsArrayOrdered[$index][21] = $languageObject->ACTIVE;
-          } else {
-            $productsArrayOrdered[$index][21] = $languageObject->INACTIVE;
-          }
-        }
-        
-        # Catalogue [COLUMN] -------------------------------------------------------------------------------------------
-        if (!$item[21]) {
-          $productsArrayOrdered[$index][22] = $languageObject->NO_DATA;
-        } else {
-          if ($item[21] == 'on') {
-            $productsArrayOrdered[$index][22] = $languageObject->ACTIVE;
-          } else {
-            $productsArrayOrdered[$index][22] = $languageObject->INACTIVE;
-          }
-        }
-        
-        # Last change date [COLUMN] ------------------------------------------------------------------------------------
-        if (!$item[22]) {
-          $productsArrayOrdered[$index][23] = $languageObject->NO_DATA;
-        } else {
-          $productsArrayOrdered[$index][23] = $item[22];
-        }
-        
-        # Date creation [COLUMN] ------------------------------------------------------------------------------------
-        $productsArrayOrdered[$index][24] = $item[23];
       }
       
       # An array is created with the data ordered and prepared for the table

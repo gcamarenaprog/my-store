@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ---------------------------------------------------------------------------------------------------------------------
  * Project name:        Store
  * Project description: Selection process skills assessment.
@@ -143,7 +143,8 @@ function viewProductAjax(product_id_view) {
     type: 'POST',
     url: 'php/controllers/ProductController.php',
     data: {
-      product_id_view: product_id_view
+      product_id_view: product_id_view,
+      product_go_to_view: 'product_go_to_view'
     },
   }).done(function (msg) {
     // Response data
@@ -168,7 +169,8 @@ function editProductAjax(product_id_edit) {
     type: 'POST',
     url: 'php/controllers/ProductController.php',
     data: {
-      product_id_edit: product_id_edit
+      product_id_edit: product_id_edit,
+      product_go_to_edit: 'product_go_to_edit'
     },
   }).done(function (msg) {
     // Response data
@@ -192,14 +194,13 @@ function deleteProductAjax(product_id, product_name) {
   // Function that sends and receives response with AJAX
   $.ajax({
     type: 'POST',
-    url: 'controllers/ProductController.php',
+    url: 'php/controllers/ProductController.php',
     data: {
-      productId: product_id,
-      productName: product_name,
-      deleteProduct: 'deleteProduct',
-      language: object_language
+      product_id: product_id,
+      product_name: product_name,
+      product_delete: 'product_delete'
     },
-    // Before send Ajax request
+// Before send Ajax request
     beforeSend: function () {
       document.getElementById("loading").style.visibility = "visible";
     },
@@ -208,7 +209,7 @@ function deleteProductAjax(product_id, product_name) {
     if (response['icon'] == 'success') {
 
       // Successful to delete record
-      launchGenericModal(response['title'], response['message'], response['confirmButtonText'], response['icon'], response['confirmButtonColor'], 'productViewAll');
+      launchGenericModal(response['title'], response['message'], response['confirmButtonText'], response['icon'], response['confirmButtonColor']);
       document.getElementById("loading").style.visibility = "hidden";
 
       // Reload DataTable
@@ -226,7 +227,7 @@ function deleteProductAjax(product_id, product_name) {
     launchGenericModal('¡Error en el proceso!', 'El proceso no se completó correctamente.' + '<br>' + textStatus + " " + errorThrown, 'Aceptar', 'error', '#3085d6', 'null');
     console.log("The following error occurred: " + textStatus + " " + errorThrown);
     document.getElementById("loading").style.visibility = "hidden";
-  }).always(function (response) {
+  }).always(function (msg) {
     // No code
   });
 }

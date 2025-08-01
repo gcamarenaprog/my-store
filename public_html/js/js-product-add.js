@@ -5,26 +5,22 @@
  * Version:             1.0.0
  * File type:           Script
  * File type:           JavaScript file
- * File description:    This file has the JavaScript functions of Product Edit view
+ * File description:    This file has the JavaScript functions of Product Add view
  * Module:              JavaScript scripts
  * ---------------------------------------------------------------------------------------------------------------------
  *
  * - Control initializations
  * - Ajax functions
  * - Validations
- * - Document on ready functions
- * - General functions
+ * - Event functions
  * - DOM functions
  */
 
-
 /** Control initializations ------------------------------------------------------------------------------------------*/
 
-// Select input
-let selectedValues = new Array();
-$('.select2').val(selectedValues);
-
 // Select2 initialization
+let selected_values = new Array();
+$('.select2').val(selected_values);
 $(document).ready(function () {
   $('.select2').select2();
 });
@@ -37,17 +33,13 @@ $(function () {
 /** Ajax functions ---------------------------------------------------------------------------------------------------*/
 
 /**
- * Update record via Ajax
+ * Insert new product via Ajax.
  *
  * @returns void
  */
-$("#editProductForm").on('submit', function (e) {
+$("#addProductForm").on('submit', function (e) {
   let form_data = new FormData(this);
-  let image_src = $('#imageProduct').attr('src');
-  $("#imageProduct").attr('src', image_src);
-    form_data.append('imageOld', image_src),
-    form_data.append('product_edit', 'product_edit'),
-    form_data.append('productId', product_id),
+  form_data.append('product_add', 'product_add'),
     e.preventDefault();
   $.ajax({
     type: 'POST',
@@ -56,14 +48,19 @@ $("#editProductForm").on('submit', function (e) {
     contentType: false,
     cache: false,
     processData: false,
+    // Before send Ajax request
     beforeSend: function () {
       document.getElementById("loading").style.visibility = "visible";
     },
   }).done(function (response) {
+    console.log(response)
     if (response['icon'] == 'success') {
-      // Successful to delete record
-      launchGenericModal(response['title'], response['message'], response['confirmButtonText'], response['icon'], response['confirmButtonColor'], 'null');
+      // Successful to add record
+      launchGenericModal(response['title'], response['message'], response['confirmButtonText'], response['icon'], response['confirmButtonColor'], 'product-list');
       document.getElementById("loading").style.visibility = "hidden";
+      // Reload DataTable
+      let table = $('#tableProducts').DataTable();
+      table.ajax.reload();
     } else {
       // Error to delete record
       launchGenericModal(response['title'], response['message'], response['confirmButtonText'], response['icon'], response['confirmButtonColor'], 'null');
@@ -91,7 +88,7 @@ $(function () {
       return true;
     }
   });
-  let editProductForm = $('#editProductForm').validate({
+  let addProductForm = $('#addProductForm').validate({
     rules: {
       inputName: {
         required: true,
@@ -157,13 +154,13 @@ $(function () {
 });
 
 /**
- * Update product form jQuery Validation
+ * Add new product form jQuery Validation
  */
 $(document).ready(function () {
   // Form jQuery Validation
-  $('#editProductForm').on('select2:select blur keyup change input', function (event) {
-    let add_new_product_form = $('#editProductForm');
-    let submit_button = $("#buttonUpdate");
+  $('#addProductForm').on('select2:select blur keyup change input', function (event) {
+    let add_new_product_form = $('#addProductForm');
+    let submit_button = $("#buttonAddNew");
     let is_valid = $(add_new_product_form).validate().checkForm();
     if (is_valid) {
       submit_button.removeAttr("disabled");
@@ -183,13 +180,13 @@ $("#customFile").on('change', function () {
   let custom_file_id = $('#customFile');
   let minimum_height = 300;
   let minimum_width = 300;
-  let no_image_path = 'public_html/resources/dist/img/products/no_image.jpg';
+  let no_image_path = 'views/resources/dist/img/products/no_image.jpg';
   let maximum_size = 1500000; // 1,500,000 = 1.5 MB
   let valid_extensions = ('jpg, jpeg, png');
   imagePreloadValidationForm(file, img, image_id, custom_file_id, minimum_width, minimum_height, maximum_size, no_image_path, valid_extensions);
 });
 
-/** Document ready functions -----------------------------------------------------------------------------------------*/
+/** Events functions -------------------------------------------------------------------------------------------------*/
 
 /** DOM functions ----------------------------------------------------------------------------------------------------*/
 
@@ -228,7 +225,7 @@ function hiddenHelpForm() {
 /**
  * Tool button clean: Reset all values inputs of the form
  */
-function cleanEditProductForm() {
+function cleanAddNewProductForm() {
   bsCustomFileInput.destroy();
   $('#inputName').val('');
   $('#imageProduct').attr('src', 'public_html/resources/dist/img/products/no_image.jpg');
