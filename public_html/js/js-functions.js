@@ -35,3 +35,28 @@ function getCookieValue(name_cookie) {
     return null;
   }
 }
+
+
+/**
+ * Launches a generic modal with the information passed to it, with accept button.
+ *
+ * @param {String} title Title of the modal.
+ * @param {String} content HTML content of the modal.
+ * @param {String} confirm_button_text Text confirm button.
+ * @param {String} icon Icon of the modal | error | successful | warning | info | question
+ * @param {String} confirm_button_color HEX code color for the confirmation button.
+ * @param {String} redirect Slug view to redirect after launch modal.
+ */
+function launchGenericModal(title, content, confirm_button_text, icon, confirm_button_color = '#3085d6', redirect = 'null') {
+  Swal.fire({
+    title: title,
+    html: content,
+    confirmButtonText: confirm_button_text,
+    icon: icon,
+    confirmButtonColor: confirm_button_color
+  }).then(function () {
+    if (redirect != 'null') {
+      window.location = redirect;
+    }
+  })
+}
