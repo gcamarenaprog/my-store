@@ -79,6 +79,88 @@
       }
     }
     
+    /**
+     * Image validation, copy and move to destination folder
+     *
+     * @param array  $fileContent    $_FILE content of the uploaded file.
+     * @param string $folderName     Folder name to save files.
+     * @param string $filePrefix     Prefix name for name file of file uploaded.
+     * @param array  $mimeTypesArray Array with valid MIME types.
+     * @param int    $fileSizeValid  Minimum file size valid.
+     * @param array  $extensionArray Array with valid file extensions.
+     *
+     * @return array
+     */
+    function fileValidation (array $fileContent, string $folderName, string $filePrefix, array $mimeTypesArray, int $fileSizeValid, array $extensionArray): array
+    {
+      // Data: File name e.g. image.jpg
+      $fileName = $fileContent['name'];
+      
+      // Data: Filetype e.g. image/jpeg
+      $fileMimeType = $fileContent['type'];
+      
+      // Data: Filetype e.g. C:\xampp\tmp\phpC45D.tmp
+      $fileTemporalName = $fileContent['tmp_name'];
+      
+      // Data: Filetype e.g. 748391 in Kb
+      $fileSize = $fileContent['size'];
+      
+      // Data: Get image dimensions e.g. Array ( [0] => 1920 [1] => 845 [2] => 2 [3] => width="1920" height="845" [bits] => 8 [channels] => 3 [mime] => image/jpeg )
+      $fileDimensions = getimagesize ($fileContent['tmp_name']);
+      
+      // Data: Document root e.g. './public_html/'
+      $documentRoot = $_SERVER['DOCUMENT_ROOT'];
+      
+      // Full path for image
+      $fileDirectoryDestination = $documentRoot . '/public_html/resources/dist/img/' . $folderName . '/';
+      
+      // Get file extension
+      $fileExtensionExtracted = explode (".", $fileName);
+      
+      // Data: File extension e.g. jpg
+      $fileExtension = strtolower (end ($fileExtensionExtracted));
+      
+      // Data: New file name with prefix and date.
+      $fileNewFileName = $filePrefix . '_' . date ("Y-m-d_h-i-s") . '.' . $fileExtension;
+      
+      // Data: New path of the image file
+      $filePathForDatabase = 'public_html/resources/dist/img/' . $folderName . '/' . $fileNewFileName;
+      
+      // Data: New name and path
+      $fileNameAndPath = $fileDirectoryDestination . $fileNewFileName; // File names and pat e.g. files/image_file.jpg
+      
+      // Validate MIME type
+      if (in_array ($fileMimeType, $mimeTypesArray)) {
+        
+        // Validate image size < 1.5 MB
+        if ($fileSize < $fileSizeValid) {
+          
+          // Validate file allowed extensions
+          if (in_array($fileExtension, $extensionArray)) {
+            
+            // Directory in which the uploaded file will be moved
+            if (move_uploaded_file ($fileTemporalName, $fileNameAndPath)) {
+              
+              $dataFile['imageFileProcess'] = 'successful';
+              $dataFile['imageFilePath'] = $filePathForDatabase;
+              
+              return $dataFile;
+              
+            } else {
+              return $dataFile['imageFileProcess'] = 'error-file-move';
+            }
+          } else {
+            return $dataFile['imageFileProcess'] = 'error-file-extension';
+          }
+        } else {
+          return $dataFile['imageFileProcess'] = 'error-file-size';
+        }
+      } else {
+        return $dataFile['imageFileProcess'] = 'error-file-mime-type';
+      }
+      return $dataFile['imageFileProcess'] = 'error-file-unknown';
+    }
+    
     # Menu functions ---------------------------------------------------------------------------------------------------
     
     /**
