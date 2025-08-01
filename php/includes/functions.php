@@ -60,6 +60,25 @@
       return htmlspecialchars ($string); // Convert special characters to HTML entities
     }
     
+    /**
+     * Validates whether a variable is null, empty, or has a string value.
+     *
+     * @param string $value   Value to evaluate in the function.
+     * @param string $message Text string returned if null or empty.
+     *
+     * @return string|null
+     */
+    function dataValidationText (string $value, string $message): string | null
+    {
+      if ($value == null) {
+        return $message;
+      } elseif($value == '1969-12-31 16:00:00'){
+        return null;
+      } else{
+        return $value;
+      }
+    }
+    
     # Menu functions ---------------------------------------------------------------------------------------------------
     
     /**
