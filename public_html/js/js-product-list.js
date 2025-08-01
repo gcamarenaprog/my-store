@@ -51,7 +51,7 @@ let table = $(function () {
       'type': 'GET',
       'data': {
         // language: object_language,
-        getAllProducts: 'getAllProducts',
+        product_get_all: 'product_get_all',
       },
     },
     "dom": 'Bfrtip',
@@ -168,12 +168,12 @@ function editProductAjax(product_id_edit) {
     type: 'POST',
     url: 'php/controllers/ProductController.php',
     data: {
-      productIdEdit: product_id_edit
+      product_id_edit: product_id_edit
     },
   }).done(function (msg) {
     // Response data
     console.log(msg);
-    window.location.href = 'productEdit';
+    window.location.href = 'product-edit';
   }).fail(function (jqXHR, textStatus, errorThrown) { // Function that is executed if something has gone wrong
     launchGenericModal('¡Error en el proceso!', 'El proceso no se completó correctamente.' + '<br>' + textStatus + " " + errorThrown, modal_button_accept, 'error', '#3085d6', 'null');
     console.log("The following error occurred: " + textStatus + " " + errorThrown);
