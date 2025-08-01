@@ -31,7 +31,7 @@
       </div>
 
       <!-- Icon page -->
-      <div class="col-sm-6 ininsys-icon-page">
+      <div class="col-sm-6 store-icon-page">
         <ol class="breadcrumb float-sm-right">
           <i class="fa fa-home"></i>
         </ol>
@@ -56,7 +56,7 @@
 
           <!-- Title -->
           <div class="col-12">
-            <h5 class="ininsys-card-title mb-2">Contadores</b></h5>
+            <h5 class="store-card-title mb-2">Contadores</b></h5>
           </div>
 
 
