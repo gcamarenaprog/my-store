@@ -22,7 +22,7 @@
     ProductController::getProductsForProductList ();
   }
   
-  # DELETE product via Ajax for DataTable_
+  # = DELETE product via Ajax for DataTable =
   if (isset($_POST['product_delete'])) {
     
     $productObject = new ProductController();

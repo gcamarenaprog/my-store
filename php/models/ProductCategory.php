@@ -23,7 +23,7 @@
   {
     
     /**
-     * _Constructor of the ModelProductCategory class, inherit of the model generic class.
+     *  :: Constructor of the ModelProductCategory class, inherit of the model generic class ::
      */
     public function __construct ()
     {
@@ -31,8 +31,21 @@
     }
     
     /**
-     * REVISED
-     * Get category name by category id
+     * :: Gets total child categories by ID category ::
+     *
+     * @param $categoryId Category id.
+     * @return int
+     */
+    public function getTotalChildCategoriesByIdCategory($categoryId): int
+    {
+      $sql = " SELECT COUNT(product_category_parent) AS NumberOfChildCategories  from {$this->table} WHERE product_category_parent LIKE '%$categoryId%' ";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchColumn ();
+    }
+    
+    /**
+     * :: Get category name by category ID ::
      *
      * @param string $categoryId Category id.
      * @return string
@@ -46,8 +59,7 @@
     }
     
     /**
-     * REVISED
-     * Gets total products on a category.
+     * :: Gets total products on a category ::
      *
      * @param string $categoryId Category id.
      * @return string
@@ -61,151 +73,16 @@
     }
     
     /**
-     * REVISED
-     * Gets total child categories by id category.
+     * :: Get all parent categories ::
      *
-     * @param $categoryId Category id.
-     * @return int
+     * @return array|bool
      */
-    public function getTotalChildCategoriesByIdCategory($categoryId): int
+    public function getAllParentCategories (): array|bool
     {
-      $sql = " SELECT COUNT(product_category_parent) AS NumberOfChildCategories  from {$this->table} WHERE product_category_parent LIKE '%$categoryId%' ";
-      $statement = $this->connectionPDO->prepare ($sql);
-      $statement->execute ();
-      return $statement->fetchColumn ();
-    }
-    
-    
-    /***
-     * REVISED
-     * Get all products categories for DataTables format
-     *
-     * @return bool|mysqli_result
-     */
-    public function getAllProductsCategoriesForDataTables (): mysqli_result|bool
-    {
-      $sql = "SELECT * FROM $this->table";
-      $connection = $this->connectionMysqli;
-      return $connection->query ($sql);
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /**
-     * Check if the product exists in a category
-     *
-     * @param $idCategory
-     * @return bool|array
-     */
-    public function checkExistsProductInCategory ($idCategory): bool|int
-    {
-      $sql = "SELECT COUNT(*) FROM $this->table WHERE product_category='$idCategory'";
-      $statement = $this->connectionPDO->prepare ($sql);
-      $statement->execute ();
-      return $statement->fetchColumn ();
-    }
-    
-    /**
-     * Check if the product exists in a category
-     *
-     * @param $categoryId
-     * @return bool|array
-     */
-    public function existsProductInCategory ($categoryId): bool|int
-    {
-      $sql = "SELECT COUNT(*) FROM $this->table WHERE product_categories='$categoryId'";
-      $statement = $this->connectionPDO->prepare ($sql);
-      $statement->execute ();
-      return $statement->fetchColumn ();
-    }
-    
-    
-    /**
-     * _Returns categories that have the same parent category, sorted in ascending or descending order.
-     *
-     * @param string $parenCategoryId <p>Parent category Id.</p>
-     * @param string $order           <p>Order ASC | DESC.</p>
-     * @return array                  <p>Array with categories or empty array.</p>
-     */
-    public function getAllProductCategoriesWithParentCategoryId (string $parenCategoryId, string $order = 'ASC'): array
-    {
-      $sql = "SELECT * FROM $this->table WHERE product_category_parent = $parenCategoryId ORDER BY product_category_name $order";
+      $sql = "SELECT * FROM $this->table WHERE product_category_parent = 0";
       $statement = $this->connectionPDO->prepare ($sql);
       $statement->execute ();
       return $statement->fetchAll ();
     }
-    
-    
-    /**
-     * Verifies if the category has child categories
-     *
-     * @param int $idCategory <p>Id category.</p>
-     * @return int            <p>0 or int number.</p>
-     */
-    public function verifyExistsChildProductCategories (int $idCategory): int
-    {
-      $sql = "SELECT COUNT(*) FROM $this->table WHERE product_category_parent='$idCategory'";
-      $statement = $this->connectionPDO->prepare ($sql);
-      $statement->execute ();
-      return $statement->fetchColumn ();
-    }
-    
-    
-    /**
-     * _Get parent category with id category parent
-     *
-     * @param int $idCategoryParent
-     * @return array|bool
-     */
-    public function getParentCategory (int $idCategoryParent): array|bool
-    {
-      $sql = "SELECT * FROM $this->table WHERE product_category_id='$idCategoryParent'";
-      $statement = $this->connectionPDO->prepare ($sql);
-      $statement->execute ();
-      $result = $statement->fetch (PDO::FETCH_ASSOC);
-      if (!$result) {
-        return false;
-      } else {
-        return $result;
-      }
-    }
-    
-    
-    /**
-     * _Get all parent Categories
-     *
-     * @return mysqli_result
-     */
-    public function getAllParentCategories (): mysqli_result
-    {
-      $sql = "SELECT * FROM $this->table WHERE product_category_parent=0";
-      $connection = $this->connectionMysqli;
-      return $connection->query ($sql);
-    }
-    
-    
-    /**
-     * _Get all subcategories
-     *
-     * @param $product_category_id
-     * @return mysqli_result|bool
-     */
-    public function getAllSubcategories ($product_category_id): mysqli_result|bool
-    {
-      $sql = "SELECT * FROM products_categories WHERE product_category_parent=$product_category_id ORDER BY product_category_name ASC";
-      $connection = $this->connectionMysqli;
-      return $connection->query ($sql);
-    }
-    
-    
-    
-    
     
   }

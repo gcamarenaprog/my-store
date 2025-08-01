@@ -50,7 +50,6 @@ let table = $(function () {
       'url': 'php/controllers/ProductController.php',
       'type': 'GET',
       'data': {
-        // language: object_language,
         product_get_all: 'product_get_all',
       },
     },
