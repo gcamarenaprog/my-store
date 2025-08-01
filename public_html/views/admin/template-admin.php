@@ -44,6 +44,15 @@
   <link rel='stylesheet' href='public_html/resources/plugins/select2/css/select2.min.css'>
   <link rel='stylesheet' href='public_html/resources/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css'>
 
+  <!-- Bootstrap4 Duallistbox /-->
+  <link rel="stylesheet" href="public_html/resources/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+  
+  <!-- BS Stepper /-->
+  <link rel="stylesheet" href="public_html/resources/plugins/bs-stepper/css/bs-stepper.min.css">
+
+  <!-- dropzonejs /-->
+  <link rel="stylesheet" href="public_html/resources/plugins/dropzone/min/dropzone.min.css">
+
   <!-- Ekko Lightbox /-->
   <link rel="stylesheet" href="public_html/resources/plugins/ekko-lightbox/ekko-lightbox.css">
 
