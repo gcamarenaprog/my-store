@@ -35,7 +35,7 @@
       </div>
       
       <!-- Icon page /-->
-      <div class='col-sm-6 ininsys-icon-page'>
+      <div class='col-sm-6 store-icon-page'>
         <ol class='breadcrumb float-sm-right'>
           <i class='fa fa-truck-ramp-box'></i>
         </ol>
@@ -58,7 +58,7 @@
           <div class="card-header">
             
             <!-- Card: Title /-->
-            <h5 class="ininsys-card-title">
+            <h5 class="store-card-title">
               <i class="fa fa-truck-ramp-box"></i>
               Lista de productos
             </h5>
@@ -112,6 +112,7 @@
                 <th>Descripción</th>
                 
                 <th>Precio</th>
+                <th>Cantidad</th>
                 
                 <th>Categoría</th>
                 
@@ -140,6 +141,7 @@
                 <th>Descripción</th>
 
                 <th>Precio</th>
+                <th>Cantidad</th>
 
                 <th>Categoría</th>
 
