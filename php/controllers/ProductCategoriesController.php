@@ -173,6 +173,11 @@
       return $this->model->getTotal ();
     }
     
+    function getTotalProductsOfCategoryID ($categoryId)
+    {
+      return $this->model->getTotalProductsCategoryByIdCategory($categoryId);
+    }
+    
     /**
      * :: Get all the records from a table, if you want them sorted you must use the field and order parameters. ::
      *
@@ -316,7 +321,8 @@
           "product_category_description" => $row['product_category_description'],
           "product_category_parent" => $row['product_category_parent'],
           "product_category_date_last_change" => $row['product_category_date_last_change'],
-          "product_category_date_creation" => $row['product_category_date_creation']
+          "product_category_date_creation" => $row['product_category_date_creation'],
+          "product_category_image" => $row['product_category_image'],
         );
       }
       return $data;
