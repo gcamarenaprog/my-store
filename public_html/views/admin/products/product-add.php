@@ -407,7 +407,7 @@
                         <div class="form-group">
                           <label>Imagen del producto</label>
                           <div class="text-center">
-                            <img src="public_html/resources/dist/img/products/no_image.jpg"
+                            <img src="public_html/resources/admin/dist/img/products/no_image.jpg"
 
                                  class="img-thumbnail"
                                  id="imageProduct"
@@ -518,14 +518,14 @@
 </div><!-- .content /-->
 
 <!-- jQuery /-->
-<script src="public_html/resources/plugins/jquery/jquery.min.js"></script>
+<script src="public_html/resources/admin/plugins/jquery/jquery.min.js"></script>
 
 <!-- jquery-validation /-->
-<script src="public_html/resources/plugins/jquery-validation/jquery.validate.min.js"></script>
-<script src="public_html/resources/plugins/jquery-validation/additional-methods.min.js"></script>
+<script src="public_html/resources/admin/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="public_html/resources/admin/plugins/jquery-validation/additional-methods.min.js"></script>
 
 <!-- bs-custom-file-input /-->
-<script src="public_html/resources/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script src="public_html/resources/admin/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 
 <!-- Custom JS Code /-->
 <script src="public_html/js/js-functions.js"></script>

@@ -87,7 +87,7 @@
      * 7 = UPLOAD_ERR_EXTENSION  => A PHP extension stopped the file upload.
      */
     if ($_FILES['customFile']['error'] == 4) {
-      $productImagePath = 'public_html/resources/dist/img/products/no_image.jpg';
+      $productImagePath = 'public_html/resources/admin/dist/img/products/no_image.jpg';
     } elseif (!$_FILES['customFile']['error'] == 0) {
       if ($_FILES['customFile']['error'] == 1) {
         $productData['message'] = 'El archivo cargado excede la directiva upload_max_filesize en php.ini';
@@ -234,7 +234,7 @@
      * 7 = UPLOAD_ERR_EXTENSION  => A PHP extension stopped the file upload.
      */
     if ($_FILES['customFile']['error'] == 4) {
-      $productImagePath = 'public_html/resources/dist/img/products/no_image.jpg';
+      $productImagePath = 'public_html/resources/admin/dist/img/products/no_image.jpg';
     } elseif (!$_FILES['customFile']['error'] == 0) {
       if ($_FILES['customFile']['error'] == 1) {
         $productData['message'] = 'El archivo cargado excede la directiva upload_max_filesize en php.ini';
@@ -572,7 +572,7 @@
         # Image [3. COLUMN] --------------------------------------------------------------------------------------------
         // If there is no product image
         if (!isset($item['product_image']) || $item['product_image'] == null || $item['product_image'] == '') {
-          $item['product_image'] = "public_html/resources/dist/img/products/no_images.jpg";
+          $item['product_image'] = "public_html/resources/admin/dist/img/products/no_images.jpg";
         }
         $productsArrayOrdered[$index][2] = '
           <a href = "' . $item['product_image'] . '"

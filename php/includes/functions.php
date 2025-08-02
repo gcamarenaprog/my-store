@@ -40,7 +40,7 @@
     {
       # If no exists user image
       if (!isset($_SESSION['user_image'])) {
-        echo 'public_html/resources/dist/img/users/no_image.jpg';
+        echo 'public_html/resources/admin/dist/img/users/no_image.jpg';
       } else {
         echo $_SESSION['user_image'];
       }
@@ -112,7 +112,7 @@
       $documentRoot = $_SERVER['DOCUMENT_ROOT'];
       
       // Full path for image
-      $fileDirectoryDestination = $documentRoot . '/public_html/resources/dist/img/' . $folderName . '/';
+      $fileDirectoryDestination = $documentRoot . '/public_html/resources/admin/dist/img/' . $folderName . '/';
       
       // Get file extension
       $fileExtensionExtracted = explode (".", $fileName);
@@ -124,7 +124,7 @@
       $fileNewFileName = $filePrefix . '_' . date ("Y-m-d_h-i-s") . '.' . $fileExtension;
       
       // Data: New path of the image file
-      $filePathForDatabase = 'public_html/resources/dist/img/' . $folderName . '/' . $fileNewFileName;
+      $filePathForDatabase = 'public_html/resources/admin/dist/img/' . $folderName . '/' . $fileNewFileName;
       
       // Data: New name and path
       $fileNameAndPath = $fileDirectoryDestination . $fileNewFileName; // File names and pat e.g. files/image_file.jpg

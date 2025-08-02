@@ -21,12 +21,12 @@
 <head>
   
   <!-- DataTables /-->
-  <link rel="stylesheet" href="public_html/resources/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="public_html/resources/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="public_html/resources/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <link rel="stylesheet" href="public_html/resources/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="public_html/resources/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="public_html/resources/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   
   <!-- Theme style personalized /-->
-  <link rel="stylesheet" href="public_html/resources/dist/css/custom.css">
+  <link rel="stylesheet" href="public_html/resources/admin/dist/css/custom.css">
 
 </head>
 
@@ -683,7 +683,7 @@
 <!-- .content /-->
 
 <!-- jQuery /-->
-<script src="public_html/resources/plugins/jquery/jquery.min.js"></script>
+<script src="public_html/resources/admin/plugins/jquery/jquery.min.js"></script>
 
 <!-- Custom JS Code /-->
 <script src="public_html/js/js-functions.js"></script>
@@ -692,5 +692,5 @@
 <script src="public_html/js/js-product-categories.js"></script>
 
 <!-- jquery-validation /-->
-<script src="public_html/resources/plugins/jquery-validation/jquery.validate.min.js"></script>
-<script src="public_html/resources/plugins/jquery-validation/additional-methods.min.js"></script>
+<script src="public_html/resources/admin/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="public_html/resources/admin/plugins/jquery-validation/additional-methods.min.js"></script>

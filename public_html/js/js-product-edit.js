@@ -183,7 +183,7 @@ $("#customFile").on('change', function () {
   let custom_file_id = $('#customFile');
   let minimum_height = 300;
   let minimum_width = 300;
-  let no_image_path = 'public_html/resources/dist/img/products/no_image.jpg';
+  let no_image_path = 'public_html/resources/admin/dist/img/products/no_image.jpg';
   let maximum_size = 1500000; // 1,500,000 = 1.5 MB
   let valid_extensions = ('jpg, jpeg, png');
   imagePreloadValidationForm(file, img, image_id, custom_file_id, minimum_width, minimum_height, maximum_size, no_image_path, valid_extensions);
@@ -231,7 +231,7 @@ function hiddenHelpForm() {
 function cleanEditProductForm() {
   bsCustomFileInput.destroy();
   $('#inputName').val('');
-  $('#imageProduct').attr('src', 'public_html/resources/dist/img/products/no_image.jpg');
+  $('#imageProduct').attr('src', 'public_html/resources/admin/dist/img/products/no_image.jpg');
   $('#textAreaSpecifications').val('');
   $('#inputBrand').val('');
   $('#inputModel').val('');

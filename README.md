@@ -96,3 +96,7 @@ _README is available under the GPL license._
 
 
 ---
+## Extra information
+=REEMPLAZAR(MINUSC(I4),1,1,MAYUSC(IZQUIERDA(I4,1)))
+'aaaa-mm-dd hh:mm'
+=DERECHA(A1,LARGO(A1)-ENCONTRAR(" ",A1))

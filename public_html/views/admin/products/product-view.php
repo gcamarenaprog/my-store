@@ -570,11 +570,11 @@
 </script>
 
 <!-- jQuery -->
-<script src="public_html/resources/plugins/jquery/jquery.min.js"></script>
+<script src="public_html/resources/admin/plugins/jquery/jquery.min.js"></script>
 
 <!-- jquery-validation -->
-<script src="public_html/resources/plugins/jquery-validation/jquery.validate.min.js"></script>
-<script src="public_html/resources/plugins/jquery-validation/additional-methods.min.js"></script>
+<script src="public_html/resources/admin/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="public_html/resources/admin/plugins/jquery-validation/additional-methods.min.js"></script>
 
 <!-- Custom JS Code -->
 <script src="public_html/js/js-functions.js"></script>

@@ -228,7 +228,7 @@ function hiddenHelpForm() {
 function cleanAddNewProductForm() {
   bsCustomFileInput.destroy();
   $('#inputName').val('');
-  $('#imageProduct').attr('src', 'public_html/resources/dist/img/products/no_image.jpg');
+  $('#imageProduct').attr('src', 'public_html/resources/admin/dist/img/products/no_image.jpg');
   $('#textAreaSpecifications').val('');
   $('#inputBrand').val('');
   $('#inputModel').val('');

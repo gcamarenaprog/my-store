@@ -114,10 +114,10 @@
 
 
 <!-- jQuery -->
-<script src="public_html/resources/plugins/jquery/jquery.min.js"></script>
+<script src="public_html/resources/admin/plugins/jquery/jquery.min.js"></script>
 
 <!-- Sweet Alert -->
-<script src="public_html/resources/plugins/sweetalert2/sweetalert2.11.7.31.js"></script>
+<script src="public_html/resources/admin/plugins/sweetalert2/sweetalert2.11.7.31.js"></script>
 
 <!-- Custom JS Code -->
 <script src="public_html/js/js-functions.js"></script>

@@ -30,13 +30,13 @@
         href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback'>
   
   <!-- Font Awesome Styles -->
-  <link rel='stylesheet' href='public_html/resources/plugins/fontawesome-free/css/all.min.css'>
+  <link rel='stylesheet' href='public_html/resources/admin/plugins/fontawesome-free/css/all.min.css'>
   
   <!-- AdminLTE Template Styles -->
-  <link rel='stylesheet' href='public_html/resources/dist/css/adminlte.min.css'>
+  <link rel='stylesheet' href='public_html/resources/admin/dist/css/adminlte.min.css'>
   
   <!-- Custom styles -->
-  <link rel='stylesheet' href='public_html/resources/dist/css/custom.css'>
+  <link rel='stylesheet' href='public_html/resources/admin/dist/css/custom.css'>
 
 </head>
 
@@ -193,14 +193,14 @@
 </div>
 
 <!-- jQuery JavaScript Code /-->
-<script src='public_html/resources/plugins/jquery/jquery.min.js'></script>
+<script src='public_html/resources/admin/plugins/jquery/jquery.min.js'></script>
 
 <!-- jquery-validation JavaScript Codes /-->
-<script src='public_html/resources/plugins/jquery-validation/jquery.validate.min.js'></script>
-<script src='public_html/resources/plugins/jquery-validation/additional-methods.min.js'></script>
+<script src='public_html/resources/admin/plugins/jquery-validation/jquery.validate.min.js'></script>
+<script src='public_html/resources/admin/plugins/jquery-validation/additional-methods.min.js'></script>
 
 <!-- Bootstrap 4 JavaScript Code /-->
-<script src='public_html/resources/plugins/bootstrap/js/bootstrap.bundle.min.js'></script>
+<script src='public_html/resources/admin/plugins/bootstrap/js/bootstrap.bundle.min.js'></script>
 
 <!-- AdminLTE Template JavaScript Code /-->
 <script src='public_html/resources/js/adminlte.min.js'></script>
