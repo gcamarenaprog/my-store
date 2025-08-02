@@ -47,7 +47,7 @@
      */
     public function home (): void
     {
-      include 'public_html/views/store/home.php';
+      include 'public_html/views/store/views/home.php';
     }
     
     

@@ -1,6 +1,21 @@
+<?php
+  /**
+   * -------------------------------------------------------------------------------------------------------------------
+   * Project name:        Store
+   * Project description: Selection process skills assessment.
+   * Version:             1.0.0
+   * File type:           Template file
+   * File description:    Contains the template topbar module.
+   * Module:              Template Store
+   * -------------------------------------------------------------------------------------------------------------------
+   */
+?>
+
 <!-- Topbar Start -->
 <div class="container-fluid">
   <div class="row bg-secondary py-1 px-xl-5">
+    
+    <!-- Top menu /-->
     <div class="col-lg-6 d-none d-lg-block">
       <div class="d-inline-flex align-items-center h-100">
         <a class="text-body mr-3" href="">Nosostros</a>
@@ -9,6 +24,8 @@
         <a class="text-body mr-3" href="">Preguntas</a>
       </div>
     </div>
+    
+    <!-- Sign in - Currency - Language Menus /-->
     <div class="col-lg-6 text-center text-lg-right">
       <div class="d-inline-flex align-items-center">
         <div class="btn-group">
@@ -43,6 +60,8 @@
       </div>
     </div>
   </div>
+  
+  <!-- Logo and name -->
   <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
     <div class="col-lg-4">
       <a href="" class="text-decoration-none">
@@ -50,6 +69,8 @@
         <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">STORE</span>
       </a>
     </div>
+    
+    <!-- Search -->
     <div class="col-lg-4 col-6 text-left">
       <form action="">
         <div class="input-group">
@@ -62,10 +83,13 @@
         </div>
       </form>
     </div>
+    
+    <!-- Customer service /-->
     <div class="col-lg-4 col-6 text-right">
       <p class="m-0">Servicio al Cliente</p>
       <h5 class="m-0">+012 345 6789</h5>
     </div>
   </div>
+  
 </div>
 <!-- Topbar End -->

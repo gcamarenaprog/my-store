@@ -5,7 +5,7 @@
    * Project description: Selection process skills assessment.
    * Version:             1.0.0
    * File type:           Template file
-   * File description:    Contains the template foot module.
+   * File description:    Contains the template footer module.
    * Module:              Template
    * -------------------------------------------------------------------------------------------------------------------
    */

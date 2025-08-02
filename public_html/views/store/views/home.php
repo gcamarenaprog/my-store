@@ -1,22 +1,20 @@
-<h1>Hello World</h1>
-
 <!-- Carousel /-->
-<?php include 'modules/carousel.php'; ?>
+<?php include 'public_html/views/store/modules/carousel.php'; ?>
 
 <!-- Featured /-->
-<?php include 'modules/featured.php'; ?>
+<?php include 'public_html/views/store/modules/featured.php'; ?>
 
 <!-- Categories /-->
-<?php include 'modules/categories.php'; ?>
+<?php include 'public_html/views/store/modules/categories.php'; ?>
 
 <!-- Products /-->
-<?php include 'modules/products-1.php'; ?>
+<?php include 'public_html/views/store/modules/products-1.php'; ?>
 
 <!-- Offer /-->
-<?php include 'modules/offer.php'; ?>
+<?php include 'public_html/views/store/modules/offer.php'; ?>
 
 <!-- Products /-->
-<?php include 'modules/products-2.php'; ?>
+<?php include 'public_html/views/store/modules/products-2.php'; ?>
 
 <!-- Vendor /-->
-<?php include 'modules/vendor.php'; ?>
+<?php include 'public_html/views/store/modules/vendor.php'; ?>
