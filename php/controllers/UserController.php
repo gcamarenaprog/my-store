@@ -10,8 +10,6 @@
    * -------------------------------------------------------------------------------------------------------------------
    */
   
-  global $langTemplate;
-  
   # Required files
   require_once (dirname (__DIR__, 1) . '/includes/functions.php');
   require_once (dirname (__DIR__, 1) . '/models/User.php');

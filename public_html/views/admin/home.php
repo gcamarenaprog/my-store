@@ -12,10 +12,21 @@
    
   # Required files
   require_once ('php/controllers/ProductController.php');
+  require_once ('php/controllers/UserController.php');
+  require_once ('php/controllers/CommentController.php');
   
   # Get total products
   $productObject = new ProductController();
   $totalProducts = $productObject->getTotalProducts ();
+  
+  # Get total users
+  $userObject = new UserController();
+  $totalUsers = $userObject->getTotalUsers ();
+  
+  # Get total comments
+  $commentObject = new CommentController();
+  $totalComments = $commentObject->getTotalComments ();
+  
 ?>
 
 <!-- Header -->
@@ -59,9 +70,8 @@
             <h5 class="store-card-title mb-2">Contadores</b></h5>
           </div>
 
-
           <!-- Products count -->
-          <div class="col-lg-12 col-md-12">
+          <div class="col-lg-4 col-md-6">
             <div class="small-box bg-olive">
               <div class="inner">
                 <h3><?php echo $totalProducts; ?></h3>
@@ -70,7 +80,41 @@
               <div class="icon">
                 <i class="fa fa-truck-ramp-box ininsys-icon-counters"></i>
               </div>
-              <a href="productViewAll" id="moreInfoProducts" class="small-box-footer"
+              <a href="product-list" id="moreInfoProducts" class="small-box-footer"
+                 title="Ver detalles">Ver detalles
+                <i class="fa fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Users count -->
+          <div class="col-lg-4 col-md-6">
+            <div class="small-box bg-gradient-info">
+              <div class="inner">
+                <h3><?php echo $totalUsers; ?></h3>
+                <h4>Usuarios</h4>
+              </div>
+              <div class="icon">
+                <i class="fa fa-truck-ramp-box ininsys-icon-counters"></i>
+              </div>
+              <a href="#" id="moreInfoProducts" class="small-box-footer"
+                 title="Ver detalles">Ver detalles
+                <i class="fa fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Comments count -->
+          <div class="col-lg-4 col-md-6">
+            <div class="small-box bg-primary">
+              <div class="inner">
+                <h3><?php echo $totalComments; ?></h3>
+                <h4>Comentarios</h4>
+              </div>
+              <div class="icon">
+                <i class="fa fa-truck-ramp-box ininsys-icon-counters"></i>
+              </div>
+              <a href="#" id="moreInfoProducts" class="small-box-footer"
                  title="Ver detalles">Ver detalles
                 <i class="fa fa-arrow-circle-right"></i>
               </a>
