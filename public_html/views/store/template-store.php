@@ -19,7 +19,7 @@
 <head>
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <title>Administración</title>
+  <title><?php echo SYSTEM_FULL_NAME ?></title>
 
   <!-- Favicon -->
   <link href="public_html/resources/store/dist/img/favicon.ico" rel="icon">
