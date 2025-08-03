@@ -9,39 +9,84 @@
    * Module:              Template Store
    * -------------------------------------------------------------------------------------------------------------------
    */
+  
+  require_once (dirname (__DIR__, 4) . '/php/controllers/ProductCategoriesController.php');
+  $newObject = new ProductCategoriesController();
+  
+  $categories = $newObject->getAllParentCategoriesWithSubcategories ();
+  
+  $last = end ($categories);
 ?>
 
-<!-- Navbar Start -->
+<!-- Navbar / Start -->
 <div class="container-fluid bg-dark mb-30">
   <div class="row px-xl-5">
-    
+
+    <!-- Categories menu / Start -->
     <div class="col-lg-3 d-none d-lg-block">
-      <a class="btn d-flex align-items-center justify-content-between bg-primary w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; padding: 0 30px;">
+
+      <!-- Main button of categories menu /-->
+      <a class="btn d-flex align-items-center justify-content-between bg-primary w-100" data-toggle="collapse"
+         href="#navbar-vertical" style="height: 65px; padding: 0 30px;">
         <h6 class="text-dark m-0"><i class="fa fa-bars mr-2"></i>Categorías</h6>
         <i class="fa fa-angle-down text-dark"></i>
       </a>
-      <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
+
+      <!-- Elements of menu / Start -->
+      <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light"
+           id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
+
         <div class="navbar-nav w-100">
-          <div class="nav-item dropdown dropright">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dresses <i class="fa fa-angle-right float-right mt-1"></i></a>
-            <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
-              <a href="" class="dropdown-item">Men's Dresses</a>
-              <a href="" class="dropdown-item">Women's Dresses</a>
-              <a href="" class="dropdown-item">Baby's Dresses</a>
-            </div>
-          </div>
-          <a href="" class="nav-item nav-link">Shirts</a>
-          <a href="" class="nav-item nav-link">Jeans</a>
-          <a href="" class="nav-item nav-link">Swimwear</a>
-          <a href="" class="nav-item nav-link">Sleepwear</a>
-          <a href="" class="nav-item nav-link">Sportswear</a>
-          <a href="" class="nav-item nav-link">Jumpsuits</a>
-          <a href="" class="nav-item nav-link">Blazers</a>
-          <a href="" class="nav-item nav-link">Jackets</a>
-          <a href="" class="nav-item nav-link">Shoes</a>
+          
+          <?php foreach ($categories as $category): ?>
+            
+            <?php
+            # Check if the category has child categories
+            $totalChildCategories = $newObject->countChildCategoriesOfCategory ($category['product_category_id']);
+            ?>
+            
+            <?php if ($totalChildCategories): // Print categories with child categories ?>
+              <div class="nav-item dropdown dropright">
+
+                <!-- Category name -->
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                  <?php echo $category['product_category_name']; ?>
+                  <i class="fa fa-angle-right float-right mt-1"></i>
+                </a>
+
+                <!-- Sub-category name / Start -->
+                <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
+                  <?php
+                    if (!empty($category['subcategory'])) {
+                      echo $newObject->printSubcategories ($category['subcategory'], $pixels = 0);
+                    }
+                  ?>
+                </div>
+                <!-- Sub-category name / End -->
+
+              </div>
+            
+            <?php else: // Print categories without child categories ?>
+
+              <!-- Category name -->
+              <a href="" class="nav-item nav-link">
+                <?php echo $category['product_category_name']; ?>
+              </a>
+            
+            <?php endif; ?>
+          
+          <?php endforeach; ?>
+
+
         </div>
+        
       </nav>
+      <!-- Elements of menu / End -->
+
     </div>
+    <!-- Categories menu / End -->
+
+    <!-- Main menu and counters / Start -->
     <div class="col-lg-9">
       <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
         <a href="" class="text-decoration-none d-block d-lg-none">
@@ -66,17 +111,20 @@
           <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
             <a href="" class="btn px-0">
               <i class="fas fa-heart text-primary"></i>
-              <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
+              <span class="badge text-secondary border border-secondary rounded-circle"
+                    style="padding-bottom: 2px;">0</span>
             </a>
             <a href="" class="btn px-0 ml-3">
               <i class="fas fa-shopping-cart text-primary"></i>
-              <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
+              <span class="badge text-secondary border border-secondary rounded-circle"
+                    style="padding-bottom: 2px;">0</span>
             </a>
           </div>
         </div>
       </nav>
     </div>
-    
+    <!-- Main menu and counters / End -->
+
   </div>
 </div>
-<!-- Navbar End -->
+<!-- Navbar / End -->
