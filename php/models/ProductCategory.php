@@ -16,14 +16,18 @@
    * This class defines the product category model class. This class inherits from the generic model class. Its methods
    * are:
    *
-   * - getAllCategoriesWithParentCategoryId
-   * - getAllProductsCategoriesForDataTables
+   * - getTotalChildCategoriesByIdCategory (string $categoryId)
+   * - getTotalProductsCategoryByIdCategory (string $categoryId)
+   * - getCategoryNameById (string $categoryId)
+   * - getAllParentCategories
+   * - getAllSubcategories ($product_category_id)
+   * - countChildCategoriesOfCategory (int $idCategory)
    */
   class ProductCategory extends Generic
   {
     
     /**
-     *  :: Constructor of the ModelProductCategory class, inherit of the model generic class ::
+     *  :: Constructor of the ModelProductCategory class, inherit of the model generic class. ::
      */
     public function __construct ()
     {
@@ -31,12 +35,12 @@
     }
     
     /**
-     * :: Gets total child categories by ID category ::
+     * :: Gets total child categories by ID category. ::
      *
-     * @param $categoryId Category id.
+     * @param string $categoryId
      * @return int
      */
-    public function getTotalChildCategoriesByIdCategory($categoryId): int
+    public function getTotalChildCategoriesByIdCategory (string $categoryId): int
     {
       $sql = " SELECT COUNT(product_category_parent) AS NumberOfChildCategories  from {$this->table} WHERE product_category_parent LIKE '%$categoryId%' ";
       $statement = $this->connectionPDO->prepare ($sql);
@@ -45,7 +49,21 @@
     }
     
     /**
-     * :: Get category name by category ID ::
+     * :: Gets total products on a category. ::
+     *
+     * @param string $categoryId
+     * @return string
+     */
+    public function getTotalProductsCategoryByIdCategory (string $categoryId): string
+    {
+      $sql = " SELECT COUNT(product_categories) AS NumberOfProducts from products WHERE product_categories LIKE '%$categoryId%' ";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchColumn ();
+    }
+    
+    /**
+     * :: Get category name by category ID. ::
      *
      * @param string $categoryId Category id.
      * @return string
@@ -59,21 +77,7 @@
     }
     
     /**
-     * :: Gets total products on a category ::
-     *
-     * @param string $categoryId Category id.
-     * @return string
-     */
-    public function getTotalProductsCategoryByIdCategory (string $categoryId): string
-    {
-      $sql = " SELECT COUNT(product_categories) AS NumberOfProducts from products WHERE product_categories LIKE '%$categoryId%' ";
-      $statement = $this->connectionPDO->prepare ($sql);
-      $statement->execute ();
-      return $statement->fetchColumn ();
-    }
-    
-    /**
-     * :: Get all parent categories ::
+     * :: Get all parent categories. ::
      *
      * @return array|bool
      */
@@ -83,6 +87,33 @@
       $statement = $this->connectionPDO->prepare ($sql);
       $statement->execute ();
       return $statement->fetchAll ();
+    }
+    
+    /**
+     * :: Get all subcategories. ::
+     *
+     * @param $product_category_id
+     * @return array|false
+     */
+    public function getAllSubcategories ($product_category_id): false|array
+    {
+      $sql = "SELECT * FROM products_categories WHERE product_category_parent=$product_category_id ORDER BY product_category_name ASC";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchAll ();
+    }
+    
+    /**
+     * :: Count child categories of a category. ::
+     * @param int $idCategory
+     * @return int
+     */
+    public function countChildCategoriesOfCategory (int $idCategory): int
+    {
+      $sql = "SELECT COUNT(*) FROM $this->table WHERE product_category_parent = '$idCategory' ";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchColumn ();
     }
     
   }
