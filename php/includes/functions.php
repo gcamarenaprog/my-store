@@ -23,9 +23,11 @@
     
     /**
      * Test function.
+     *
      * @return void
      */
-    static function test (){
+    static function test ()
+    {
       echo 'Silence is golden!';
     }
     
@@ -68,13 +70,13 @@
      *
      * @return string|null
      */
-    function dataValidationText (string $value, string $message): string | null
+    function dataValidationText (string $value, string $message): string|null
     {
       if ($value == null) {
         return $message;
-      } elseif($value == '1969-12-31 16:00:00'){
+      } elseif ($value == '1969-12-31 16:00:00') {
         return null;
-      } else{
+      } else {
         return $value;
       }
     }
@@ -136,7 +138,7 @@
         if ($fileSize < $fileSizeValid) {
           
           // Validate file allowed extensions
-          if (in_array($fileExtension, $extensionArray)) {
+          if (in_array ($fileExtension, $extensionArray)) {
             
             // Directory in which the uploaded file will be moved
             if (move_uploaded_file ($fileTemporalName, $fileNameAndPath)) {
@@ -223,6 +225,67 @@
     static function sessionsAddNewValue (string $newName, string $newData): void
     {
       $_SESSION[$newName] = $newData;
+    }
+    
+    /**
+     * Get min score of all products
+     *
+     * @return int
+     */
+    static function getMinScore (): int
+    {
+      $productObject = new ProductController();
+      $resMinLikes = $productObject->getMinScore ();
+      return $resMinLikes[0]['MIN(product_likes)'];
+    }
+    
+    /**
+     * Get max score of all products
+     *
+     * @return int
+     */
+    static function getMaxScore (): int
+    {
+      $productObject = new ProductController();
+      $resMaxLikes = $productObject->getMaxScore ();
+      return $resMaxLikes[0]['MAX(product_likes)'];
+    }
+    
+    /**
+     * Print stars with score
+     *
+     * @param $productLikes
+     * @return void
+     */
+    function printStarsWithScore ($productLikes): void
+    {
+      $starValue = ($productLikes * 100) / $this->getMaxScore();
+      $starValue=  number_format ($starValue, 2, '.', ',');
+      
+      if ($starValue < 20) {
+        $count = 1;
+      } elseif ($starValue > 20 && $starValue < 40) {
+        $count = 2;
+      } elseif ($starValue > 40 && $starValue < 60) {
+        $count = 3;
+      } elseif ($starValue > 40 && $starValue < 80) {
+        $count = 4;
+      } elseif ($starValue > 80 && $starValue <= 100) {
+        $count = 5;
+      }
+      
+      for ($i = 1; $i <= $count; $i++) {
+        echo '<small class="fa fa-star text-primary mr-1"></small>';
+      }
+      
+      if ($count < 5) {
+        
+        for ($i = 1; $i <= 5 - $count; $i++) {
+          echo '<small class="far fa-star text-primary mr-1"></small>';
+        }
+        
+      }
+      
     }
     
   }
