@@ -28,10 +28,6 @@
       
       switch ($nameOfMethod) {
         
-        case ($nameOfMethod === 'test'):
-          $this->test ();
-          break;
-        
         case ($nameOfMethod === 'home'):
         case ($nameOfMethod === 'admin'):
           $this->admin ();
@@ -64,16 +60,6 @@
         default:
           $this->admin ();
       }
-    }
-    
-    /**
-     * Load the home view
-     *
-     * @return void
-     */
-    public function test (): void
-    {
-      include 'public_html/views/admin/test.php';
     }
     
     /**
