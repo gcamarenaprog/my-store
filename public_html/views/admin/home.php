@@ -27,6 +27,10 @@
   $commentObject = new CommentController();
   $totalComments = $commentObject->getTotalComments ();
   
+  # Get total categories
+  $categoriesObject = new ProductCategoriesController();
+  $totalCategories = $categoriesObject->getTotalProductCategories ();
+  
 ?>
 
 <!-- Header -->
@@ -71,7 +75,7 @@
           </div>
 
           <!-- Products count -->
-          <div class="col-lg-4 col-md-6">
+          <div class="col-lg-3 col-md-6">
             <div class="small-box bg-olive">
               <div class="inner">
                 <h3><?php echo $totalProducts; ?></h3>
@@ -87,8 +91,25 @@
             </div>
           </div>
 
+          <!-- Categories count -->
+          <div class="col-lg-3 col-md-6">
+            <div class="small-box bg-purple">
+              <div class="inner">
+                <h3><?php echo $totalCategories; ?></h3>
+                <h4>Categorías</h4>
+              </div>
+              <div class="icon">
+                <i class="fa fa-truck-ramp-box ininsys-icon-counters"></i>
+              </div>
+              <a href="product-categories" id="moreInfoProducts" class="small-box-footer"
+                 title="Ver detalles">Ver detalles
+                <i class="fa fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+
           <!-- Users count -->
-          <div class="col-lg-4 col-md-6">
+          <div class="col-lg-3 col-md-6">
             <div class="small-box bg-gradient-info">
               <div class="inner">
                 <h3><?php echo $totalUsers; ?></h3>
@@ -105,7 +126,7 @@
           </div>
 
           <!-- Comments count -->
-          <div class="col-lg-4 col-md-6">
+          <div class="col-lg-3 col-md-6">
             <div class="small-box bg-primary">
               <div class="inner">
                 <h3><?php echo $totalComments; ?></h3>
@@ -120,7 +141,6 @@
               </a>
             </div>
           </div>
-
 
         </div>
 
