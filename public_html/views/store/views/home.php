@@ -23,13 +23,13 @@
 <?php include 'public_html/views/store/modules/categories.php'; ?>
 
 <!-- Products /-->
-<?php include 'public_html/views/store/modules/products-1.php'; ?>
+<?php include 'public_html/views/store/modules/featured-products.php'; ?>
 
 <!-- Offer /-->
 <?php include 'public_html/views/store/modules/offer.php'; ?>
 
 <!-- Products /-->
-<?php include 'public_html/views/store/modules/products-2.php'; ?>
+<?php include 'public_html/views/store/modules/reent-products.php'; ?>
 
 <!-- Vendor /-->
 <?php include 'public_html/views/store/modules/vendor.php'; ?>

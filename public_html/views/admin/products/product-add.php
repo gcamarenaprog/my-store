@@ -310,7 +310,6 @@
                           </div>
                         </div>
 
-
                         <!-- Comments -->
                         <div class="form-group">
                           <label for="inputComments">Número de comentarios</label>
@@ -351,7 +350,6 @@
                                class="store-form-help">Fecha de última modificación
                           </div>
                         </div>
-
 
                         <!-- Date creation -->
                         <div class="form-group">
