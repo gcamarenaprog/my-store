@@ -29,7 +29,7 @@
     
     <?php  foreach ($resultCategories as $item): ?>
       
-      <?php  $totalProductsOfCategory = $categoriesObject->getTotalProductsOfCategoryID ($item['product_category_id']); ?>
+      <?php  $totalProductsOfCategory = $categoriesObject->getTotalProductsCategoryByIdCategory ($item['product_category_id']); ?>
     
     <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
       <a class="text-decoration-none" href="">
