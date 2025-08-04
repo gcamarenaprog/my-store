@@ -1,0 +1,17 @@
+@charset "UTF-8";
+/*
+ * Project name:        Store
+ * Project description: Selection process skills assessment.
+ * Version:             1.0.0
+ * File type:           Style CSS file
+ * File description:    Custom styles store template for the project.
+ * Module:              Styles
+*/
+
+/* Details Product View */
+.store-product-details-categories {
+  text-transform: uppercase;
+  font-weight: normal;
+  color: #6c757d;
+  font-size: 60%;
+}
