@@ -58,6 +58,10 @@ function sortingSelectedOption(number) {
   }
 }
 
+/**
+ * View product details via Ajax.
+ * @param product_id_view
+ */
 function viewProductDetailsAjax(product_id_view) {
   // Function that sends and receives response with AJAX
   $.ajax({

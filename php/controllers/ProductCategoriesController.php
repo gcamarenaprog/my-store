@@ -540,8 +540,8 @@
       foreach ($categories as $category) {
         
         
-        $html .= ' <a href="" class="dropdown-item">
-                      <label for="' . $category['product_category_id'] . '">' . $category['product_category_name'] . ' </label>
+        $html .= ' <a href="shop?category=' . $category['product_category_id'] . '" class="dropdown-item">
+        <label for="' . $category['product_category_id'] . '">' . $category['product_category_name'] . ' </label>
                    </a>';
         
         if (!empty($category['subcategory'])) {

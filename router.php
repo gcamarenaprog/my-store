@@ -52,6 +52,8 @@
       $jsonString = json_encode ($url);
       if (str_contains ($jsonString, 'page')) {
         $this->view = 'shop';
+      } elseif (str_contains ($jsonString, 'category')) {
+        $this->view = 'shop';
       } else {
         # If the view does not exist, it defaults to the 'Main' controller
         $this->view = !empty($url[0]) ? $url[0] : 'admin';

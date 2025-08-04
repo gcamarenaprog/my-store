@@ -89,31 +89,44 @@
     }
     
     /**
+     * = Get total records. =
+     *
+     * @return int
+     */
+    public function getTotalProductsOfCategoryId ($categoryId): int
+    {
+      $sql = " SELECT COUNT(*) FROM {$this->table} WHERE product_categories LIKE '%$categoryId%' ";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchColumn ();
+    }
+    
+    /**
      * = Calculate the displacement. =
      *
      * @param $displacement
      * @param $resultsPerPage
      * @return array|false
      */
-    public function calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue): false|array
+    public function calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue, $categoryId): false|array
     {
       if ($sortingValue == 1) {
-        $sql = " SELECT * FROM {$this->table} ORDER BY product_id DESC  LIMIT $displacement, $resultsPerPage ";
+        $sql = " SELECT * FROM {$this->table} WHERE  product_categories LIKE '%$categoryId%' ORDER BY product_id DESC  LIMIT $displacement, $resultsPerPage  ";
         $statement = $this->connectionPDO->prepare ($sql);
         $statement->execute ();
         return $statement->fetchAll ();
       } elseif ($sortingValue == 2) {
-        $sql = " SELECT * FROM {$this->table} ORDER BY product_likes DESC  LIMIT $displacement, $resultsPerPage ";
+        $sql = " SELECT * FROM {$this->table} WHERE  product_categories LIKE '%$categoryId%' ORDER BY product_likes DESC  LIMIT $displacement, $resultsPerPage ";
         $statement = $this->connectionPDO->prepare ($sql);
         $statement->execute ();
         return $statement->fetchAll ();
       } elseif ($sortingValue == 3) {
-        $sql = " SELECT * FROM {$this->table} ORDER BY product_views DESC  LIMIT $displacement, $resultsPerPage ";
+        $sql = " SELECT * FROM {$this->table} WHERE  product_categories LIKE '%$categoryId%' ORDER BY product_views DESC  LIMIT $displacement, $resultsPerPage ";
         $statement = $this->connectionPDO->prepare ($sql);
         $statement->execute ();
         return $statement->fetchAll ();
       } else {
-        $sql = " SELECT * FROM {$this->table} LIMIT $displacement, $resultsPerPage";
+        $sql = " SELECT * FROM {$this->table} WHERE  product_categories LIKE '%$categoryId%' LIMIT $displacement, $resultsPerPage";
         $statement = $this->connectionPDO->prepare ($sql);
         $statement->execute ();
         return $statement->fetchAll ();

@@ -14,36 +14,31 @@
   # Required files
   require_once (dirname (__DIR__, 4) . '/php/includes/functions.php');
   require_once (dirname (__DIR__, 4) . '/php/controllers/ProductController.php');
+  require_once (dirname (__DIR__, 4) . '/php/controllers/ProductCategoriesController.php');
   
   $productObject = new ProductController();
   $objectFunction = new Functions();
+  $objectCategory = new ProductCategoriesController();
   
+  # Get category Id
+  $categoryID = $_GET['category'] ?? 0;
+  $categoryName = $objectCategory->getCategoryNameById ($categoryID);
   
   # Get the order value
-  if (isset($_COOKIE["sortingValue"])) {
-    $sortingValue = $_COOKIE["sortingValue"];
-  } else {
-    $sortingValue = '0';
-  }
-  
-  echo $sortingValue;
+  $sortingValue = $_COOKIE["sortingValue"] ?? '0';
   
   # Get the current page (default, page 1)
   $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
   
   # Number of results per page
-  if (isset($_COOKIE["showValue"])) {
-    $resultsPerPage = $_COOKIE["showValue"];
-  } else {
-    $resultsPerPage = 9;
-  }
+  $resultsPerPage = $_COOKIE["showValue"] ?? 9;
   
   # Calculate the displacement
   $displacement = ($currentPage - 1) * $resultsPerPage;
-  $result = $productObject->calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue);
+  $result = $productObject->calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue, $categoryID);
   
   # Get the total number of results
-  $totalRows = $productObject->getTotalProducts ();
+  $totalRows = $productObject->getTotalProductsOfCategoryId ($categoryID);
   $totalResults = $totalRows;
   
   # Calculate the total number of pages
@@ -59,7 +54,7 @@
       <nav class="breadcrumb bg-light mb-30">
         <a class="breadcrumb-item text-dark" href="store">Incio</a>
         <a class="breadcrumb-item text-dark" href="shop">Tienda</a>
-        <span class="breadcrumb-item active">Lista de Productos</span>
+        <span class="breadcrumb-item active"><strong>Lista de <?php echo $categoryName; ?></strong></span>
       </nav>
     </div>
   </div>
@@ -74,7 +69,7 @@
     <div class="col-lg-3 col-md-4">
       <!-- Price Start -->
       <h5 class="section-title position-relative text-uppercase mb-3"><span
-            class="bg-secondary pr-3">Filtrar por precio</span></h5>
+            class="bg-secondary pr-3">Filtrar por stock</span></h5>
       <div class="bg-light p-4 mb-30">
         <form>
           <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
@@ -113,7 +108,7 @@
 
       <!-- Color Start -->
       <h5 class="section-title position-relative text-uppercase mb-3"><span
-            class="bg-secondary pr-3">Filtrar por stock</span></h5>
+            class="bg-secondary pr-3">Filtrar por precio</span></h5>
       <div class="bg-light p-4 mb-30">
         <form>
           <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">

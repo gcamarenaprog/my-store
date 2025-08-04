@@ -26,6 +26,12 @@
     $url[0] = 'shop';
   }
   
+  # Check if it contains page for store pagination
+  $jsonString = json_encode($url);
+  if (str_contains($jsonString, 'category')) {
+    $url[0] = 'shop';
+  }
+  
   # If the user is logged in, the administration template is loaded
   if ($url[0] == 'store' || $url[0] == 'contact' || $url[0] == 'shop' || $url[0] == 'product'  || $url[0] == '' || $url[0] == 'login') {
     

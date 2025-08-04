@@ -378,11 +378,11 @@
   }
   
   
-  
   /**
    * This class defines the product controller class.
    *
    * - getTotalProducts
+   * - getTotalProductsOfCategoryId
    * - getAllProducts
    * - getProduct
    * - deleteProduct
@@ -412,6 +412,17 @@
     function getTotalProducts (): int
     {
       return $this->model->getTotal ();
+    }
+    
+    /**
+     * = Get total number of products. =
+     *
+     * @param $categoryId
+     * @return int
+     */
+    function getTotalProductsOfCategoryId ($categoryId): int
+    {
+      return $this->model->getTotalProductsOfCategoryId ($categoryId);
     }
     
     /**
@@ -735,9 +746,9 @@
      * @param $resultsPerPage
      * @return array|false
      */
-    public function calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue = 0): false|array
+    public function calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue = 0, $categoryID = 0): false|array
     {
-      return $this->model->calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue);
+      return $this->model->calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue, $categoryID);
     }
     
   }

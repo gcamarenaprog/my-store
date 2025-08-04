@@ -49,7 +49,7 @@
               <div class="nav-item dropdown dropright">
 
                 <!-- Category name -->
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                <a href="shop?category=<?php echo $category['product_category_id']; ?>" class="nav-link dropdown-toggle" data-toggle="dropdown">
                   <?php echo $category['product_category_name']; ?>
                   <i class="fa fa-angle-right float-right mt-1"></i>
                 </a>
@@ -69,7 +69,7 @@
             <?php else: // Print categories without child categories ?>
 
               <!-- Category name -->
-              <a href="" class="nav-item nav-link">
+              <a href="shop?category=<?php echo $category['product_category_id']; ?>" class="nav-item nav-link">
                 <?php echo $category['product_category_name']; ?>
               </a>
             
@@ -128,3 +128,12 @@
   </div>
 </div>
 <!-- Navbar / End -->
+
+<!-- jQuery -->
+<script src='public_html/resources/admin/plugins/jquery/jquery.min.js'></script>
+
+<script>
+  $('.dropdown-toggle').click(function () {
+    window.location = $(this).attr('href');
+  });
+</script>
