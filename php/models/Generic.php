@@ -32,7 +32,7 @@
     protected string $field;
     
     /**
-     * ModelGeneric class constructor with the parameters: table name and field.
+     * = ModelGeneric class constructor with the parameters: table name and field. =
      *
      * @param $table string <p>Name of the table to use.</p>
      * @param $field string <p>Name of the field of the table to use.</p>
@@ -46,7 +46,7 @@
     }
     
     /**
-     * Returns the total number of records of the table.
+     * = Get total records. =
      *
      * @return int
      */
@@ -59,7 +59,7 @@
     }
     
     /**
-     * Get all the records from a table, if you want them sorted you must use the field and order parameters.
+     * = Get all records, with the option to sort by specific field. =
      *
      * @param string $order ASC | DESC | NONE, Return all records ordered, If this option is used with the field option.
      * @param string $field Field to order. If this option is used, the field order is also used.
@@ -79,7 +79,7 @@
     }
     
     /**
-     * Returns a record that matches the Id passed as a parameter.
+     * = Get record by Id. =
      *
      * @param $id Identifier of the record to obtain.
      */
@@ -92,7 +92,7 @@
     }
     
     /**
-     * Generic method that deletes a record that matches the id passed as a parameter
+     * = Delete record by Id. =
      *
      * @param $id Identifier of the record to delete.
      *
@@ -107,7 +107,7 @@
     }
     
     /**
-     * Generic method that updates a record that matches the id passed as a parameter
+     * = Update record by Id. =
      *
      * @param string $id   Record id to update.
      * @param string $data Data to update.
@@ -122,7 +122,7 @@
     }
     
     /**
-     * Generic method that inserts a new record
+     * = Insert a new record. =
      *
      * @param string $dataColumns Name of columns in order.
      * @param string $data Data in same order that data columns.

@@ -14,6 +14,8 @@
   
   /**
    * This class defines the User model class
+   *
+   * - verifyUserAndPassword
    */
   class User extends Generic
   {
@@ -26,14 +28,8 @@
       parent::__construct ('users', 'user_id');
     }
     
-    
-    public function insertData ($dataColumns, $data): int|bool
-    {
-      return parent::insert ($dataColumns, $data);
-    }
-    
     /**
-     * Check exist a user if username and password match in database and return a row with the user data.
+     * = Verify if exists user and password. =
      *
      * @param string $user     <p>String with the username</p>
      * @param string $password <p>String with the password</p>

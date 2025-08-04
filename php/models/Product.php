@@ -15,7 +15,10 @@
   /**
    * This class defines the product model class. This class inherits from the generic model class. Its methods are:
    *
-   * - getAllProductsForDataTables
+   * - getCheapestProductOfCategoryID
+   * - getAllRecentProducts
+   * - getMaxScore
+   * - getMinScore
    */
   class Product extends Generic
   {
@@ -24,7 +27,7 @@
     protected string $field;
     
     /**
-     * Constructor of the Product model class
+     * = Product model construct. =
      */
     public function __construct ()
     {
@@ -32,15 +35,56 @@
     }
     
     /**
-     * = Get all products for DataTables format. =
+     * = Get the cheapest product of a category. =
      *
-     * @return array|false
+     * @param $categoryId
+     * @return array|bool
      */
-    public function getAllProducts (): false|array
+    public function getCheapestProductOfCategoryID ($categoryId): array|bool
     {
-      $stmt = $this->connectionPDO->prepare ("SELECT * FROM {$this->table} ");
-      $stmt->execute ();
-      return $stmt->fetchAll ();
+      $sql = " SELECT product_id, product_name, product_image, product_likes, product_price, MIN(product_price) FROM {$this->table} WHERE  product_categories LIKE '%$categoryId%' ";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchAll ();
+    }
+    
+    /**
+     * = Get all recent products. =
+     *
+     * @return array|bool
+     */
+    public function getAllRecentProducts (): array|bool
+    {
+      $sql = "SELECT * FROM {$this->table} ORDER BY product_id DESC LIMIT 10;";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchAll ();
+    }
+    
+    /**
+     * = Get mas score of the all products. =
+     *
+     * @return false|array
+     */
+    public function getMaxScore (): false|array
+    {
+      $sql = " SELECT MAX(product_likes) FROM {$this->table}";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchAll ();
+    }
+    
+    /**
+     * = Get min score of the all products. =
+     *
+     * @return false|array
+     */
+    public function getMinScore (): false|array
+    {
+      $sql = " SELECT  MIN(product_likes) FROM {$this->table}";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchAll ();
     }
     
   }

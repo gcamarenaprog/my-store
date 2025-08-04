@@ -16,18 +16,18 @@
    * This class defines the product category model class. This class inherits from the generic model class. Its methods
    * are:
    *
-   * - getTotalChildCategoriesByIdCategory (string $categoryId)
-   * - getTotalProductsCategoryByIdCategory (string $categoryId)
-   * - getCategoryNameById (string $categoryId)
+   * - getTotalChildCategoriesByIdCategory
+   * - getTotalProductsCategoryByIdCategory
+   * - getCategoryNameById
    * - getAllParentCategories
-   * - getAllSubcategories ($product_category_id)
-   * - countChildCategoriesOfCategory (int $idCategory)
+   * - getAllSubcategories
+   * - countChildCategoriesOfCategory
    */
   class ProductCategory extends Generic
   {
     
     /**
-     *  :: Constructor of the ModelProductCategory class, inherit of the model generic class. ::
+     *  = Product category construct. =
      */
     public function __construct ()
     {
@@ -35,7 +35,7 @@
     }
     
     /**
-     * :: Gets total child categories by ID category. ::
+     * =  Gets total child categories by ID category. =
      *
      * @param string $categoryId
      * @return int
@@ -49,7 +49,7 @@
     }
     
     /**
-     * :: Gets total products on a category. ::
+     * =  Gets total products on a category. =
      *
      * @param string $categoryId
      * @return string
@@ -63,7 +63,7 @@
     }
     
     /**
-     * :: Get category name by category ID. ::
+     * = Get category name by category ID. =
      *
      * @param string $categoryId Category id.
      * @return string
@@ -77,7 +77,7 @@
     }
     
     /**
-     * :: Get all parent categories. ::
+     * = Get all parent categories. =
      *
      * @return array|bool
      */
@@ -90,7 +90,7 @@
     }
     
     /**
-     * :: Get all subcategories. ::
+     * = Get all subcategories. =
      *
      * @param $product_category_id
      * @return array|false
@@ -104,7 +104,7 @@
     }
     
     /**
-     * :: Count child categories of a category. ::
+     * = Count child categories of a category. =
      * @param int $idCategory
      * @return int
      */

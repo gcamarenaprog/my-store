@@ -12,9 +12,7 @@
   
   /**
    * This class defines the database model for the connection to the database with PDO.
-   * Its methods are:
    *
-   * - __construct
    * - connectionPDO
    * - getConnectionPDO
    * - closeConnectionPDO
@@ -24,7 +22,7 @@
     private PDO $connectionPDO;
     
     /**
-     * ModelDatabase class constructor
+     * Database model construct.
      */
     public function __construct ()
     {

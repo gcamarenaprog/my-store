@@ -142,30 +142,30 @@
   /**
    * This class defines the product categories controller class.
    *
-   * - insertProductCategory (string $dataColumns, string $data)
-   * - getProductCategory (int $categoryId)
-   * - deleteProductCategoryById (int $categoryId)
-   * - updateProductCategory (string $categoryId, string $categoryData)
+   * - insertProductCategory
+   * - getProductCategory
+   * - deleteProductCategoryById
+   * - updateProductCategory
    * - getTotalProductCategories
-   * - getTotalProductsCategoryByIdCategory ($categoryId)
-   * - getTotalChildCategoriesByIdCategory ($categoryId)
-   * - getAllCategories (string $order = 'NONE', string $field = 'NONE')
+   * - getTotalProductsCategoryByIdCategory
+   * - getTotalChildCategoriesByIdCategory
+   * - getAllCategories
    * - getCategoriesForCategoriesList
    * - getAllParentCategories
    * - getAllParentsCategoriesIds
    * - getAllParentCategoriesWithSubcategories
    * - getAllSubcategories
    * - getCategoryNameById
-   * - getCategoriesNamesByIdsWithSeparator (string $categoriesIds, string $separator = ',')
-   * - countChildCategoriesOfCategory (int $idCategory)
-   * - printSubcategories ($categories, $pixels)
+   * - getCategoriesNamesByIdsWithSeparator
+   * - countChildCategoriesOfCategory
+   * - printSubcategories
    */
   class ProductCategoriesController
   {
     private ProductCategory $model;
     
     /**
-     * :: ProductCategoriesController class constructor. ::
+     * = ProductCategoriesController class constructor. =
      */
     function __construct ()
     {
@@ -175,7 +175,7 @@
     /** Main methods ------------------------------------------------------------------------------------------------ */
     
     /**
-     * :: Insert a new category. ::
+     * = Insert a new category. =
      *
      * @param string $dataColumns Names of columns.
      * @param string $data        Data of new record.
@@ -187,7 +187,7 @@
     }
     
     /**
-     * :: Get the category data with the id category. ::
+     * = Get the category data with the id category. =
      *
      * @param int $categoryId A number id of the product category.
      * @return array|bool     The name of the category or false.
@@ -198,7 +198,7 @@
     }
     
     /**
-     * :: Delete a category with the category id. ::
+     * = Delete a category with the category id. =
      *
      * @param int $categoryId The id of the category.
      * @return int            Returns 1 if there was deleted and 0 if there was no deleted.
@@ -209,7 +209,7 @@
     }
     
     /**
-     * :: Update category. ::
+     * = Update category. =
      *
      * @param string $categoryId   Category id.
      * @param string $categoryData Data of product category to update.
@@ -223,7 +223,7 @@
     /** Get total methods ------------------------------------------------------------------------------------------- */
     
     /**
-     * :: Get total number of categories. ::
+     * = Get total number of categories. =
      *
      * @return int
      */
@@ -233,7 +233,7 @@
     }
     
     /**
-     * :: Get total products category by id category ::
+     * = Get total products category by id category =
      *
      * @param $categoryId
      * @return string
@@ -244,7 +244,7 @@
     }
     
     /**
-     * :: Gets total child categories by id category ::
+     * = Gets total child categories by id category =
      *
      * @param $categoryId
      * @return mixed
@@ -257,7 +257,7 @@
     /** Get all methods --------------------------------------------------------------------------------------------- */
     
     /**
-     * :: Get all categories. ::
+     * = Get all categories. =
      *
      * @param string $order ASC | DESC | NONE
      * @param string $field Field to order, the field should exist on table.
@@ -269,7 +269,7 @@
     }
     
     /**
-     * :: Get all products categories for DataTables format. ::
+     * = Get all products categories for DataTables format. =
      *
      * @return void
      */
@@ -383,7 +383,7 @@
     }
     
     /**
-     * :: Get all parent categories. ::
+     * = Get all parent categories. =
      *
      * @return array
      */
@@ -406,7 +406,7 @@
     }
     
     /**
-     * :: Get all parents categories ids. ::
+     * = Get all parents categories ids. =
      *
      * @return array|bool
      */
@@ -423,7 +423,7 @@
     }
     
     /**
-     * :: Get all parent categories with subcategories. ::
+     * = Get all parent categories with subcategories. =
      *
      * @return array
      */
@@ -445,7 +445,7 @@
     }
     
     /**
-     * :: Get all subcategories. ::
+     * = Get all subcategories. =
      *
      * @param $product_category_id
      * @return array
@@ -469,7 +469,7 @@
     
     /** Other methods ----------------------------------------------------------------------------------------------- */
     /**
-     * :: Get category name by id. ::
+     * = Get category name by id. =
      *
      * @param int $categoryId Category id
      * @return string
@@ -480,7 +480,7 @@
     }
     
     /**
-     * :: Get categories names by ids with separator. ::
+     * = Get categories names by ids with separator. =
      *
      * @param string $categoriesIds String with categories id numbers.
      * @param string $separator     Character to separate the list of categories.
@@ -516,7 +516,7 @@
     }
     
     /**
-     * :: Count child categories of a category. ::
+     * = Count child categories of a category. =
      *
      * @param int $idCategory
      * @return int
@@ -527,7 +527,7 @@
     }
     
     /**
-     * :: Print subcategories in html format. ::
+     * = Print subcategories in html format. =
      *
      * @param $categories <p>Array categories.</p>
      * @param $pixels     <p>Pixel size for left margin.</p>

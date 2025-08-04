@@ -15,7 +15,6 @@
   require_once (dirname (__DIR__, 1) . '/models/Product.php');
   require_once (dirname (__DIR__, 1) . '/controllers/ProductController.php');
   require_once (dirname (__DIR__, 1) . '/controllers/ProductCategoriesController.php');
-  require_once (dirname (__DIR__, 1) . '/includes/functions.php');
   
   # = GET ALL products via AJAX for DataTable =
   if (isset($_GET['product_get_all'])) {
@@ -397,7 +396,7 @@
     }
     
     /**
-     * Get total number of products.
+     * = Get total number of products. =
      *
      * @return int
      */
@@ -407,7 +406,16 @@
     }
     
     /**
-     * = Get all the records from a table, if you want them sorted you must use the field and order parameters. =
+     * = Get all recent products. =
+     * @return array|bool
+     */
+    function getAllRecentProducts (): array|bool
+    {
+      return $this->model->getAllRecentProducts ();
+    }
+    
+    /**
+     * Get all the records from a table, if you want them sorted you must use the field and order parameters.
      *
      * @param string $order ASC | DESC | NONE
      * @param string $field Field to order, the field should exist on table.
@@ -415,11 +423,22 @@
      */
     function getAllProducts (string $order = 'NONE', string $field = 'NONE'): array|bool
     {
-      return $this->model->getAll ();
+      return $this->model->getAll () ;
     }
     
     /**
-     * Get product data by product id.
+     * = Get all products of category id. =
+     *
+     * @param $categoryID
+     * @return array|bool
+     */
+    function getCheapestProductOfCategoryID ($categoryID): array|bool
+    {
+      return $this->model->getCheapestProductOfCategoryID ($categoryID);
+    }
+    
+    /**
+     * = Get product data by product id. =
      *
      * @param string $productId Product id.
      * @return array | bool
@@ -430,7 +449,7 @@
     }
     
     /**
-     * Delete product data by product id.
+     * = Delete product data by product id. =
      *
      * @param string $productId Product id.
      * @return int
@@ -441,7 +460,7 @@
     }
     
     /**
-     * Update a product.
+     * = Update a product. =
      *
      * @param string $productId Product id.
      * @param string $data      Data for update record.
@@ -453,7 +472,7 @@
     }
     
     /**
-     * Insert a new product.
+     * = Insert a new product. =
      *
      * @param string $dataColumns Names of columns.
      * @param string $data        Data of new record.
@@ -465,7 +484,7 @@
     }
     
     /**
-     * Get product data formatted for details view.
+     * = Get product data formatted for details view. =
      *
      * @param string   $productId Product id.
      * @return array
@@ -485,7 +504,7 @@
       $productDataToProductDetailsViewArray['productPrice'] = number_format ($productData['product_price'], 2, '.', ',');
       $productDataToProductDetailsViewArray['productPriceClean'] =  $objectFunctions->dataValidationText ($productData['product_price'], 'No hay datos');
       $productDataToProductDetailsViewArray['productQuantity'] = number_format ($productData['product_quantity'], 2, '.', ',');
-      $productDataToProductDetailsViewArray['productCategories'] = $objectCategoriesProduct->getAllCategoriesNamesById ($productData['product_categories'],  '/');
+      $productDataToProductDetailsViewArray['productCategories'] = $objectCategoriesProduct->getCategoriesNamesByIdsWithSeparator ($productData['product_categories'],  '/');
       $productDataToProductDetailsViewArray['productBrand'] = $objectFunctions->dataValidationText ($productData['product_brand'], 'No hay datos');
       $productDataToProductDetailsViewArray['productModel'] = $objectFunctions->dataValidationText ($productData['product_model'], 'No hay datos');
       $productDataToProductDetailsViewArray['productViews'] = $objectFunctions->dataValidationText ($productData['product_views'], 'No hay datos');
@@ -618,7 +637,7 @@
         }
         
         # Categories [7. COLUMN] -----------------------------------------------------------------------------------------
-        $categoriesNames = $categoriesObject->getAllCategoriesNamesById ($item['product_categories'], ',');
+        $categoriesNames = $categoriesObject->getCategoriesNamesByIdsWithSeparator ($item['product_categories'], ',');
         $productsArrayOrdered[$index][7] = $categoriesNames;
         
         # Brand [8. COLUMN] --------------------------------------------------------------------------------------------
@@ -677,5 +696,25 @@
       
       # Print data JSON response
       echo json_encode ($new_array);
+    }
+    
+    /**
+     * = Get max score of the all products. =
+     *
+     * @return array|false
+     */
+    function getMaxScore (): false|array
+    {
+      return $this->model->getMaxScore ();
+    }
+    
+    /**
+     * = Get min score of the all products. =
+     *
+     * @return array|false
+     */
+    function getMinScore (): false|array
+    {
+      return $this->model->getMinScore ();
     }
   }

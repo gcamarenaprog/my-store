@@ -133,7 +133,6 @@
       include 'public_html/views/admin/products/product-view.php';
     }
     
-    
     /**
      * Load the home view
      *

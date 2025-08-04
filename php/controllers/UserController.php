@@ -17,12 +17,8 @@
   
   /**
    * This class defines the user controller class.
-   * Its methods are:
    *
-   * - __construct
    * - getTotalUsers
-   * - getAllUsers
-   * - getUser
    * - verifyUserAndPassword
    */
   class UserController
@@ -30,7 +26,7 @@
     private User $model;
     
     /**
-     * User Controller Constructor
+     * = User controller construct. =
      */
     function __construct ()
     {
@@ -38,7 +34,7 @@
     }
     
     /**
-     * Get total number of users.
+     * = Get total number of users. =
      *
      * @return int
      */
@@ -48,31 +44,7 @@
     }
     
     /**
-     * Get all the records from a table, if you want them sorted you must use the field and order parameters.
-     *
-     * @param string $order ASC | DESC | NONE
-     * @param string $field Field to order, the field should exist on table.
-     * @return array|bool
-     */
-    function getAllUsers (string $order = 'none', string $field = 'none'): array|bool
-    {
-      return $this->model->getAll ();
-    }
-    
-    
-    /**
-     * This method return a user from with the parameter id
-     *
-     * @param $id
-     * @return array|bool
-     */
-    function getUser ($id): array|bool
-    {
-      return $this->model->getById ($id);
-    }
-    
-    /***
-     * This method checks if a user and password exist in the database users table
+     * = Verify if exists user and password. =
      *
      * @param string $user
      * @param string $password
