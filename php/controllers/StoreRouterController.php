@@ -35,13 +35,17 @@
           $this->home ();
           break;
         
+        case ($nameOfMethod === 'contact'):
+          $this->contact ();
+          break;
+        
         default:
           $this->home ();
       }
     }
     
     /**
-     * Load the home view
+     * Load the home view.
      *
      * @return void
      */
@@ -50,5 +54,14 @@
       include 'public_html/views/store/views/home.php';
     }
     
+    /**
+     * Load the contact view.
+     *
+     * @return void
+     */
+    public function contact (): void
+    {
+      include 'public_html/views/store/views/contact.php';
+    }
     
   }

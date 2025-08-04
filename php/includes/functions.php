@@ -12,11 +12,6 @@
   
   /**
    * This class defines the global system functions.
-   * Its functions are:
-   *
-   * - cleanStringFromInput
-   * - sessionsInitializeSessionVariable
-   * - sessionsAddNewValue
    */
   class Functions
   {
@@ -225,6 +220,17 @@
     static function sessionsAddNewValue (string $newName, string $newData): void
     {
       $_SESSION[$newName] = $newData;
+    }
+    
+    /**
+     * This function add new data to array of the $_SESSION variable
+     *
+     * @param String $newName The name of the new value.
+     * @return void
+     */
+    static function sessionsDeleteValue (string $newName): void
+    {
+      unset($_SESSION['$newName']);
     }
     
     /**

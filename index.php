@@ -21,19 +21,14 @@
   $url = explode ('/', URL);
   
   # If the user is logged in, the administration template is loaded
-  if ( $url[0] == 'store' || $url[0] == '' || $url[0]== 'login') {
+  if ($url[0] == 'store' || $url[0] == 'contact' || $url[0] == '' || $url[0] == 'login') {
     
-    if ( $url[0] == 'login') {
-      
-      # Template file of store
-      include 'login.php';
-      
-    }else {
-      # Template file of store
-      include 'public_html/views/store/template-store.php';
-    }
+    $return_value = match ($url[0]) {
+      'login' => include 'login.php',
+      default => include 'public_html/views/store/template-store.php',
+    };
     
-  } elseif( isset($_SESSION['user_username']) || ($url[0] == 'admin')) {
+  } elseif (isset($_SESSION['user_username']) || ($url[0] == 'admin')) {
     
     # Template file of administration
     include 'public_html/views/admin/template-admin.php';

@@ -61,8 +61,8 @@
   <!-- Footer /-->
   <?php include 'modules/footer.php'; ?>
 
-  <!-- Back to Top -->
-  <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+  <!-- Back to top /-->
+  <?php include 'modules/back-to-top.php'; ?>
 
 <?php  ob_end_flush();?>
 
