@@ -29,6 +29,7 @@
      */
     public function selectMethod (string $nameOfMethod): void
     {
+      
       switch ($nameOfMethod) {
         
         case ($nameOfMethod === 'store'):
@@ -38,6 +39,11 @@
         case ($nameOfMethod === 'contact'):
           $this->contact ();
           break;
+        
+        case ($nameOfMethod === 'shop'):
+          $this->shop ();
+          break;
+        
         
         default:
           $this->home ();
@@ -64,4 +70,24 @@
       include 'public_html/views/store/views/contact.php';
     }
     
+    /**
+     * Load the shop view.
+     *
+     * @return void
+     */
+    public function shop (): void
+    {
+      include 'public_html/views/store/views/shop.php';
+    }
+    
+    
+    /**
+     * Load the product view.
+     *
+     * @return void
+     */
+    public function product (): void
+    {
+      include 'public_html/views/store/views/product.php';
+    }
   }

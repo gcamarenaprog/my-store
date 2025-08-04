@@ -20,8 +20,14 @@
   # Separates the words corresponding to the name of the controller and the method into an array
   $url = explode ('/', URL);
   
+  # Check if it contains page for store pagination
+  $jsonString = json_encode($url);
+  if (str_contains($jsonString, 'page')) {
+    $url[0] = 'shop';
+  }
+  
   # If the user is logged in, the administration template is loaded
-  if ($url[0] == 'store' || $url[0] == 'contact' || $url[0] == '' || $url[0] == 'login') {
+  if ($url[0] == 'store' || $url[0] == 'contact' || $url[0] == 'shop'  || $url[0] == '' || $url[0] == 'login') {
     
     $return_value = match ($url[0]) {
       'login' => include 'login.php',

@@ -48,8 +48,15 @@
       # Separates the words corresponding to the name of the controller and the view into an array
       $url = explode ('/', URL);
       
-      # If the view does not exist, it defaults to the 'Main' controller
-      $this->view = !empty($url[0]) ? $url[0] : 'admin';
+      # Check if it contains page for store pagination
+      $jsonString = json_encode ($url);
+      if (str_contains ($jsonString, 'page')) {
+        $this->view = 'shop';
+      } else {
+        # If the view does not exist, it defaults to the 'Main' controller
+        $this->view = !empty($url[0]) ? $url[0] : 'admin';
+      }
+      
     }
     
     /**
@@ -66,9 +73,9 @@
       
       # Redirect to root if two or more parameters exist in the URL
       if (count ($url) > 1) {
-        $host  = $_SERVER['HTTP_HOST'];
-        $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-        header("Location: http://$host$uri/admin");
+        $host = $_SERVER['HTTP_HOST'];
+        $uri = rtrim (dirname ($_SERVER['PHP_SELF']), '/\\');
+        header ("Location: http://$host$uri/admin");
         exit();
       }
       
