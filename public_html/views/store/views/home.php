@@ -29,7 +29,7 @@
 <?php include 'public_html/views/store/modules/offer.php'; ?>
 
 <!-- Products /-->
-<?php include 'public_html/views/store/modules/reent-products.php'; ?>
+<?php include 'public_html/views/store/modules/recent-products.php'; ?>
 
 <!-- Vendor /-->
 <?php include 'public_html/views/store/modules/vendor.php'; ?>

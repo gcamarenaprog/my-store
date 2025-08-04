@@ -43,7 +43,7 @@
      */
     public function getCheapestProductOfCategoryID ($categoryId): array|bool
     {
-      $sql = " SELECT product_id, product_name, product_image, product_likes, product_price, MIN(product_price) FROM {$this->table} WHERE  product_categories LIKE '%$categoryId%' ";
+      $sql = " SELECT product_id, product_name, product_image, product_likes, product_price, product_views, MIN(product_price) FROM {$this->table} WHERE  product_categories LIKE '%$categoryId%' ";
       $statement = $this->connectionPDO->prepare ($sql);
       $statement->execute ();
       return $statement->fetchAll ();

@@ -57,14 +57,15 @@
         # The cheapest product is selected from each selected category.
         $getAllProductsOfCategory = $productObject->getCheapestProductOfCategoryID ($categoryId);
         
-        foreach ($getAllProductsOfCategory as $item1) {
+        foreach ($getAllProductsOfCategory as $product) {
           
-          $productName = $item1['product_name'];
-          $productPrice = number_format ($item1['product_price'], 2, '.', ',');
-          $productPriceDisscount = $item1['product_price'] + $item1['product_price'] * 0.05;
-          $productLikes = $item1['product_likes'];
-          $productImage = $item1['product_image'];
-          $productId = $item1['product_id'];
+          $productName = $product['product_name'];
+          $productPrice = number_format ($product['product_price'], 2, '.', ',');
+          $productPriceDisscount = $product['product_price'] + $product['product_price'] * 0.05;
+          $productLikes = $product['product_likes'];
+          $productImage = $product['product_image'];
+          $productId = $product['product_id'];
+          $productViews = $product['product_views'];
         }
         
         ?>
@@ -87,6 +88,7 @@
                   <del>$<?php echo $productPriceDisscount; ?></del>
                 </h6>
               </div>
+              <small class="pt-1">(<?php echo $productViews; ?>) Visitas</small>
               <div class="d-flex align-items-center justify-content-center mb-1">
                 <?php $objectFunction->printStarsWithScore ($productLikes); ?>
                 <small>(<?php echo $productLikes; ?>)</small>

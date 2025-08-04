@@ -46,7 +46,7 @@
         $productLikes = $product['product_likes'];
         $productImage = $product['product_image'];
         $productId = $product['product_id'];
-        
+        $productViews = $product['product_views'];
         
         ?>
         <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
@@ -68,6 +68,7 @@
                   <del>$<?php echo $productPriceDisscount; ?></del>
                 </h6>
               </div>
+              <small class="pt-1">(<?php echo $productViews; ?>) Visitas</small>
               <div class="d-flex align-items-center justify-content-center mb-1">
                 <?php $objectFunction->printStarsWithScore ($productLikes); ?>
                 <small>(<?php echo $productLikes; ?>)</small>
