@@ -57,7 +57,6 @@
     }
     
     
-    
   }
   
   # = ADD new product via AJAX for DataTable =
@@ -141,7 +140,7 @@
         } elseif ($resultImageValidation['imageFileProcess'] == 'error-file-extension') {
           $productData['message'] = 'Extensión de archivo incorrecta.';
         } elseif ($resultImageValidation['imageFileProcess'] == 'error-file-size') {
-          $productData['message'] ='Error en el tamaño de archivo.';
+          $productData['message'] = 'Error en el tamaño de archivo.';
         } elseif ($resultImageValidation['imageFileProcess'] == 'error-file-mime-type') {
           $productData['message'] = 'Archivo no válido.';
         } elseif ($resultImageValidation['imageFileProcess'] == 'error-file-unknown') {
@@ -166,14 +165,14 @@
     # If there are no errors in the file validations, then:
     $productName = $_POST['inputName'];
     $productSpecifications = $_POST['textAreaSpecifications'];
-    $productBrand= $_POST['inputBrand'];
+    $productBrand = $_POST['inputBrand'];
     $productModel = $_POST['inputModel'];
     $productPrice = $_POST['inputPrice'];
     $productQuantity = $_POST['inputQuantity'];
     $productCategories = implode (',', $_POST['selectCategories']);
     $productLastChange = date ("Y-m-d H:i:s");
     $productViews = 0;
-    $productLikes= 0;
+    $productLikes = 0;
     $productCommentId = 0;
     
     $objectProduct = new ProductController();
@@ -288,7 +287,7 @@
         } elseif ($resultImageValidation['imageFileProcess'] == 'error-file-extension') {
           $productData['message'] = 'Extensión de archivo incorrecta.';
         } elseif ($resultImageValidation['imageFileProcess'] == 'error-file-size') {
-          $productData['message'] ='Error en el tamaño de archivo.';
+          $productData['message'] = 'Error en el tamaño de archivo.';
         } elseif ($resultImageValidation['imageFileProcess'] == 'error-file-mime-type') {
           $productData['message'] = 'Archivo no válido.';
         } elseif ($resultImageValidation['imageFileProcess'] == 'error-file-unknown') {
@@ -313,7 +312,7 @@
     # If there are no errors in the file validations, then:
     $productName = $_POST['inputName'];
     $productSpecifications = $_POST['textAreaSpecifications'];
-    $productBrand= $_POST['inputBrand'];
+    $productBrand = $_POST['inputBrand'];
     $productModel = $_POST['inputModel'];
     $productPrice = $_POST['inputPrice'];
     $productQuantity = $_POST['inputQuantity'];
@@ -382,6 +381,7 @@
    * - insertProduct
    * - getProductFormattedForDetailsView
    * - getProductsForProductList
+   * - calculateTheDsiplacement
    */
   class ProductController
   {
@@ -407,6 +407,7 @@
     
     /**
      * = Get all recent products. =
+     *
      * @return array|bool
      */
     function getAllRecentProducts (): array|bool
@@ -423,7 +424,7 @@
      */
     function getAllProducts (string $order = 'NONE', string $field = 'NONE'): array|bool
     {
-      return $this->model->getAll () ;
+      return $this->model->getAll ();
     }
     
     /**
@@ -486,7 +487,7 @@
     /**
      * = Get product data formatted for details view. =
      *
-     * @param string   $productId Product id.
+     * @param string $productId Product id.
      * @return array
      */
     function getProductFormattedForDetailsView (string $productId): array
@@ -502,9 +503,9 @@
       $productDataToProductDetailsViewArray['productName'] = $objectFunctions->dataValidationText ($productData['product_name'], 'No hay datos');
       $productDataToProductDetailsViewArray['productSpecifications'] = $objectFunctions->dataValidationText ($productData['product_specs'], 'No hay datos');
       $productDataToProductDetailsViewArray['productPrice'] = number_format ($productData['product_price'], 2, '.', ',');
-      $productDataToProductDetailsViewArray['productPriceClean'] =  $objectFunctions->dataValidationText ($productData['product_price'], 'No hay datos');
+      $productDataToProductDetailsViewArray['productPriceClean'] = $objectFunctions->dataValidationText ($productData['product_price'], 'No hay datos');
       $productDataToProductDetailsViewArray['productQuantity'] = number_format ($productData['product_quantity'], 2, '.', ',');
-      $productDataToProductDetailsViewArray['productCategories'] = $objectCategoriesProduct->getCategoriesNamesByIdsWithSeparator ($productData['product_categories'],  '/');
+      $productDataToProductDetailsViewArray['productCategories'] = $objectCategoriesProduct->getCategoriesNamesByIdsWithSeparator ($productData['product_categories'], '/');
       $productDataToProductDetailsViewArray['productBrand'] = $objectFunctions->dataValidationText ($productData['product_brand'], 'No hay datos');
       $productDataToProductDetailsViewArray['productModel'] = $objectFunctions->dataValidationText ($productData['product_model'], 'No hay datos');
       $productDataToProductDetailsViewArray['productViews'] = $objectFunctions->dataValidationText ($productData['product_views'], 'No hay datos');
@@ -717,4 +718,17 @@
     {
       return $this->model->getMinScore ();
     }
+    
+    /**
+     * = Calculate the displacement. =
+     *
+     * @param $displacement
+     * @param $resultsPerPage
+     * @return array|false
+     */
+    public function calculateTheDsiplacement ($displacement, $resultsPerPage): false|array
+    {
+      return $this->model->calculateTheDsiplacement ($displacement, $resultsPerPage);
+    }
+    
   }

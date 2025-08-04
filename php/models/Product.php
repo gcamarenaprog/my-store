@@ -19,6 +19,7 @@
    * - getAllRecentProducts
    * - getMaxScore
    * - getMinScore
+   * - calculateTheDsiplacement
    */
   class Product extends Generic
   {
@@ -82,6 +83,21 @@
     public function getMinScore (): false|array
     {
       $sql = " SELECT  MIN(product_likes) FROM {$this->table}";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchAll ();
+    }
+    
+    /**
+     * = Calculate the displacement. =
+     *
+     * @param $displacement
+     * @param $resultsPerPage
+     * @return array|false
+     */
+    public function calculateTheDsiplacement($displacement, $resultsPerPage): false|array
+    {
+      $sql = " SELECT * FROM {$this->table} LIMIT $displacement, $resultsPerPage";
       $statement = $this->connectionPDO->prepare ($sql);
       $statement->execute ();
       return $statement->fetchAll ();
