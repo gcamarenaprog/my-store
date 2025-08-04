@@ -225,9 +225,9 @@
                 <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Mostrar
                 </button>
                 <div id="myDropdown" class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item" href="#" onclick="showResultsSelectedOption(9);">9</a>
-                  <a class="dropdown-item" href="#" onclick="showResultsSelectedOption(18);">18</a>
-                  <a class=" dropdown-item" href="#" onclick="showResultsSelectedOption(27);">27</a>
+                  <a class="dropdown-item" href="#" onclick="showSelectedOption(9);">9</a>
+                  <a class="dropdown-item" href="#" onclick="showSelectedOption(18);">18</a>
+                  <a class=" dropdown-item" href="#" onclick="showSelectedOption(27);">27</a>
                 </div>
               </div>
             </div>
@@ -266,7 +266,7 @@
                 <div class="text-center py-4">
 
                   <!-- Product details -->
-                  <a class="h6 text-decoration-none text-truncate" href=""><?php echo $productName; ?></a>
+                  <a class="h6 text-decoration-none text-truncate" onclick="viewProduct()" href=""><?php echo $productName; ?></a>
                   <div class="d-flex align-items-center justify-content-center mt-2">
                     <h5><?php echo $productPrice; ?></h5>
                     <h6 class="text-muted ml-2">
@@ -352,52 +352,5 @@
 <!-- Custom JS Code -->
 <script src='public_html/js/js-functions.js'></script>
 
-<script>
-  /** Document ready functions -----------------------------------------------------------------------------------------*/
-  $(document).ready(function () {
-
-
-  });
-
-  /**
-   * Show number of products selected
-   * @param number
-   */
-  function showResultsSelectedOption(number) {
-
-    switch (number) {
-      case 9:
-        setCookie('showValue', '9');
-        location.reload();
-        break;
-      case 18:
-        setCookie('showValue', '28');
-        location.reload();
-        break;
-      case 27:
-        setCookie('showValue', '27');
-        location.reload();
-        break;
-    }
-
-  }
-
-
-  function sortingSelectedOption(number) {
-    switch (number) {
-      case 1:
-        setCookie('sortingValue', '1');
-        location.reload();
-        break;
-      case 2:
-        setCookie('sortingValue', '2');
-        location.reload();
-        break;
-      case 3:
-        setCookie('sortingValue', '3');
-        location.reload();
-        break;
-    }
-  }
-
-</script>
+<!-- Custom JS Code -->
+<script src='public_html/js/js-shop.js'></script>
