@@ -95,12 +95,30 @@
      * @param $resultsPerPage
      * @return array|false
      */
-    public function calculateTheDsiplacement($displacement, $resultsPerPage): false|array
+    public function calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue): false|array
     {
-      $sql = " SELECT * FROM {$this->table} LIMIT $displacement, $resultsPerPage";
-      $statement = $this->connectionPDO->prepare ($sql);
-      $statement->execute ();
-      return $statement->fetchAll ();
+      if ($sortingValue == 1) {
+        $sql = " SELECT * FROM {$this->table} ORDER BY product_id DESC  LIMIT $displacement, $resultsPerPage ";
+        $statement = $this->connectionPDO->prepare ($sql);
+        $statement->execute ();
+        return $statement->fetchAll ();
+      } elseif ($sortingValue == 2) {
+        $sql = " SELECT * FROM {$this->table} ORDER BY product_likes DESC  LIMIT $displacement, $resultsPerPage ";
+        $statement = $this->connectionPDO->prepare ($sql);
+        $statement->execute ();
+        return $statement->fetchAll ();
+      } elseif ($sortingValue == 3) {
+        $sql = " SELECT * FROM {$this->table} ORDER BY product_views DESC  LIMIT $displacement, $resultsPerPage ";
+        $statement = $this->connectionPDO->prepare ($sql);
+        $statement->execute ();
+        return $statement->fetchAll ();
+      } else {
+        $sql = " SELECT * FROM {$this->table} LIMIT $displacement, $resultsPerPage";
+        $statement = $this->connectionPDO->prepare ($sql);
+        $statement->execute ();
+        return $statement->fetchAll ();
+        
+      }
+      
     }
-    
   }

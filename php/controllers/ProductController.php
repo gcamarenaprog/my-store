@@ -726,9 +726,9 @@
      * @param $resultsPerPage
      * @return array|false
      */
-    public function calculateTheDsiplacement ($displacement, $resultsPerPage): false|array
+    public function calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue = 0): false|array
     {
-      return $this->model->calculateTheDsiplacement ($displacement, $resultsPerPage);
+      return $this->model->calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue);
     }
     
   }

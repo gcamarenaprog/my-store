@@ -10,6 +10,7 @@
    * -------------------------------------------------------------------------------------------------------------------
    */
   
+  
   # Required files
   require_once (dirname (__DIR__, 4) . '/php/includes/functions.php');
   require_once (dirname (__DIR__, 4) . '/php/controllers/ProductController.php');
@@ -17,11 +18,21 @@
   $productObject = new ProductController();
   $objectFunction = new Functions();
   
+  
+  # Get the order value
+  if (isset($_COOKIE["sortingValue"])) {
+    $sortingValue = $_COOKIE["sortingValue"];
+  } else {
+    $sortingValue = '0';
+  }
+  
+  echo $sortingValue;
+  
   # Get the current page (default, page 1)
   $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
   
   # Number of results per page
-  if ($_COOKIE["showValue"]) {
+  if (isset($_COOKIE["showValue"])) {
     $resultsPerPage = $_COOKIE["showValue"];
   } else {
     $resultsPerPage = 9;
@@ -29,7 +40,7 @@
   
   # Calculate the displacement
   $displacement = ($currentPage - 1) * $resultsPerPage;
-  $result = $productObject->calculateTheDsiplacement ($displacement, $resultsPerPage);
+  $result = $productObject->calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue);
   
   # Get the total number of results
   $totalRows = $productObject->getTotalProducts ();
@@ -39,6 +50,7 @@
   $totalPages = ceil ($totalResults / $resultsPerPage);
 
 ?>
+
 
 <!-- Breadcrumb Start -->
 <div class="container-fluid">
@@ -204,9 +216,9 @@
                 <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Ordenar
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item" href="#">Recientes</a>
-                  <a class="dropdown-item" href="#">Popularidad</a>
-                  <a class="dropdown-item" href="#">Mejores calificados</a>
+                  <a class="dropdown-item" href="#" onclick="sortingSelectedOption(1);">Recientes</a>
+                  <a class="dropdown-item" href="#" onclick="sortingSelectedOption(2);">Popularidad</a>
+                  <a class="dropdown-item" href="#" onclick="sortingSelectedOption(3);">Más visitados</a>
                 </div>
               </div>
               <div class="btn-group ml-2">
@@ -339,11 +351,9 @@
 <script src='public_html/js/js-functions.js'></script>
 
 <script>
-
   /** Document ready functions -----------------------------------------------------------------------------------------*/
   $(document).ready(function () {
 
-    setCookie('showValue', '9');
 
   });
 
@@ -367,7 +377,25 @@
         location.reload();
         break;
     }
-    
+
+  }
+
+
+  function sortingSelectedOption(number) {
+    switch (number) {
+      case 1:
+        setCookie('sortingValue', '1');
+        location.reload();
+        break;
+      case 2:
+        setCookie('sortingValue', '2');
+        location.reload();
+        break;
+      case 3:
+        setCookie('sortingValue', '3');
+        location.reload();
+        break;
+    }
   }
 
 </script>
