@@ -58,7 +58,24 @@ function sortingSelectedOption(number) {
   }
 }
 
-function viewProduct(){
-  console.log('here')
-  window.location.href = 'product';
+function viewProductDetailsAjax(product_id_view) {
+  // Function that sends and receives response with AJAX
+  $.ajax({
+    type: 'POST',
+    url: 'php/controllers/ProductController.php',
+    data: {
+      product_id_view: product_id_view,
+      product_details_go_to_view: 'product_details_go_to_view'
+    },
+  }).done(function (msg) {
+    // Response data
+    console.log(msg);
+    window.location.href = 'product';
+  }).fail(function (jqXHR, textStatus, errorThrown) { // Function that is executed if something has gone wrong
+    // Error message in console
+    console.log("The following error occurred: " + textStatus + " " + errorThrown);
+    // Error removal toast message
+    launchGenericModal(modal_edit_product_error_title, modal_edit_product_error_text + textStatus + " " + errorThrown, modal_edit_product_button_accept, 'error');
+    document.getElementById("loading").style.visibility = "hidden";
+  });
 }

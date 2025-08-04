@@ -38,6 +38,9 @@
   <!-- Customized Bootstrap Stylesheet -->
   <link href="public_html/resources/store/dist/css/style.css" rel="stylesheet">
 
+  <!-- Customized Bootstrap Stylesheet -->
+  <link href="public_html/resources/store/dist/css/custom.css" rel="stylesheet">
+
 </head>
 
 <body class='hold-transition sidebar-mini layout-fixed'>

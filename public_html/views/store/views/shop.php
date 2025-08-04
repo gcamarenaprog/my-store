@@ -266,7 +266,7 @@
                 <div class="text-center py-4">
 
                   <!-- Product details -->
-                  <a class="h6 text-decoration-none text-truncate" onclick="viewProduct()" href=""><?php echo $productName; ?></a>
+                  <a class="h6 text-decoration-none text-truncate" onclick="viewProductDetailsAjax(<?php echo $productId; ?>)" href=""><?php echo $productName; ?></a>
                   <div class="d-flex align-items-center justify-content-center mt-2">
                     <h5><?php echo $productPrice; ?></h5>
                     <h6 class="text-muted ml-2">

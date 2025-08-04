@@ -44,6 +44,9 @@
           $this->shop ();
           break;
         
+        case ($nameOfMethod === 'product'):
+          $this->product ();
+          break;
         
         default:
           $this->home ();

@@ -27,7 +27,7 @@
   }
   
   # If the user is logged in, the administration template is loaded
-  if ($url[0] == 'store' || $url[0] == 'contact' || $url[0] == 'shop'  || $url[0] == '' || $url[0] == 'login') {
+  if ($url[0] == 'store' || $url[0] == 'contact' || $url[0] == 'shop' || $url[0] == 'product'  || $url[0] == '' || $url[0] == 'login') {
     
     $return_value = match ($url[0]) {
       'login' => include 'login.php',

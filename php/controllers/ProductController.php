@@ -370,6 +370,15 @@
     echo 'ok';
   }
   
+  # = VIEW details of a store product =
+  if (isset($_POST['product_details_go_to_view'])) {
+    session_start ();
+    $_SESSION['viewProductDetailsSessionFlag'] = $_POST['product_id_view'];
+    echo 'ok';
+  }
+  
+  
+  
   /**
    * This class defines the product controller class.
    *
