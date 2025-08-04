@@ -26,4 +26,19 @@
       parent::__construct ('comments', 'comment_id');
     }
     
+    /**
+     * Get all comments of product id.
+     *
+     * @param $productId
+     * @return array|false
+     */
+    public function getAllCommentsOfProduct ($productId): false|array
+    {
+      $sql = "SELECT * FROM " . $this->table . " WHERE comment_product_id = '$productId' ";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchAll ();
+      
+    }
+    
   }

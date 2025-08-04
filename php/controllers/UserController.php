@@ -19,6 +19,7 @@
    * This class defines the user controller class.
    *
    * - getTotalUsers
+   * - getUserById
    * - verifyUserAndPassword
    */
   class UserController
@@ -41,6 +42,14 @@
     function getTotalUsers (): int
     {
       return $this->model->getTotal ();
+    }
+    
+    /**
+     * @return array|bool
+     */
+    function getUserById ($userId): bool|array
+    {
+      return $this->model->getById ($userId);
     }
     
     /**
