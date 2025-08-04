@@ -21,7 +21,11 @@
   $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
   
   # Number of results per page
-  $resultsPerPage = 9;
+  if ($_COOKIE["showValue"]) {
+    $resultsPerPage = $_COOKIE["showValue"];
+  } else {
+    $resultsPerPage = 9;
+  }
   
   # Calculate the displacement
   $displacement = ($currentPage - 1) * $resultsPerPage;
@@ -179,7 +183,7 @@
             </label>
             <span class="badge border font-weight-normal">145</span>
           </div>
- 
+
         </form>
       </div>
       <!-- Size End -->
@@ -197,21 +201,21 @@
             </div>
             <div class="ml-2">
               <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Sorting
+                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Ordenar
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item" href="#">Latest</a>
-                  <a class="dropdown-item" href="#">Popularity</a>
-                  <a class="dropdown-item" href="#">Best Rating</a>
+                  <a class="dropdown-item" href="#">Recientes</a>
+                  <a class="dropdown-item" href="#">Popularidad</a>
+                  <a class="dropdown-item" href="#">Mejores calificados</a>
                 </div>
               </div>
               <div class="btn-group ml-2">
-                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Showing
+                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Mostrar
                 </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item" href="#">10</a>
-                  <a class="dropdown-item" href="#">20</a>
-                  <a class="dropdown-item" href="#">30</a>
+                <div id="myDropdown" class="dropdown-menu dropdown-menu-right">
+                  <a class="dropdown-item" href="#" onclick="showResultsSelectedOption(9);">9</a>
+                  <a class="dropdown-item" href="#" onclick="showResultsSelectedOption(18);">18</a>
+                  <a class=" dropdown-item" href="#" onclick="showResultsSelectedOption(27);">27</a>
                 </div>
               </div>
             </div>
@@ -327,3 +331,43 @@
   </div>
 </div>
 <!-- Shop End -->
+
+<!-- jQuery -->
+<script src='public_html/resources/admin/plugins/jquery/jquery.min.js'></script>
+
+<!-- Custom JS Code -->
+<script src='public_html/js/js-functions.js'></script>
+
+<script>
+
+  /** Document ready functions -----------------------------------------------------------------------------------------*/
+  $(document).ready(function () {
+
+    setCookie('showValue', '9');
+
+  });
+
+  /**
+   * Show number of products selected
+   * @param number
+   */
+  function showResultsSelectedOption(number) {
+
+    switch (number) {
+      case 9:
+        setCookie('showValue', '9');
+        location.reload();
+        break;
+      case 18:
+        setCookie('showValue', '28');
+        location.reload();
+        break;
+      case 27:
+        setCookie('showValue', '27');
+        location.reload();
+        break;
+    }
+    
+  }
+
+</script>
