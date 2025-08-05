@@ -21,7 +21,7 @@
   
   # Get total users
   $userObject = new UserController();
-  $totalUsers = $userObject->getTotalUsers ();
+  $totalUsers = $userObject->getTotalUsers () - 1;
   
   # Get total comments
   $commentObject = new CommentController();

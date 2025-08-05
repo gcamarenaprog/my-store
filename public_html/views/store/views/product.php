@@ -54,7 +54,7 @@
 
 ?>
 
-<!-- Breadcrumb Start -->
+<!-- Breadcrumb / Start -->
 <div class="container-fluid">
   <div class="row px-xl-5">
     <div class="col-12">
@@ -70,7 +70,7 @@
 <!-- Breadcrumb End -->
 
 
-<!-- Shop Detail Start -->
+<!-- Shop Detail / Start -->
 <div class="container-fluid pb-5">
 
   <!-- Images carrousel /-->
