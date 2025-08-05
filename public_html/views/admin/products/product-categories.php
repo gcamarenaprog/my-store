@@ -631,13 +631,16 @@
               <thead>
               
               <tr>
-                <th>ID</th>
+                <th>No.</th>
+                <th>Id</th>
                 <th>Herramientas</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
-                <th>Número de productos</th>
+                <th>Total productos sin subcategorías</th>
+                <th>Total productos con subcategorías</th>
                 <th>Categoría padre</th>
-                <th>Último cambio</th>
+                <th>Categorías hijas</th>
+                <th>Fecha de última modificación</th>
                 <th>Fecha de creación</th>
               </tr>
               </thead>
@@ -646,13 +649,16 @@
               </tbody>
               <tfoot>
               <tr>
-                <th>ID</th>
+                <th>No.</th>
+                <th>Id</th>
                 <th>Herramientas</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
-                <th>Número de productos</th>
+                <th>Total productos sin subcategorías</th>
+                <th>Total productos con subcategorías</th>
                 <th>Categoría padre</th>
-                <th>Último cambio</th>
+                <th>Categorías hijas</th>
+                <th>Fecha de última modificación</th>
                 <th>Fecha de creación</th>
               </tr>
               </tfoot>
