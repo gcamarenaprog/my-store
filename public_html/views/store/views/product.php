@@ -11,15 +11,11 @@
    */
   
   # Required files
-  require_once (dirname (__DIR__, 4) . '/php/includes/functions.php');
-  require_once (dirname (__DIR__, 4) . '/php/controllers/ProductCategoriesController.php');
   require_once (dirname (__DIR__, 4) . '/php/controllers/ProductController.php');
   require_once (dirname (__DIR__, 4) . '/php/controllers/CommentController.php');
   require_once (dirname (__DIR__, 4) . '/php/controllers/UserController.php');
   
-  $objectCategoriesProduct = new ProductCategoriesController();
   $objectProduct = new ProductController();
-  $objectFunctions = new Functions();
   $objectComments = new CommentController();
   $objectUser = new UserController();
   
@@ -30,7 +26,7 @@
     $productId = $_SESSION['viewProductDetailsSessionFlag'];
     
     # Get product data formatted
-    $commentData = $objectProduct->getProductFormattedForDetailsView ($productId);
+    $productData = $objectProduct->getProductFormattedForDetailsView ($productId);
     
     # Get product id from session flag var
     $productId = $_SESSION['viewProductDetailsSessionFlag'];
@@ -65,7 +61,8 @@
       <nav class="breadcrumb bg-light mb-30">
         <a class="breadcrumb-item text-dark" href="store">Inicio</a>
         <a class="breadcrumb-item text-dark" href="shop">Tienda</a>
-        <span class="breadcrumb-item active"><strong> <?php echo $commentData['productName']; ?></strong></span>
+        <a class="breadcrumb-item text-dark" href="#"><?php echo $productData['productCategories']; ?></a>
+        <span class="breadcrumb-item active"><strong> <?php echo $productData['productName']; ?></strong></span>
       </nav>
     </div>
   </div>
@@ -82,16 +79,16 @@
       <div id="product-carousel" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner bg-light">
           <div class="carousel-item active">
-            <img class="w-100 h-100" src="<?php echo $commentData['productImage']; ?>" alt="Image">
+            <img class="w-100 h-100" src="<?php echo $productData['productImage']; ?>" alt="Image">
           </div>
           <div class="carousel-item">
-            <img class="w-100 h-100" src="<?php echo $commentData['productImage']; ?>" alt="Image">
+            <img class="w-100 h-100" src="<?php echo $productData['productImage']; ?>" alt="Image">
           </div>
           <div class="carousel-item">
-            <img class="w-100 h-100" src="<?php echo $commentData['productImage']; ?>" alt="Image">
+            <img class="w-100 h-100" src="<?php echo $productData['productImage']; ?>" alt="Image">
           </div>
           <div class="carousel-item">
-            <img class="w-100 h-100" src="<?php echo $commentData['productImage']; ?>" alt="Image">
+            <img class="w-100 h-100" src="<?php echo $productData['productImage']; ?>" alt="Image">
           </div>
         </div>
         <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
@@ -109,11 +106,12 @@
         <!-- Category/ies /-->
         <h4>
           <small class="store-product-details-categories"
-                 title="Categoría/s">CATEGORÍA/S: <?php echo $commentData['productCategories']; ?></small>
+                 title="Categoría/s">CATEGORÍA/S: <?php echo $productData['productCategories']; ?>
+          </small>
         </h4>
 
         <!-- Name /-->
-        <h3><?php echo $commentData['productName']; ?></h3>
+        <h3><?php echo $productData['productName']; ?></h3>
 
         <!-- Likes and views /-->
         <div class="d-flex mb-3">
@@ -132,24 +130,25 @@
             <?php endif; ?>
 
           </div>
-          <small class="pt-1">(99 Comentarios) / <?php echo $commentData['productViews']; ?> Visitas</small>
+          <small class="pt-1">(<?php echo $countComments; ?> Comentarios) / <?php echo $productData['productViews']; ?>
+            Visitas</small>
         </div>
 
-        <!-- Price /-->
-        <h3 class="font-weight-semi-bold mb-4">$<?php echo $commentData['productPrice']; ?></h3>
-        <p class="mb-4"><?php echo $commentData['productSpecifications']; ?></p>
+        <!-- Description /-->
+        <h3 class="font-weight-semi-bold mb-4">$<?php echo $productData['productPrice']; ?></h3>
+        <p class="mb-4"><?php echo $productData['productSpecifications']; ?></p>
 
         <!-- Brand /-->
         <div class="d-flex mb-3">
-          <strong class="text-dark mr-3">Marca:</strong><?php echo $commentData['productBrand']; ?>
+          <strong class="text-dark mr-3">Marca:</strong><?php echo $productData['productBrand']; ?>
         </div>
 
         <!-- Model /-->
         <div class="d-flex mb-3">
-          <strong class="text-dark mr-3">Modelo:</strong><?php echo $commentData['productModel']; ?>
+          <strong class="text-dark mr-3">Modelo:</strong><?php echo $productData['productModel']; ?>
         </div>
 
-        <!-- Add to cart /-->
+        <!-- Add to cart / Start -->
         <div class="d-flex align-items-center mb-4 pt-2">
           <div class="input-group quantity mr-3" style="width: 130px;">
             <div class="input-group-btn">
@@ -166,8 +165,9 @@
           </div>
           <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Añadir al carrito</button>
         </div>
+        <!-- Add to cart / End -->
 
-        <!-- Social media /-->
+        <!-- Share in / Start -->
         <div class="d-flex pt-2">
           <strong class="text-dark mr-2">Compartir en:</strong>
           <div class="d-inline-flex">
@@ -185,6 +185,7 @@
             </a>
           </div>
         </div>
+        <!-- Share in / End -->
 
       </div>
     </div>
@@ -206,7 +207,7 @@
 
               <!-- Comments list / Start -->
               <div class="col-md-6">
-                <h4 class="mb-4"><?php echo $totalCommentsOfTheProduct; ?>"<?php echo $commentData['productName']; ?>
+                <h4 class="mb-4"><?php echo $totalCommentsOfTheProduct; ?>"<?php echo $productData['productName']; ?>
                   "</h4>
                 
                 <?php foreach ($resultComments as $comment): ?>
