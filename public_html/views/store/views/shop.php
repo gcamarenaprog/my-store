@@ -22,7 +22,17 @@
   
   # Get category Id
   $categoryID = $_GET['category'] ?? 0;
-  $categoryName = $objectCategory->getCategoryNameById ($categoryID);
+  
+ // echo 'id '. $categoryID;
+  echo '<br>';
+  
+  //setcookie('categoryIdValue', $categoryID);
+  
+  if ($_COOKIE['categoryIdValue'] == 0) {
+    $categoryName = 'Productos';
+  } else {
+    $categoryName = $objectCategory->getCategoryNameById ($categoryID);
+  }
   
   # Get the order value
   $sortingValue = $_COOKIE["sortingValue"] ?? '0';
@@ -33,13 +43,18 @@
   # Number of results per page
   $resultsPerPage = $_COOKIE["showValue"] ?? 9;
   
-  # Calculate the displacement
+  # Calculate the displacement and get all products of the category selected
   $displacement = ($currentPage - 1) * $resultsPerPage;
   $result = $productObject->calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue, $categoryID);
   
+  //print_r ($result);
+  
   # Get the total number of results
-  $totalRows = $productObject->getTotalProductsOfCategoryId ($categoryID);
+  $totalRows = $objectCategory->getTotalProductsOfCategoryId ($categoryID);
   $totalResults = $totalRows;
+  
+  echo '<br>';
+  echo '=='. $totalResults;
   
   # Calculate the total number of pages
   $totalPages = ceil ($totalResults / $resultsPerPage);
@@ -242,6 +257,7 @@
             $productImage = $product['product_image'];
             $productId = $product['product_id'];
             $productViews = $product['product_views'];
+            $productCategories = $product['product_categories'];
             ?>
 
             <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
@@ -260,8 +276,10 @@
 
                 <div class="text-center py-4">
 
+                  <?php echo $productCategories; ?>
                   <!-- Product details -->
-                  <a class="h6 text-decoration-none text-truncate" onclick="viewProductDetailsAjax(<?php echo $productId; ?>)" href=""><?php echo $productName; ?></a>
+                  <a class="h6 text-decoration-none text-truncate"
+                     onclick="viewProductDetailsAjax(<?php echo $productId; ?>)" href=""><?php echo $productName; ?></a>
                   <div class="d-flex align-items-center justify-content-center mt-2">
                     <h5><?php echo $productPrice; ?></h5>
                     <h6 class="text-muted ml-2">
@@ -270,7 +288,7 @@
                   </div>
 
                   <small class="pt-1">(<?php echo $productViews; ?>) Visitas</small>
-                  
+
                   <!-- Product score -->
                   <div class="d-flex align-items-center justify-content-center mb-1">
                     <?php $objectFunction->printStarsWithScore ($productLikes); ?>
@@ -349,3 +367,14 @@
 
 <!-- Custom JS Code -->
 <script src='public_html/js/js-shop.js'></script>
+
+<script>
+
+  /** Document ready functions -----------------------------------------------------------------------------------------*/
+  $(document).ready(function () {
+
+    setCookie('categoryIdValue', '<?php echo $categoryID; ?>')
+
+  });
+  
+</script>

@@ -99,7 +99,7 @@
         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
           <div class="navbar-nav mr-auto py-0">
             <a href="store" class="nav-item nav-link active">Inicio</a>
-            <a href="shop" class="nav-item nav-link">Tienda</a>
+            <a href="shop?category=0" class="nav-item nav-link">Tienda</a>
             <div class="nav-item dropdown">
               <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
                 <a href="cart.html" class="dropdown-item">Shopping Cart</a>

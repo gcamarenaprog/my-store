@@ -415,17 +415,6 @@
     }
     
     /**
-     * Get total products of category Id
-     *
-     * @param $categoryID
-     * @return int
-     */
-    function getTotalProductsOfCategoryId ($categoryID): int
-    {
-      return $this->model->getTotalProductsOfCategoryId ($categoryID);
-    }
-    
-    /**
      * = Get all recent products. =
      *
      * @return array|bool
@@ -742,13 +731,57 @@
     /**
      * = Calculate the displacement. =
      *
-     * @param $displacement
-     * @param $resultsPerPage
+     * @param     $displacement
+     * @param     $resultsPerPage
+     * @param int $sortingValue
+     * @param     $categoryID
      * @return array|false
      */
-    public function calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue = 0, $categoryID = 0): false|array
+    public
+    function calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue = 0, $categoryId): false|array
     {
-      return $this->model->calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue, $categoryID);
+      
+      require_once (dirname (__DIR__, 1) . '/controllers/ProductCategoriesController.php');
+      $productCategoriesObject = new ProductCategoriesController();
+      $isParentCategory = $productCategoriesObject->isParentCategory ($categoryId);
+      $hasChildCategories = $productCategoriesObject->getTotalChildCategoriesByIdCategory ($categoryId);
+      
+      if (($hasChildCategories == 0 && $isParentCategory == 1) || ($hasChildCategories == 0 && $isParentCategory == 0)) {
+        return $this->model->calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue, $categoryId);
+      } else {
+        echo 'test';
+        echo '<br>';
+        $categoriesIds = [];
+        $total = [];
+        $result = $productCategoriesObject->getChildCategoriesByIdCategory ($categoryId);
+        //implode (',',$result);
+        // print_r ($result);
+        $cats = [];
+        foreach ($result as $categoryData) {
+          $cats [] = $categoryData['product_category_id'];
+        }
+        
+        // print_r ($cats);
+        //echo '<br>';
+        $final = implode (",", $cats);
+        echo $final;
+        
+        //echo $final;
+        // echo $categoryData['product_category_id'];
+        
+        // var_dump ($total);
+        //}
+        
+        //print_r ($total);
+        
+        $total = $this->model->calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue, $final, '1');
+        return $total;
+      }
+      
+      
+      //return $this->model->calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue, $categoryID);
+      
+      
     }
     
   }

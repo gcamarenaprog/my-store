@@ -73,7 +73,7 @@
     $data['product_category_date_last_change'] = $categoryData['product_category_date_last_change'];
     $data['product_category_date_creation'] = $categoryData['product_category_date_creation'];
     
-    $totalProducts = $objectProductCategory->getTotalProductsCategoryByIdCategory ($categoryData['product_category_id']);
+    $totalProducts = $objectProductCategory->getTotalProductsOfCategoryId ($categoryData['product_category_id']);
     $data['product_category_number_of_products'] = $totalProducts;
     
     echo json_encode ($data);
@@ -233,14 +233,14 @@
     }
     
     /**
-     * = Get total products category by id category =
+     * = Gets the total number of products without child categories by Category ID =
      *
      * @param $categoryId
      * @return string
      */
-    public function getTotalProductsCategoryByIdCategory ($categoryId): string
+    public function getsTotalProductsWithoutChildCategoriesByCategoryId ($categoryId): string
     {
-      return $this->model->getTotalProductsCategoryByIdCategory ($categoryId);
+      return $this->model->getsTotalProductsWithoutChildCategoriesByCategoryId ($categoryId);
     }
     
     /**
@@ -253,6 +253,59 @@
     {
       return $this->model->getTotalChildCategoriesByIdCategory ($categoryId);
     }
+    
+    /**
+     * = Gets child categories by id category =
+     *
+     * @param $categoryId
+     * @return mixed
+     */
+    public function getChildCategoriesByIdCategory ($categoryId): array
+    {
+      return $this->model->getChildCategoriesByIdCategory ($categoryId);
+    }
+    
+    
+    /**
+     * Get total products of category Id
+     *
+     * @param $categoryID
+     * @return int
+     */
+    function getTotalProductsOfCategoryId ($categoryID): int
+    {
+      $isParentCategory = $this->isParentCategory ($categoryID);
+      $hasChildCategories = $this->getTotalChildCategoriesByIdCategory ($categoryID);
+      $totalProducts = 0;
+      if ($hasChildCategories == 0 && $isParentCategory == 1) {
+        $totalProducts = $this->model->getTotalProductsOfCategoryId ($categoryID);
+      } elseif ($hasChildCategories == 0 && $isParentCategory == 0) {
+        $totalProducts = $this->model->getTotalProductsOfCategoryId ($categoryID);
+      } else {
+        $productsInChildrenCategories = $this->model->getCategoryIdIfItIsChildOfTheCategoryId ($categoryID);
+        foreach ($productsInChildrenCategories as $categoryID) {
+          $productsInParentCategory = $this->model->getTotalProductsOfCategoryId ($categoryID['product_category_id']);
+          $totalProducts = $totalProducts + $productsInParentCategory;
+        }
+      }
+      return $totalProducts;
+    }
+    
+    
+   
+    
+    
+    public function isParentCategory ($categoryId): int|bool
+    {
+      return $this->model->isParentCategory ($categoryId);
+    }
+    
+    
+    
+    
+    
+    
+    
     
     /** Get all methods --------------------------------------------------------------------------------------------- */
     
@@ -294,14 +347,17 @@
       # Sort the data for the DataTables
       foreach ($data as $index => $item) {
         
-        # No. [0. COLUMN] ----------------------------------------------------------------------------------------------
+        # #. [0. COLUMN] ----------------------------------------------------------------------------------------------
         $categoriesArrayOrdered[$index][0] = $indexNumber++;
         
-        # Tools [1. COLUMN] -----------------------------------------------------------------------------------------------
-        $totalProducts = $categoriesObject->getTotalProductsCategoryByIdCategory ($item['product_category_id']);
+        # No. [1. COLUMN] ----------------------------------------------------------------------------------------------
+        $categoriesArrayOrdered[$index][1] = $item['product_category_id'];
+        
+        # Tools [2. COLUMN] --------------------------------------------------------------------------------------------
+        $totalProducts = $categoriesObject->getTotalProductsOfCategoryId ($item['product_category_id']);
         $totalChild = $categoriesObject->getTotalChildCategoriesByIdCategory ($item['product_category_id']);
         
-        $categoriesArrayOrdered[$index][1] = '
+        $categoriesArrayOrdered[$index][2] = '
           <div class="btn-group" style="padding: 10px;">
           
             <!-- View button /-->
@@ -332,46 +388,60 @@
           
          ';
         
-        
-        # Name [2. COLUMN] ---------------------------------------------------------------------------------------------
+        # Name [3. COLUMN] ---------------------------------------------------------------------------------------------
         if (!$item['product_category_name']) {
-          $categoriesArrayOrdered[$index][2] = 'No hay datos.';
-        } else {
-          $categoriesArrayOrdered[$index][2] = $item['product_category_name'];
-        }
-        
-        
-        # Description [3. COLUMN] ---------------------------------------------------------------------------------------------
-        if (!$item['product_category_description']) {
           $categoriesArrayOrdered[$index][3] = 'No hay datos.';
         } else {
-          $categoriesArrayOrdered[$index][3] = $item['product_category_description'];
+          $categoriesArrayOrdered[$index][3] = $item['product_category_name'];
         }
         
-        # Number of products [4. COLUMN] ---------------------------------------------------------------------------------------------
-        $totalProducts = $categoriesObject->getTotalProductsCategoryByIdCategory ($item['product_category_id']);
-        $categoriesArrayOrdered[$index][4] = $totalProducts;
+        # Description [4. COLUMN] --------------------------------------------------------------------------------------
+        if (!$item['product_category_description']) {
+          $categoriesArrayOrdered[$index][4] = 'No hay datos.';
+        } else {
+          $categoriesArrayOrdered[$index][4] = $item['product_category_description'];
+        }
+        # Total products without subcategories [5. COLUMN] --------------------------------------------------------------------------------------
+        $totalProducts = $categoriesObject->getsTotalProductsWithoutChildCategoriesByCategoryId ($item['product_category_id']);
+        $categoriesArrayOrdered[$index][5] = $totalProducts;
         
-        # Parent category [5. COLUMN] ---------------------------------------------------------------------------------------------
+        # Total products with subcategories [6. COLUMN] ---------------------------------------------------------------------------------------------
+        $totalProducts = $categoriesObject->getTotalProductsOfCategoryId ($item['product_category_id']);
+        $categoriesArrayOrdered[$index][6] = $totalProducts;
+        
+        # Parent category [7. COLUMN] ---------------------------------------------------------------------------------------------
         $parentCategoryName = $categoriesObject->getCategoryNameById ($item['product_category_parent']);
         if ($parentCategoryName) {
-          $categoriesArrayOrdered[$index][5] = $parentCategoryName;
+          $categoriesArrayOrdered[$index][7] = $parentCategoryName;
         } else {
-          $categoriesArrayOrdered[$index][5] = 'No tiene.';
+          $categoriesArrayOrdered[$index][7] = 'No tiene.';
         }
         
-        # Date last change [6. COLUMN] ---------------------------------------------------------------------------------------------
+        # Child categories [8. COLUMN] ---------------------------------------------------------------------------------------------
+        $childCategories = $categoriesObject->getChildCategoriesByIdCategory ($item['product_category_id']);
+        $categoriesNames = [];
+        foreach ($childCategories as $item) {
+          $categoriesNames[] = $item['product_category_name'];
+        }
+        $categoriesNames = implode (', ', $categoriesNames);
+        if ($childCategories) {
+          $categoriesArrayOrdered[$index][8] = $categoriesNames;
+        } else {
+          $categoriesArrayOrdered[$index][8] = 'No tiene.';
+        }
+        
+        # Date last change [9. COLUMN] ---------------------------------------------------------------------------------------------
         if (!$item['product_category_date_last_change']) {
-          $categoriesArrayOrdered[$index][6] = 'No hay datos.';
+          $categoriesArrayOrdered[$index][9] = 'No hay datos.';
         } else {
-          $categoriesArrayOrdered[$index][6] = $item['product_category_date_last_change'];
+          $categoriesArrayOrdered[$index][9] = $item['product_category_date_last_change'];
         }
         
-        # Date creation [7. COLUMN] ---------------------------------------------------------------------------------------------
+        # Date creation [10. COLUMN] ---------------------------------------------------------------------------------------------
         if (!$item['product_category_date_creation']) {
-          $categoriesArrayOrdered[$index][7] = 'No hay datos.';
+          $categoriesArrayOrdered[$index][10] = 'No hay datos.';
         } else {
-          $categoriesArrayOrdered[$index][7] = $item['product_category_date_creation'];
+          $categoriesArrayOrdered[$index][10] = $item['product_category_date_creation'];
         }
       }
       

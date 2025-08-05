@@ -88,18 +88,6 @@
       return $statement->fetchAll ();
     }
     
-    /**
-     * = Get total records. =
-     *
-     * @return int
-     */
-    public function getTotalProductsOfCategoryId ($categoryId): int
-    {
-      $sql = " SELECT COUNT(*) FROM {$this->table} WHERE product_categories LIKE '%$categoryId%' ";
-      $statement = $this->connectionPDO->prepare ($sql);
-      $statement->execute ();
-      return $statement->fetchColumn ();
-    }
     
     /**
      * = Calculate the displacement. =
@@ -108,30 +96,69 @@
      * @param $resultsPerPage
      * @return array|false
      */
-    public function calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue, $categoryId): false|array
+    public function calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue = 0, $categoryId, $subcategories = 0): false|array
     {
-      if ($sortingValue == 1) {
-        $sql = " SELECT * FROM {$this->table} WHERE  product_categories LIKE '%$categoryId%' ORDER BY product_id DESC  LIMIT $displacement, $resultsPerPage  ";
-        $statement = $this->connectionPDO->prepare ($sql);
-        $statement->execute ();
-        return $statement->fetchAll ();
-      } elseif ($sortingValue == 2) {
-        $sql = " SELECT * FROM {$this->table} WHERE  product_categories LIKE '%$categoryId%' ORDER BY product_likes DESC  LIMIT $displacement, $resultsPerPage ";
-        $statement = $this->connectionPDO->prepare ($sql);
-        $statement->execute ();
-        return $statement->fetchAll ();
-      } elseif ($sortingValue == 3) {
-        $sql = " SELECT * FROM {$this->table} WHERE  product_categories LIKE '%$categoryId%' ORDER BY product_views DESC  LIMIT $displacement, $resultsPerPage ";
-        $statement = $this->connectionPDO->prepare ($sql);
-        $statement->execute ();
-        return $statement->fetchAll ();
-      } else {
-        $sql = " SELECT * FROM {$this->table} WHERE  product_categories LIKE '%$categoryId%' LIMIT $displacement, $resultsPerPage";
-        $statement = $this->connectionPDO->prepare ($sql);
-        $statement->execute ();
-        return $statement->fetchAll ();
-        
+      if ($subcategories == 0){
+        if ($sortingValue == 1 || $sortingValue == 2 || $sortingValue == 3) {
+          $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_id DESC  LIMIT $displacement, $resultsPerPage  ";
+        }else{
+          $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) LIMIT $displacement, $resultsPerPage";
+        }
+      }else{
+        if ($sortingValue == 1 || $sortingValue == 2 || $sortingValue == 3) {
+          $sql = " SELECT * FROM {$this->table} WHERE  INSTR('$categoryId',product_categories ) ORDER BY product_id DESC  LIMIT $displacement, $resultsPerPage  ";
+        }else{
+          $sql = " SELECT * FROM {$this->table} WHERE  INSTR('$categoryId', product_categories) LIMIT $displacement, $resultsPerPage";
+        }
       }
       
+
+      
+      
+      //  } elseif ($hasChildCategories == 0 && $isParentCategory == 0) {
+      
+      /*       if ($sortingValue == 1) {
+               $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_id DESC  LIMIT $displacement, $resultsPerPage  ";
+               
+             } elseif ($sortingValue == 2) {
+               $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_likes DESC  LIMIT $displacement, $resultsPerPage ";
+               
+             } elseif ($sortingValue == 3) {
+               $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_views DESC  LIMIT $displacement, $resultsPerPage ";
+               
+             } else {
+               $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) LIMIT $displacement, $resultsPerPage";
+               
+             }*/
+      
+      /* } else {
+         echo 'test';
+         $categoriesIds = [];
+        $result = $productCategoriesObject->getChildCategoriesByIdCategory ($categoryId);
+        foreach ($result as $categoryData){
+          $categoriesIds [] = $categoryData['product_category_id'];
+        }
+        var_dump ($categoriesIds);
+        $categories = implode (',', $categoriesIds);
+        echo $categories;
+        
+         if ($sortingValue == 1) {
+           $sql = " SELECT * FROM {$this->table} WHERE FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_id DESC  LIMIT $displacement, $resultsPerPage  ";
+           
+         } elseif ($sortingValue == 2) {
+           $sql = " SELECT * FROM {$this->table} WHERE FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_likes DESC  LIMIT $displacement, $resultsPerPage ";
+           
+         } elseif ($sortingValue == 3) {
+           $sql = " SELECT * FROM {$this->table} WHERE FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_views DESC  LIMIT $displacement, $resultsPerPage ";
+           
+         } else {
+           $sql = " SELECT * FROM {$this->table} WHERE FIND_IN_SET ('$categoryId',product_categories) LIMIT $displacement, $resultsPerPage";
+           
+         }
+       }*/
+      
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchAll ();
     }
   }

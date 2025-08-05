@@ -17,6 +17,9 @@
    * are:
    *
    * - getTotalChildCategoriesByIdCategory
+   * - getCategoryIdIfItIsChildOfTheCategoryId
+   * - isParentCategory
+   * - getTotalProductsOfCategoryId
    * - getTotalProductsCategoryByIdCategory
    * - getCategoryNameById
    * - getAllParentCategories
@@ -35,7 +38,7 @@
     }
     
     /**
-     * =  Gets total child categories by ID category. =
+     * = Gets total child categories by ID category. =
      *
      * @param string $categoryId
      * @return int
@@ -49,14 +52,70 @@
     }
     
     /**
-     * =  Gets total products on a category. =
+     * = Gets child categories by id category =
+     *
+     * @param string $categoryId
+     * @return array
+     */
+    public function getChildCategoriesByIdCategory (string $categoryId): array
+    {
+      $sql = " SELECT * from {$this->table} WHERE product_category_parent LIKE '%$categoryId%' ";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchAll ();
+    }
+    
+    /**
+     * = Get category id if its Is child of the category id. =
+     *
+     * @param $categoryId
+     * @return array
+     */
+    public function getCategoryIdIfItIsChildOfTheCategoryId ($categoryId): array
+    {
+      $sql = " SELECT product_category_id  from {$this->table} WHERE  product_category_parent = '$categoryId'";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchAll ();
+    }
+    
+    /**
+     * = Is parent category =
+     *
+     * @param $categoryId
+     * @return int|bool
+     */
+    public function isParentCategory ($categoryId): int|bool
+    {
+      $sql = "SELECT COUNT(product_category_id) AS IsParentCategory from {$this->table} WHERE product_category_id = '$categoryId' AND product_category_parent = 0";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchColumn ();
+    }
+    
+    /**
+     * = Get total records. =
+     *
+     * @param $categoryId
+     * @return int
+     */
+    public function getTotalProductsOfCategoryId ($categoryId): int
+    {
+      $sql = " SELECT COUNT(product_categories) AS NumberOfProducts from products WHERE  FIND_IN_SET ('$categoryId',product_categories) ";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchColumn ();
+    }
+    
+    /**
+     * = Gets total products on a category. =
      *
      * @param string $categoryId
      * @return string
      */
-    public function getTotalProductsCategoryByIdCategory (string $categoryId): string
+    public function getsTotalProductsWithoutChildCategoriesByCategoryId (string $categoryId): string
     {
-      $sql = " SELECT COUNT(product_categories) AS NumberOfProducts from products WHERE product_categories LIKE '%$categoryId%' ";
+      $sql = " SELECT COUNT(product_categories) AS NumberOfProducts from products WHERE  FIND_IN_SET ('$categoryId',product_categories) ";
       $statement = $this->connectionPDO->prepare ($sql);
       $statement->execute ();
       return $statement->fetchColumn ();
@@ -105,6 +164,7 @@
     
     /**
      * = Count child categories of a category. =
+     *
      * @param int $idCategory
      * @return int
      */
