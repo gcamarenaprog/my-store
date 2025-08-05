@@ -44,18 +44,37 @@
      *
      * @return array|bool
      */
-    function getAllComments(): bool|array
+    function getAllComments (): bool|array
     {
       return $this->model->getAll ();
     }
     
     /**
      * Get all comments of product id.
+     *
      * @param $productId
      * @return array|false
      */
-    function getAllCommentsOfProduct($productId): false|array
+    function getAllCommentsOfProduct ($productId): false|array
     {
       return $this->model->getAllCommentsOfProduct ($productId);
+    }
+    
+    /**
+     * Get total comments of a product
+     *
+     * @param $productId
+     * @return string
+     */
+    public function getTotalCommentsOfProduct ($productId): string
+    {
+      $result = $this->model->getTotalCommentsOfProduct ($productId);
+      if ($result == 0) {
+        return 'No hay comentarios para: ';
+      } elseif ($result == 1) {
+        return '1 comentario para: ';
+      } else {
+        return $result . ' comentarios para: ';
+      }
     }
   }

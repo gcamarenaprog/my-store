@@ -415,14 +415,14 @@
     }
     
     /**
-     * = Get total number of products. =
+     * Get total products of category Id
      *
-     * @param $categoryId
+     * @param $categoryID
      * @return int
      */
-    function getTotalProductsOfCategoryId ($categoryId): int
+    function getTotalProductsOfCategoryId ($categoryID): int
     {
-      return $this->model->getTotalProductsOfCategoryId ($categoryId);
+      return $this->model->getTotalProductsOfCategoryId ($categoryID);
     }
     
     /**

@@ -41,4 +41,17 @@
       
     }
     
+    /**
+     * Get total comments of a product
+     * @param $productId
+     * @return int
+     */
+    public function getTotalCommentsOfProduct ($productId): int
+    {
+      $sql = " SELECT COUNT(*) FROM {$this->table} WHERE comment_product_id = '$productId' ";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchColumn ();
+    }
+    
   }
