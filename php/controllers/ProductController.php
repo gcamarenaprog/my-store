@@ -425,6 +425,16 @@
     }
     
     /**
+     * = Get a list of top-rated products. =
+     *
+     * @return array|bool
+     */
+    function getsBestScoredProducts (): array|bool
+    {
+      return $this->model->getsBestScoredProducts ();
+    }
+    
+    /**
      * Get all the records from a table, if you want them sorted you must use the field and order parameters.
      *
      * @param string $order ASC | DESC | NONE

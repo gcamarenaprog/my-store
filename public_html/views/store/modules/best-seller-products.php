@@ -5,7 +5,7 @@
    * Project description: Selection process skills assessment.
    * Version:             1.0.0
    * File type:           Template file
-   * File description:    Contains the template recent products module.
+   * File description:    Contains the template best seller products module.
    * Module:              Template Store
    * -------------------------------------------------------------------------------------------------------------------
    *
@@ -17,32 +17,32 @@
   require_once (dirname (__DIR__, 4) . '/php/controllers/ProductCategoriesController.php');
   
   # Declaration and initialization of variables
-  $objectFunction = new Functions();
+  $functionObject = new Functions();
   $categoriesObject = new ProductCategoriesController();
   $productObject = new ProductController();
   
   $counterOfCards = 0;
   
   # Get recent products
-  $recentProducts = $productObject->getRecentProducts ();
+  $bestScoredProductsList = $productObject->getsBestScoredProducts ();
 
 ?>
 
 <!-- Products Start -->
 <div class="container-fluid pt-5 pb-3">
-  <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Productos recientes</span>
+  <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Productos más vendidos</span>
   </h2>
   <div class="row px-xl-5">
     
-    <?php foreach ($recentProducts as $product): ?>
+    <?php foreach ($bestScoredProductsList as $product): ?>
       
       <?php
-      # Only print 8 cards
-      if ($counterOfCards >= 8) {
+      # Only print 12 cards
+      if ($counterOfCards >= 12) {
         break;
       }
       ?>
-      <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+      <div class="col-lg-2 col-md-4 col-sm-6 pb-1">
         <div class="product-item bg-light mb-4">
 
           <!-- Product image / Start -->
@@ -67,7 +67,7 @@
             <div class="d-flex align-items-center justify-content-center mt-2">
               <h5>$<?php echo number_format ($product['product_price'], 2, '.', ','); ?></h5>
               <h6 class="text-muted ml-2">
-                <del>$<?php echo $product['product_price'] + $product['product_price'] * 0.05; ?></del>
+                <del>$<?php echo number_format ($product['product_price'] + $product['product_price'] * 0.05, 2, '.', ','); ?></del>
               </h6>
             </div>
 
@@ -76,7 +76,7 @@
 
             <!-- Likes -->
             <div class="d-flex align-items-center justify-content-center mb-1">
-              <?php $objectFunction->printStarsWithScore ($product['product_likes']); ?>
+              <?php $functionObject->printStarsWithScore ($product['product_likes']); ?>
               <small>(<?php echo $product['product_likes']; ?>)</small>
             </div>
 

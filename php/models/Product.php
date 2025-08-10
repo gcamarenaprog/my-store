@@ -66,6 +66,19 @@
       return $statement->fetchAll ();
     }
     
+    /**
+     * = Get a list of top-rated products. =
+     *
+     * @return array|bool
+     */
+    public function getsBestScoredProducts (): array|bool
+    {
+      $sql = "SELECT * FROM {$this->table} ORDER BY product_likes DESC LIMIT 12;";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchAll ();
+    }
+    
     
     /**
      * = Get mas score of the all products. =

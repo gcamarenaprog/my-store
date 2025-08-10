@@ -44,7 +44,7 @@
       ?>
       <div class="col-lg-2 col-md-4 col-sm-6 pb-1">
         <div class="product-item bg-light mb-4">
-          
+
           <!-- Product image / Start -->
           <div class="product-img position-relative overflow-hidden">
             <img class="img-fluid w-100" src="<?php echo $product['product_image']; ?>" alt="">
@@ -54,39 +54,40 @@
             </div>
           </div>
           <!-- Product image / End -->
-          
+
           <!-- Product data / Start -->
           <div class="text-center py-4">
-            
+
             <!-- Name -->
             <a class="h6 text-decoration-none text-truncate" href=""><?php echo $product['product_name']; ?></a>
-            
+
             <!-- Prices -->
             <div class="d-flex align-items-center justify-content-center mt-2">
               <h5>$<?php echo number_format ($product['product_price'], 2, '.', ','); ?></h5>
               <h6 class="text-muted ml-2">
-                <del>$<?php echo $product['product_price'] + $product['product_price'] * 0.05; ?></del>
+                <del>
+                  $<?php echo number_format ($product['product_price'] + $product['product_price'] * 0.05, 2, '.', ','); ?></del>
               </h6>
             </div>
-            
+
             <!-- Views -->
             <small class="pt-1">(<?php echo $product['product_views']; ?>) Visitas</small>
-            
+
             <!-- Likes -->
             <div class="d-flex align-items-center justify-content-center mb-1">
               <?php $functionObject->printStarsWithScore ($product['product_likes']); ?>
               <small>(<?php echo $product['product_likes']; ?>)</small>
             </div>
-          
+
           </div>
           <!-- Product data / End -->
-        
+
         </div>
       </div>
       
       <?php $counterOfCards++; ?>
     <?php endforeach; ?>
-  
+
   </div>
 </div>
 <!-- Products End -->
