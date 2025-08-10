@@ -40,7 +40,7 @@
       default => include 'public_html/views/store/template-store.php',
     };
     
-  } elseif (isset($_SESSION['user_username']) && ($url[0] == 'admin')) {
+  } elseif (isset($_SESSION['user_username'])) {
     
     # Template file of administration
     include 'public_html/views/admin/template-admin.php';
