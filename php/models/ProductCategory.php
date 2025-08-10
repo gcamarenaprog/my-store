@@ -136,6 +136,20 @@
     }
     
     /**
+     * = Get category by category id. =
+     *
+     * @param string $categoryId
+     * @return array
+     */
+    public function getCategoryByCategoryId (string $categoryId): array
+    {
+      $sql = " SELECT * FROM {$this->table} WHERE product_category_id ='$categoryId' ";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchAll ();
+    }
+    
+    /**
      * = Get all parent categories. =
      *
      * @return array|bool

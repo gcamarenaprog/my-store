@@ -16,7 +16,7 @@
   $objectProduct = new ProductController();
   $objectCategoriesProduct = new ProductCategoriesController();
   
-  $allProductCategories = $objectCategoriesProduct->getAllCategories ('ASC');
+  $allProductCategories = $objectCategoriesProduct->getCategoriesList ('ASC');
   
   # Get product id to edit view it
   if (isset($_SESSION['editProductSessionFlag'])) {

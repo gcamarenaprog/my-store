@@ -149,11 +149,11 @@
    * - getTotalProductCategories
    * - getTotalProductsCategoryByIdCategory
    * - getTotalChildCategoriesByIdCategory
-   * - getAllCategories
+   * - getCategoriesList
    * - getCategoriesForCategoriesList
    * - getParentCategories
    * - getParentsCategoriesIds
-   * - getAllParentCategoriesWithSubcategories
+   * - getParentsCategoriesWithSubcategories
    * - getAllSubcategories
    * - getCategoryNameById
    * - getCategoriesNamesByIdsWithSeparator
@@ -292,19 +292,15 @@
     }
     
     
-   
-    
-    
+    /**
+     * = Is parent category. =
+     * @param $categoryId
+     * @return int|bool
+     */
     public function isParentCategory ($categoryId): int|bool
     {
       return $this->model->isParentCategory ($categoryId);
     }
-    
-    
-    
-    
-    
-    
     
     
     /** Get all methods --------------------------------------------------------------------------------------------- */
@@ -316,7 +312,7 @@
      * @param string $field Field to order, the field should exist on table.
      * @return array|bool
      */
-    function getAllCategories (string $order = 'NONE', string $field = 'NONE'): array|bool
+    function getCategoriesList (string $order = 'NONE', string $field = 'NONE'): array|bool
     {
       return $this->model->getAll ();
     }
@@ -329,7 +325,7 @@
     static function getCategoriesForCategoriesList (): void
     {
       $categoriesObject = new ProductCategoriesController();
-      $result = $categoriesObject->getAllCategories ();
+      $result = $categoriesObject->getCategoriesList ();
       
       foreach ($result as $row) {
         $data[] = array(
@@ -497,9 +493,27 @@
      *
      * @return array
      */
-    public function getAllParentCategoriesWithSubcategories (): array
+    public function getParentsCategoriesWithSubcategories (): array
     {
       $result = $this->model->getParentCategories ();
+      
+      $categories = array();
+      
+      foreach ($result as $row) {
+        $categories[] = array(
+          'product_category_id' => $row['product_category_id'],
+          'product_category_parent' => $row['product_category_parent'],
+          'product_category_name' => $row['product_category_name'],
+          'subcategory' => $this->getAllSubcategories ($row['product_category_id']),
+        );
+      }
+      return $categories;
+    }
+    
+    
+    public function getParentsCategoriesWithSubcategoriesByParentCategoryId ($parentCategoryId): array
+    {
+      $result = $this->model->getCategoryByCategoryId($parentCategoryId);
       
       $categories = array();
       

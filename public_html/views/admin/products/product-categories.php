@@ -168,7 +168,7 @@
                         title="Categoría padre"
                         required>
                   <?php
-                    $result = $categoryObject->getAllCategories (); ?>
+                    $result = $categoryObject->getAllParentCategories  (); ?>
                   <option value="0">Sin categoría padre</option>
                   <?php foreach ($result as $index => $item) { ?>
                     
@@ -384,7 +384,7 @@
                         title="Categoría padre"
                         required>
                   <?php
-                    $result = $categoryObject->getAllParentCategories ();
+                    $result = $categoryObject->getAllParentCategories  ();
                     echo '<option value="0">Sin categoría padre</option>';
                     foreach ($result as $index => $item) { ?>
                       <option value="<?php echo $item['product_category_id']; ?>">
@@ -536,7 +536,7 @@
                         title="Categoría padre"
                         required>
                   <?php
-                    $result = $categoryObject->getAllParentCategories (); ?>
+                    $result = $categoryObject->getAllParentCategories  (); ?>
                   <option value="0">Sin categoría padre</option>
                   <?php foreach ($result as $index => $item) { ?>
                     

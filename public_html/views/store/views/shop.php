@@ -47,6 +47,12 @@
   
   # Calculate the total number of pages
   $totalPages = ceil ($totalProducts / $resultsPerPage);
+  
+  # Get parent categories with subcategories
+  $parentsCategoriesAndSubcategoriesList = $objectCategory->getParentsCategoriesWithSubcategoriesByParentCategoryId ($categoryID);
+  
+  # Has child categories
+  $hasChildCategories = $objectCategory->getTotalChildCategoriesByIdCategory ($categoryID);
 
 ?>
 
@@ -71,6 +77,41 @@
 
     <!-- Shop Sidebar / Start -->
     <div class="col-lg-3 col-md-4">
+
+
+      <!-- Sub-categories / Start -->
+      <?php if ($hasChildCategories > 0): ?>
+        <h5 class="section-title position-relative text-uppercase mb-3"><span
+              class="bg-secondary pr-3"><?php echo $categoryName; ?></span></h5>
+        <div class="bg-light p-4 mb-30">
+          
+          <?php foreach ($parentsCategoriesAndSubcategoriesList as $category): ?>
+
+            <div class=" d-flex align-items-center justify-content-between mb-3">
+              <span class="font-weight-bold"><?php echo $category['product_category_name']; ?></span>
+              <span class="badge border font-weight-normal"><?php echo $totalProducts; ?></span>
+            </div>
+            
+            <?php foreach ($category['subcategory'] as $item): ?>
+              
+              <?php
+              # Get the total number of results
+              $totalProducts = $objectCategory->getTotalProductsOfCategory ($item['product_category_id']);
+              ?>
+
+              <div class=" d-flex align-items-center justify-content-between mb-1 ml-3">
+                <a class="h6 text-decoration-none text-truncate"
+                   style="font-weight: normal; "
+                   href="shop?category=<?php echo $item['product_category_id'] ?>">- <?php echo $item['product_category_name']; ?></a>
+                <span class="badge border font-weight-normal"><?php echo $totalProducts; ?></span>
+              </div>
+            
+            <?php endforeach; ?>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
+      <!-- Sub-categories/ End -->
+
 
       <!-- Price filter / Start -->
       <h5 class="section-title position-relative text-uppercase mb-3"><span
@@ -270,7 +311,6 @@
 
                 <!-- Product data -->
                 <div class="text-center py-4">
-                  <?php echo $product['product_categories']; ?>
                   <!-- Product name -->
                   <a class="h6 text-decoration-none text-truncate"
                      onclick="viewProductDetailsAjax(<?php echo $product['product_id']; ?>)"

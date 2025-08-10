@@ -14,7 +14,7 @@
   
   $objectCategoriesProduct = new ProductCategoriesController();
   
-  $allProductCategories = $objectCategoriesProduct->getAllCategories ('ASC');
+  $allProductCategories = $objectCategoriesProduct->getCategoriesList ('ASC');
 
 ?>
 
