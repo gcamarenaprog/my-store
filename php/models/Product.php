@@ -39,7 +39,7 @@
     
     
     /**
-     * = Get the cheapest product of a category. =
+     * = Get cheaper products list =
      *
      * @param $categoryId
      * @return array|bool

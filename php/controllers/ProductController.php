@@ -437,7 +437,7 @@
     }
     
     /**
-     * = Get all products of category id. =
+     * = Get cheaper products list =
      *
      * @param $categoryID
      * @return array|bool

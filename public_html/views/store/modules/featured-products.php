@@ -11,7 +11,7 @@
    *
    * The following criteria are used to obtain the 8 featured product listings:
    *
-   * - 8 parent categories are randomly selected.
+   * - Get parent categories are randomly selected.
    * - The cheapest product is selected from each category.
    * - The discount is simulated, increased by 5% to the actual price.
    * - The rating is going obtained from the product_score field, which ranges from 1 to 5.   *
@@ -22,35 +22,38 @@
   require_once (dirname (__DIR__, 4) . '/php/controllers/ProductController.php');
   require_once (dirname (__DIR__, 4) . '/php/controllers/ProductCategoriesController.php');
   
+  # Variables declaration and initialization.
   $objectFunction = new Functions();
   $categoriesObject = new ProductCategoriesController();
   $productObject = new ProductController();
   
-  # 8 parent categories are randomly selected.
-  $arrayCategoriesIds = [];
-  $categoriesIds = $categoriesObject->getParentsCategoriesIds (); // All parents category IDs are obtained.
+  # Get parent categories.
+  $arrayParentCategoriesIds = [];
+  $parentCategoriesIds = $categoriesObject->getParentsCategoriesIds (); // All parents category IDs are obtained.
   
-  foreach ($categoriesIds as $item) {
-    $arrayCategoriesIds[] = $item['product_category_id'];
+  # Create parents categories ids array
+  foreach ($parentCategoriesIds as $item) {
+    $arrayParentCategoriesIds[] = $item['product_category_id'];
   }
   
-  shuffle ($arrayCategoriesIds); // Shuffle array
+  # Shuffle the array of parent categories ids
+  shuffle ($arrayParentCategoriesIds);
 
 ?>
 
-<!-- Products Start -->
+<!-- Products / Start -->
 <div class="container-fluid pt-5 pb-3">
   <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Productos destacados</span>
   </h2>
   <div class="row px-xl-5">
     
     <?php $counter = 0;
-      foreach ($arrayCategoriesIds as $categoryId): ?>
+      foreach ($arrayParentCategoriesIds as $categoryId): ?>
         
         <?php
         
-        # Only print 8 cards
-        if ($counter >= 8) {
+        # Only print 12 cards
+        if ($counter >= 12) {
           break;
         }
         
@@ -60,26 +63,36 @@
         foreach ($productList as $product) {
         
         ?>
-        <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+        <div class="col-lg-2 col-md-4 col-sm-6 pb-1">
           <div class="product-item bg-light mb-4">
             <div class="product-img position-relative overflow-hidden">
               <img class="img-fluid w-100" src="<?php echo $product['product_image']; ?>" alt="">
               <div class="product-action">
-                <a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-shopping-cart"></i></a>
-                <a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
-                <a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-sync-alt"></i></a>
-                <a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-search"></i></a>
+                <a class="btn btn-outline-dark btn-square" href="#" title="Añadir al carrito"><i class="fa fa-shopping-cart"></i></a>
+                <a class="btn btn-outline-dark btn-square" href="#" title="Me gusta"><i class="far fa-heart"></i></a>
               </div>
             </div>
             <div class="text-center py-4">
-              <a class="h6 text-decoration-none text-truncate" href=""><?php echo $product['product_name']; ?></a>
+              
+              <!-- Name /-->
+              <a class="h6 text-decoration-none text-truncate"
+                 onclick="viewProductDetailsAjax(<?php echo $product['product_id']; ?>)"
+                 href="#">
+                <?php echo $product['product_name']; ?>
+              </a>
+
+              <!-- Price /-->
               <div class="d-flex align-items-center justify-content-center mt-2">
                 <h5>$<?php echo number_format ($product['product_price'], 2, '.', ','); ?></h5>
                 <h6 class="text-muted ml-2">
                   <del>$<?php echo $product['product_price'] + $product['product_price'] * 0.05; ?></del>
                 </h6>
               </div>
+
+              <!-- Visits /-->
               <small class="pt-1">(<?php echo $product['product_views']; ?>) Visitas</small>
+
+              <!-- Likes /-->
               <div class="d-flex align-items-center justify-content-center mb-1">
                 <?php $objectFunction->printStarsWithScore ($product['product_likes']); ?>
                 <small>(<?php echo $product['product_likes']; ?>)</small>
@@ -94,4 +107,7 @@
 
   </div>
 </div>
-<!-- Products End -->
+<!-- Products / End -->
+
+<!-- Custom JS Code -->
+<script src='public_html/js/js-featured-products.js'></script>
