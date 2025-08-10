@@ -28,9 +28,9 @@
   
   # 8 parent categories are randomly selected.
   $arrayCategoriesIds = [];
-  $allCategoriesIds = $categoriesObject->getAllParentsCategoriesIds (); // All parents category IDs are obtained.
+  $categoriesIds = $categoriesObject->getParentsCategoriesIds (); // All parents category IDs are obtained.
   
-  foreach ($allCategoriesIds as $item) {
+  foreach ($categoriesIds as $item) {
     $arrayCategoriesIds[] = $item['product_category_id'];
   }
   
@@ -55,24 +55,15 @@
         }
         
         # The cheapest product is selected from each selected category.
-        $getAllProductsOfCategory = $productObject->getCheapestProductOfCategoryID ($categoryId);
+        $productList = $productObject->getCheaperProducts ($categoryId);
         
-        foreach ($getAllProductsOfCategory as $product) {
-          
-          $productName = $product['product_name'];
-          $productPrice = number_format ($product['product_price'], 2, '.', ',');
-          $productPriceDisscount = $product['product_price'] + $product['product_price'] * 0.05;
-          $productLikes = $product['product_likes'];
-          $productImage = $product['product_image'];
-          $productId = $product['product_id'];
-          $productViews = $product['product_views'];
-        }
+        foreach ($productList as $product) {
         
         ?>
         <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
           <div class="product-item bg-light mb-4">
             <div class="product-img position-relative overflow-hidden">
-              <img class="img-fluid w-100" src="<?php echo $productImage; ?>" alt="">
+              <img class="img-fluid w-100" src="<?php echo $product['product_image']; ?>" alt="">
               <div class="product-action">
                 <a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-shopping-cart"></i></a>
                 <a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
@@ -81,23 +72,25 @@
               </div>
             </div>
             <div class="text-center py-4">
-              <a class="h6 text-decoration-none text-truncate" href=""><?php echo $productName; ?></a>
+              <a class="h6 text-decoration-none text-truncate" href=""><?php echo $product['product_name']; ?></a>
               <div class="d-flex align-items-center justify-content-center mt-2">
-                <h5>$<?php echo $productPrice; ?></h5>
+                <h5>$<?php echo number_format ($product['product_price'], 2, '.', ','); ?></h5>
                 <h6 class="text-muted ml-2">
-                  <del>$<?php echo $productPriceDisscount; ?></del>
+                  <del>$<?php echo $product['product_price'] + $product['product_price'] * 0.05; ?></del>
                 </h6>
               </div>
-              <small class="pt-1">(<?php echo $productViews; ?>) Visitas</small>
+              <small class="pt-1">(<?php echo $product['product_views']; ?>) Visitas</small>
               <div class="d-flex align-items-center justify-content-center mb-1">
-                <?php $objectFunction->printStarsWithScore ($productLikes); ?>
-                <small>(<?php echo $productLikes; ?>)</small>
+                <?php $objectFunction->printStarsWithScore ($product['product_likes']); ?>
+                <small>(<?php echo $product['product_likes']; ?>)</small>
               </div>
             </div>
           </div>
         </div>
         
-        <?php $counter++; endforeach; ?>
+        <?php $counter++; } ?>
+      
+      <?php endforeach; ?>
 
   </div>
 </div>

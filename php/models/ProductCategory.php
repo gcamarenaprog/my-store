@@ -19,10 +19,10 @@
    * - getTotalChildCategoriesByIdCategory
    * - getCategoryIdIfItIsChildOfTheCategoryId
    * - isParentCategory
-   * - getTotalProductsOfCategoryId
+   * - getTotalProductsOfCategory
    * - getTotalProductsCategoryByIdCategory
    * - getCategoryNameById
-   * - getAllParentCategories
+   * - getParentCategories
    * - getAllSubcategories
    * - countChildCategoriesOfCategory
    */
@@ -54,10 +54,10 @@
     /**
      * = Gets child categories by id category =
      *
-     * @param string $categoryId
+     * @param int $categoryId
      * @return array
      */
-    public function getChildCategoriesByIdCategory (string $categoryId): array
+    public function getChildCategories (int $categoryId): array
     {
       $sql = " SELECT * from {$this->table} WHERE product_category_parent LIKE '%$categoryId%' ";
       $statement = $this->connectionPDO->prepare ($sql);
@@ -140,7 +140,7 @@
      *
      * @return array|bool
      */
-    public function getAllParentCategories (): array|bool
+    public function getParentCategories (): array|bool
     {
       $sql = "SELECT * FROM $this->table WHERE product_category_parent = 0";
       $statement = $this->connectionPDO->prepare ($sql);

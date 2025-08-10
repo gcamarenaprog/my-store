@@ -15,11 +15,11 @@
   /**
    * This class defines the product model class. This class inherits from the generic model class. Its methods are:
    *
-   * - getCheapestProductOfCategoryID
-   * - getAllRecentProducts
+   * - getCheaperProducts
+   * - getRecentProducts
    * - getMaxScore
    * - getMinScore
-   * - calculateTheDsiplacement
+   * - calculateTheDisplacementAndGetProducts
    */
   class Product extends Generic
   {
@@ -41,7 +41,7 @@
      * @param $categoryId
      * @return array|bool
      */
-    public function getCheapestProductOfCategoryID ($categoryId): array|bool
+    public function getCheaperProducts ($categoryId): array|bool
     {
       $sql = " SELECT product_id, product_name, product_image, product_likes, product_price, product_views, MIN(product_price) FROM {$this->table} WHERE  product_categories LIKE '%$categoryId%' ";
       $statement = $this->connectionPDO->prepare ($sql);
@@ -50,11 +50,11 @@
     }
     
     /**
-     * = Get all recent products. =
+     * = Get recent products. =
      *
      * @return array|bool
      */
-    public function getAllRecentProducts (): array|bool
+    public function getRecentProducts (): array|bool
     {
       $sql = "SELECT * FROM {$this->table} ORDER BY product_id DESC LIMIT 10;";
       $statement = $this->connectionPDO->prepare ($sql);
@@ -90,72 +90,41 @@
     
     
     /**
-     * = Calculate the displacement. =
+     * = Calculate the displacement and get products. =
      *
-     * @param $displacement
-     * @param $resultsPerPage
+     * @param int       $displacement
+     * @param int       $resultsPerPage
+     * @param int       $sortingValue
+     * @param int|array $categoryId
+     * @param int       $subcategories
      * @return array|false
      */
-    public function calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue = 0, $categoryId, $subcategories = 0): false|array
+    public function calculateTheDisplacementAndGetProducts (int $displacement, int $resultsPerPage, int $sortingValue = 0, int|array $categoryId, int $subcategories = 0): false|array
     {
-      if ($subcategories == 0){
+      if ($subcategories == 0) {
         if ($sortingValue == 1 || $sortingValue == 2 || $sortingValue == 3) {
-          $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_id DESC  LIMIT $displacement, $resultsPerPage  ";
-        }else{
-          $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) LIMIT $displacement, $resultsPerPage";
+          $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_id DESC  LIMIT $displacement, $resultsPerPage ";
+        } else {
+          $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) LIMIT $displacement, $resultsPerPage ";
         }
-      }else{
+      } else {
+        $arrayLength = count ($categoryId);
+        $sentence = '';
+        for ($i = 0; $i < $arrayLength; $i++) {
+          $sentence .= "product_categories LIKE '%$categoryId[$i]%'";
+          if ($i < $arrayLength - 1) {
+            $sentence .= ' OR ';
+          }
+        }
+        
         if ($sortingValue == 1 || $sortingValue == 2 || $sortingValue == 3) {
-          $sql = " SELECT * FROM {$this->table} WHERE  INSTR('$categoryId',product_categories ) ORDER BY product_id DESC  LIMIT $displacement, $resultsPerPage  ";
-        }else{
-          $sql = " SELECT * FROM {$this->table} WHERE  INSTR('$categoryId', product_categories) LIMIT $displacement, $resultsPerPage";
+          
+          $sql = " SELECT * FROM {$this->table} WHERE $sentence ORDER BY product_id DESC  LIMIT $displacement, $resultsPerPage ";
+          
+        } else {
+          $sql = " SELECT * FROM {$this->table} WHERE  $sentence LIMIT $displacement, $resultsPerPage ";
         }
       }
-      
-
-      
-      
-      //  } elseif ($hasChildCategories == 0 && $isParentCategory == 0) {
-      
-      /*       if ($sortingValue == 1) {
-               $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_id DESC  LIMIT $displacement, $resultsPerPage  ";
-               
-             } elseif ($sortingValue == 2) {
-               $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_likes DESC  LIMIT $displacement, $resultsPerPage ";
-               
-             } elseif ($sortingValue == 3) {
-               $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_views DESC  LIMIT $displacement, $resultsPerPage ";
-               
-             } else {
-               $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) LIMIT $displacement, $resultsPerPage";
-               
-             }*/
-      
-      /* } else {
-         echo 'test';
-         $categoriesIds = [];
-        $result = $productCategoriesObject->getChildCategoriesByIdCategory ($categoryId);
-        foreach ($result as $categoryData){
-          $categoriesIds [] = $categoryData['product_category_id'];
-        }
-        var_dump ($categoriesIds);
-        $categories = implode (',', $categoriesIds);
-        echo $categories;
-        
-         if ($sortingValue == 1) {
-           $sql = " SELECT * FROM {$this->table} WHERE FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_id DESC  LIMIT $displacement, $resultsPerPage  ";
-           
-         } elseif ($sortingValue == 2) {
-           $sql = " SELECT * FROM {$this->table} WHERE FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_likes DESC  LIMIT $displacement, $resultsPerPage ";
-           
-         } elseif ($sortingValue == 3) {
-           $sql = " SELECT * FROM {$this->table} WHERE FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_views DESC  LIMIT $displacement, $resultsPerPage ";
-           
-         } else {
-           $sql = " SELECT * FROM {$this->table} WHERE FIND_IN_SET ('$categoryId',product_categories) LIMIT $displacement, $resultsPerPage";
-           
-         }
-       }*/
       
       $statement = $this->connectionPDO->prepare ($sql);
       $statement->execute ();

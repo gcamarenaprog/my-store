@@ -73,7 +73,7 @@
     $data['product_category_date_last_change'] = $categoryData['product_category_date_last_change'];
     $data['product_category_date_creation'] = $categoryData['product_category_date_creation'];
     
-    $totalProducts = $objectProductCategory->getTotalProductsOfCategoryId ($categoryData['product_category_id']);
+    $totalProducts = $objectProductCategory->getTotalProductsOfCategory ($categoryData['product_category_id']);
     $data['product_category_number_of_products'] = $totalProducts;
     
     echo json_encode ($data);
@@ -151,8 +151,8 @@
    * - getTotalChildCategoriesByIdCategory
    * - getAllCategories
    * - getCategoriesForCategoriesList
-   * - getAllParentCategories
-   * - getAllParentsCategoriesIds
+   * - getParentCategories
+   * - getParentsCategoriesIds
    * - getAllParentCategoriesWithSubcategories
    * - getAllSubcategories
    * - getCategoryNameById
@@ -257,12 +257,12 @@
     /**
      * = Gets child categories by id category =
      *
-     * @param $categoryId
-     * @return mixed
+     * @param int $categoryId
+     * @return array
      */
-    public function getChildCategoriesByIdCategory ($categoryId): array
+    public function getChildCategories (int $categoryId): array
     {
-      return $this->model->getChildCategoriesByIdCategory ($categoryId);
+      return $this->model->getChildCategories ($categoryId);
     }
     
     
@@ -272,7 +272,7 @@
      * @param $categoryID
      * @return int
      */
-    function getTotalProductsOfCategoryId ($categoryID): int
+    function getTotalProductsOfCategory ($categoryID): int
     {
       $isParentCategory = $this->isParentCategory ($categoryID);
       $hasChildCategories = $this->getTotalChildCategoriesByIdCategory ($categoryID);
@@ -354,7 +354,7 @@
         $categoriesArrayOrdered[$index][1] = $item['product_category_id'];
         
         # Tools [2. COLUMN] --------------------------------------------------------------------------------------------
-        $totalProducts = $categoriesObject->getTotalProductsOfCategoryId ($item['product_category_id']);
+        $totalProducts = $categoriesObject->getTotalProductsOfCategory ($item['product_category_id']);
         $totalChild = $categoriesObject->getTotalChildCategoriesByIdCategory ($item['product_category_id']);
         
         $categoriesArrayOrdered[$index][2] = '
@@ -406,7 +406,7 @@
         $categoriesArrayOrdered[$index][5] = $totalProducts;
         
         # Total products with subcategories [6. COLUMN] ---------------------------------------------------------------------------------------------
-        $totalProducts = $categoriesObject->getTotalProductsOfCategoryId ($item['product_category_id']);
+        $totalProducts = $categoriesObject->getTotalProductsOfCategory ($item['product_category_id']);
         $categoriesArrayOrdered[$index][6] = $totalProducts;
         
         # Parent category [7. COLUMN] ---------------------------------------------------------------------------------------------
@@ -418,7 +418,7 @@
         }
         
         # Child categories [8. COLUMN] ---------------------------------------------------------------------------------------------
-        $childCategories = $categoriesObject->getChildCategoriesByIdCategory ($item['product_category_id']);
+        $childCategories = $categoriesObject->getChildCategories ($item['product_category_id']);
         $categoriesNames = [];
         foreach ($childCategories as $item) {
           $categoriesNames[] = $item['product_category_name'];
@@ -459,7 +459,7 @@
      */
     public function getAllParentCategories (): array
     {
-      $result = $this->model->getAllParentCategories ();
+      $result = $this->model->getParentCategories ();
       $data = array();
       foreach ($result as $row) {
         $data[] = array(
@@ -480,9 +480,9 @@
      *
      * @return array|bool
      */
-    function getAllParentsCategoriesIds (): array|bool
+    function getParentsCategoriesIds (): array|bool
     {
-      $result = $this->model->getAllParentCategories ();
+      $result = $this->model->getParentCategories ();
       $data = array();
       foreach ($result as $row) {
         $data[] = array(
@@ -499,7 +499,7 @@
      */
     public function getAllParentCategoriesWithSubcategories (): array
     {
-      $result = $this->model->getAllParentCategories ();
+      $result = $this->model->getParentCategories ();
       
       $categories = array();
       

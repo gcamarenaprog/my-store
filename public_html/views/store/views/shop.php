@@ -23,9 +23,6 @@
   # Get category Id
   $categoryID = $_GET['category'] ?? 0;
   
- // echo 'id '. $categoryID;
-  echo '<br>';
-  
   //setcookie('categoryIdValue', $categoryID);
   
   if ($_COOKIE['categoryIdValue'] == 0) {
@@ -45,24 +42,18 @@
   
   # Calculate the displacement and get all products of the category selected
   $displacement = ($currentPage - 1) * $resultsPerPage;
-  $result = $productObject->calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue, $categoryID);
-  
-  //print_r ($result);
+  $productList = $productObject->calculateTheDisplacementAndGetProducts ($displacement, $resultsPerPage, $sortingValue, $categoryID);
   
   # Get the total number of results
-  $totalRows = $objectCategory->getTotalProductsOfCategoryId ($categoryID);
-  $totalResults = $totalRows;
-  
-  echo '<br>';
-  echo '=='. $totalResults;
+  $totalProducts = $objectCategory->getTotalProductsOfCategory ($categoryID);
   
   # Calculate the total number of pages
-  $totalPages = ceil ($totalResults / $resultsPerPage);
+  $totalPages = ceil ($totalProducts / $resultsPerPage);
 
 ?>
 
 
-<!-- Breadcrumb Start -->
+<!-- Breadcrumb / Start -->
 <div class="container-fluid">
   <div class="row px-xl-5">
     <div class="col-12">
@@ -74,62 +65,73 @@
     </div>
   </div>
 </div>
-<!-- Breadcrumb End -->
+<!-- Breadcrumb / End -->
 
-<!-- Shop Start -->
+<!-- Shop / Start -->
 <div class="container-fluid">
   <div class="row px-xl-5">
 
-    <!-- Shop Sidebar Start -->
+    <!-- Shop Sidebar / Start -->
     <div class="col-lg-3 col-md-4">
-      <!-- Price Start -->
-      <h5 class="section-title position-relative text-uppercase mb-3"><span
-            class="bg-secondary pr-3">Filtrar por stock</span></h5>
-      <div class="bg-light p-4 mb-30">
-        <form>
-          <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-            <input type="checkbox" class="custom-control-input" checked id="price-all">
-            <label class="custom-control-label" for="price-all">Sin filtro</label>
-            <span class="badge border font-weight-normal"><?php echo $totalResults; ?></span>
-          </div>
-          <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-            <input type="checkbox" class="custom-control-input" id="price-1">
-            <label class="custom-control-label" for="price-1">$0 - $100</label>
-            <span class="badge border font-weight-normal">150</span>
-          </div>
-          <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-            <input type="checkbox" class="custom-control-input" id="price-2">
-            <label class="custom-control-label" for="price-2">$100 - $200</label>
-            <span class="badge border font-weight-normal">295</span>
-          </div>
-          <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-            <input type="checkbox" class="custom-control-input" id="price-3">
-            <label class="custom-control-label" for="price-3">$200 - $300</label>
-            <span class="badge border font-weight-normal">246</span>
-          </div>
-          <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-            <input type="checkbox" class="custom-control-input" id="price-4">
-            <label class="custom-control-label" for="price-4">$300 - $400</label>
-            <span class="badge border font-weight-normal">145</span>
-          </div>
-          <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-            <input type="checkbox" class="custom-control-input" id="price-5">
-            <label class="custom-control-label" for="price-5">$400 - $500</label>
-            <span class="badge border font-weight-normal">168</span>
-          </div>
-        </form>
-      </div>
-      <!-- Price End -->
 
-      <!-- Color Start -->
+      <!-- Price filter / Start -->
       <h5 class="section-title position-relative text-uppercase mb-3"><span
             class="bg-secondary pr-3">Filtrar por precio</span></h5>
       <div class="bg-light p-4 mb-30">
         <form>
           <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="custom-control-input" checked id="price-all">
+            <label class="custom-control-label" for="price-all">Sin precio</label>
+            <span class="badge border font-weight-normal"><?php echo $totalProducts; ?></span>
+          </div>
+          <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="custom-control-input" id="price-1">
+            <label class="custom-control-label" for="price-1">$0 - $10,000</label>
+            <span class="badge border font-weight-normal">150</span>
+          </div>
+          <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="custom-control-input" id="price-2">
+            <label class="custom-control-label" for="price-2">$10,000 - $20,000</label>
+            <span class="badge border font-weight-normal">295</span>
+          </div>
+          <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="custom-control-input" id="price-3">
+            <label class="custom-control-label" for="price-3">$20,000 - $30,000</label>
+            <span class="badge border font-weight-normal">246</span>
+          </div>
+          <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="custom-control-input" id="price-4">
+            <label class="custom-control-label" for="price-4">$30,000 - $40,000</label>
+            <span class="badge border font-weight-normal">145</span>
+          </div>
+          <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="custom-control-input" id="price-5">
+            <label class="custom-control-label" for="price-5">$40,000 - $50,000</label>
+            <span class="badge border font-weight-normal">168</span>
+          </div>
+          <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="custom-control-input" id="price-5">
+            <label class="custom-control-label" for="price-5">$50,000 - $60,000</label>
+            <span class="badge border font-weight-normal">168</span>
+          </div>
+          <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+            <input type="checkbox" class="custom-control-input" id="price-5">
+            <label class="custom-control-label" for="price-5">Más de $60,000</label>
+            <span class="badge border font-weight-normal">168</span>
+          </div>
+        </form>
+      </div>
+      <!-- Price filter / End -->
+
+      <!-- Stock filter / Start -->
+      <h5 class="section-title position-relative text-uppercase mb-3"><span
+            class="bg-secondary pr-3">Filtrar por stock</span></h5>
+      <div class="bg-light p-4 mb-30">
+        <form>
+          <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
             <input type="checkbox" class="custom-control-input" checked id="color-all">
             <label class="custom-control-label" for="price-all">Sin filtro</label>
-            <span class="badge border font-weight-normal"><?php echo $totalResults; ?></span>
+            <span class="badge border font-weight-normal"><?php echo $totalProducts; ?></span>
           </div>
           <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
             <input type="checkbox" class="custom-control-input" id="color-1">
@@ -158,9 +160,9 @@
           </div>
         </form>
       </div>
-      <!-- Color End -->
+      <!-- Stock filter / End -->
 
-      <!-- Size Start -->
+      <!-- Score filter Start -->
       <h5 class="section-title position-relative text-uppercase mb-3"><span
             class="bg-secondary pr-3">Filtrar por calificación</span></h5>
       <div class="bg-light p-4 mb-30">
@@ -168,7 +170,7 @@
           <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
             <input type="checkbox" class="custom-control-input" checked id="size-all">
             <label class="custom-control-label" for="size-all">Sin filtro</label>
-            <span class="badge border font-weight-normal"><?php echo $totalResults; ?></span>
+            <span class="badge border font-weight-normal"><?php echo $totalProducts; ?></span>
           </div>
           <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
             <input type="checkbox" class="custom-control-input" id="size-1">
@@ -208,13 +210,16 @@
 
         </form>
       </div>
-      <!-- Size End -->
+      <!-- Score filter End -->
+
     </div>
     <!-- Shop Sidebar End -->
 
     <!-- Shop Product Start -->
     <div class="col-lg-9 col-md-8">
       <div class="row pb-3">
+
+        <!-- Tools of product list / Start -->
         <div class="col-12 pb-1">
           <div class="d-flex align-items-center justify-content-between mb-4">
             <div>
@@ -243,29 +248,19 @@
             </div>
           </div>
         </div>
+        <!-- Tools of product list / End -->
         
-        <?php if ($result): // There are products.?>
+        <?php if ($productList): // There are products.?>
           
-          <?php foreach ($result as $product): ?>
-            
-            <?php
-            
-            $productName = $product['product_name'];
-            $productPrice = number_format ($product['product_price'], 2, '.', ',');
-            $productPriceDisscount = $product['product_price'] + $product['product_price'] * 0.05;
-            $productLikes = $product['product_likes'];
-            $productImage = $product['product_image'];
-            $productId = $product['product_id'];
-            $productViews = $product['product_views'];
-            $productCategories = $product['product_categories'];
-            ?>
+          <?php foreach ($productList as $product): ?>
 
+            <!-- Product list / Start -->
             <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
               <div class="product-item bg-light mb-4">
 
                 <!-- Product image -->
                 <div class="product-img position-relative overflow-hidden">
-                  <img class="img-fluid w-100" src="<?php echo $productImage; ?>" alt="">
+                  <img class="img-fluid w-100" src="<?php echo $product['product_image']; ?>" alt="">
                   <div class="product-action">
                     <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
                     <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
@@ -274,31 +269,37 @@
                   </div>
                 </div>
 
+                <!-- Product data -->
                 <div class="text-center py-4">
 
-                  <?php echo $productCategories; ?>
-                  <!-- Product details -->
+                  <!-- Product name -->
                   <a class="h6 text-decoration-none text-truncate"
-                     onclick="viewProductDetailsAjax(<?php echo $productId; ?>)" href=""><?php echo $productName; ?></a>
+                     onclick="viewProductDetailsAjax(<?php echo $product['product_id']; ?>)"
+                     href=""><?php echo $product['product_name']; ?></a>
+
+                  <!-- Product prices -->
                   <div class="d-flex align-items-center justify-content-center mt-2">
-                    <h5><?php echo $productPrice; ?></h5>
+                    <h5><?php echo number_format ($product['product_price'], 2, '.', ','); ?></h5>
                     <h6 class="text-muted ml-2">
-                      <del><?php echo $productPriceDisscount; ?></del>
+                      <del><?php echo $product['product_price'] + $product['product_price'] * 0.05; ?></del>
                     </h6>
                   </div>
 
-                  <small class="pt-1">(<?php echo $productViews; ?>) Visitas</small>
+                  <!-- Product visits -->
+                  <small class="pt-1">(<?php echo $product['product_views']; ?>) Visitas</small>
 
                   <!-- Product score -->
                   <div class="d-flex align-items-center justify-content-center mb-1">
-                    <?php $objectFunction->printStarsWithScore ($productLikes); ?>
-                    <small>(<?php echo $productLikes; ?>)</small>
+                    <?php $objectFunction->printStarsWithScore ($product['product_likes']); ?>
+                    <small>(<?php echo $product['product_likes']; ?>)</small>
                   </div>
 
                 </div>
 
               </div>
             </div>
+            <!-- Product list / End -->
+          
           <?php endforeach; ?>
         
         <?php else: // No products. ?>
@@ -309,7 +310,7 @@
           </div>
         <?php endif; ?>
 
-        <!-- Pagination -->
+        <!-- Pagination / Start -->
         <div class="col-12">
           <nav>
             <ul class="pagination justify-content-center">
@@ -340,7 +341,6 @@
                 </li>
               <?php endfor; ?>
               
-              
               <?php if ($currentPage < $totalPages) : ?>
                 <a class="page-link" href='?page=<?php echo $currentPage + 1; ?>'>Siguiente</span></a>
               <?php else: ?>
@@ -350,6 +350,7 @@
             </ul>
           </nav>
         </div>
+        <!-- Pagination / End -->
 
       </div>
     </div>
@@ -357,7 +358,7 @@
 
   </div>
 </div>
-<!-- Shop End -->
+<!-- Shop / End -->
 
 <!-- jQuery -->
 <script src='public_html/resources/admin/plugins/jquery/jquery.min.js'></script>
@@ -376,5 +377,5 @@
     setCookie('categoryIdValue', '<?php echo $categoryID; ?>')
 
   });
-  
+
 </script>

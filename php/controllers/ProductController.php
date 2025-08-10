@@ -382,7 +382,7 @@
    * This class defines the product controller class.
    *
    * - getTotalProducts
-   * - getTotalProductsOfCategoryId
+   * - getTotalProductsOfCategory
    * - getAllProducts
    * - getProduct
    * - deleteProduct
@@ -390,7 +390,7 @@
    * - insertProduct
    * - getProductFormattedForDetailsView
    * - getProductsForProductList
-   * - calculateTheDsiplacement
+   * - calculateTheDisplacementAndGetProducts
    */
   class ProductController
   {
@@ -415,13 +415,13 @@
     }
     
     /**
-     * = Get all recent products. =
+     * = Get recent products. =
      *
      * @return array|bool
      */
-    function getAllRecentProducts (): array|bool
+    function getRecentProducts (): array|bool
     {
-      return $this->model->getAllRecentProducts ();
+      return $this->model->getRecentProducts ();
     }
     
     /**
@@ -442,9 +442,9 @@
      * @param $categoryID
      * @return array|bool
      */
-    function getCheapestProductOfCategoryID ($categoryID): array|bool
+    function getCheaperProducts ($categoryID): array|bool
     {
-      return $this->model->getCheapestProductOfCategoryID ($categoryID);
+      return $this->model->getCheaperProducts ($categoryID);
     }
     
     /**
@@ -504,27 +504,27 @@
       $objectFunctions = new Functions();
       $objectCategoriesProduct = new ProductCategoriesController();
       
-      $productDataToProductDetailsViewArray[] = array();
+      $productData[] = array();
       
       # Get product data
       $productData = $this->getProduct ($productId);
       
-      $productDataToProductDetailsViewArray['productName'] = $objectFunctions->dataValidationText ($productData['product_name'], 'No hay datos');
-      $productDataToProductDetailsViewArray['productSpecifications'] = $objectFunctions->dataValidationText ($productData['product_specs'], 'No hay datos');
-      $productDataToProductDetailsViewArray['productPrice'] = number_format ($productData['product_price'], 2, '.', ',');
-      $productDataToProductDetailsViewArray['productPriceClean'] = $objectFunctions->dataValidationText ($productData['product_price'], 'No hay datos');
-      $productDataToProductDetailsViewArray['productQuantity'] = number_format ($productData['product_quantity'], 2, '.', ',');
-      $productDataToProductDetailsViewArray['productCategories'] = $objectCategoriesProduct->getCategoriesNamesByIdsWithSeparator ($productData['product_categories'], '/');
-      $productDataToProductDetailsViewArray['productBrand'] = $objectFunctions->dataValidationText ($productData['product_brand'], 'No hay datos');
-      $productDataToProductDetailsViewArray['productModel'] = $objectFunctions->dataValidationText ($productData['product_model'], 'No hay datos');
-      $productDataToProductDetailsViewArray['productViews'] = $objectFunctions->dataValidationText ($productData['product_views'], 'No hay datos');
-      $productDataToProductDetailsViewArray['productLikes'] = $objectFunctions->dataValidationText ($productData['product_likes'], 'No hay datos');
-      $productDataToProductDetailsViewArray['productCommentId'] = $objectFunctions->dataValidationText ($productData['product_comment_id'], 'No hay datos');
-      $productDataToProductDetailsViewArray['productImage'] = $objectFunctions->dataValidationText ($productData['product_image'], 'No hay datos');
-      $productDataToProductDetailsViewArray['productDateLastChange'] = $objectFunctions->dataValidationText ($productData['product_date_last_change'], 'No hay datos');
-      $productDataToProductDetailsViewArray['productDateCreation'] = $objectFunctions->dataValidationText ($productData['product_date_creation'], 'No hay datos');
+      $productData['productName'] = $objectFunctions->dataValidationText ($productData['product_name'], 'No hay datos');
+      $productData['productSpecifications'] = $objectFunctions->dataValidationText ($productData['product_specs'], 'No hay datos');
+      $productData['productPrice'] = number_format ($productData['product_price'], 2, '.', ',');
+      $productData['productPriceClean'] = $objectFunctions->dataValidationText ($productData['product_price'], 'No hay datos');
+      $productData['productQuantity'] = number_format ($productData['product_quantity'], 2, '.', ',');
+      $productData['productCategories'] = $objectCategoriesProduct->getCategoriesNamesByIdsWithSeparator ($productData['product_categories'], '/');
+      $productData['productBrand'] = $objectFunctions->dataValidationText ($productData['product_brand'], 'No hay datos');
+      $productData['productModel'] = $objectFunctions->dataValidationText ($productData['product_model'], 'No hay datos');
+      $productData['productViews'] = $objectFunctions->dataValidationText ($productData['product_views'], 'No hay datos');
+      $productData['productLikes'] = $objectFunctions->dataValidationText ($productData['product_likes'], 'No hay datos');
+      $productData['productCommentId'] = $objectFunctions->dataValidationText ($productData['product_comment_id'], 'No hay datos');
+      $productData['productImage'] = $objectFunctions->dataValidationText ($productData['product_image'], 'No hay datos');
+      $productData['productDateLastChange'] = $objectFunctions->dataValidationText ($productData['product_date_last_change'], 'No hay datos');
+      $productData['productDateCreation'] = $objectFunctions->dataValidationText ($productData['product_date_creation'], 'No hay datos');
       
-      return $productDataToProductDetailsViewArray;
+      return $productData;
     }
     
     /**
@@ -536,9 +536,11 @@
     {
       $productObject = new ProductController();
       $categoriesObject = new ProductCategoriesController();
-      $result = $productObject->getAllProducts ();
       
-      foreach ($result as $row) {
+      $productList = $productObject->getAllProducts ();
+      $data = array();
+      
+      foreach ($productList as $row) {
         $data[] = array(
           "product_id" => $row['product_id'],
           "product_name" => $row['product_name'],
@@ -729,59 +731,37 @@
     }
     
     /**
-     * = Calculate the displacement. =
+     * = Calculate the displacement and get products. =
      *
-     * @param     $displacement
-     * @param     $resultsPerPage
+     * @param int $displacement
+     * @param int $resultsPerPage
      * @param int $sortingValue
-     * @param     $categoryID
+     * @param int $categoryId
      * @return array|false
      */
     public
-    function calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue = 0, $categoryId): false|array
+    function calculateTheDisplacementAndGetProducts (int $displacement, int $resultsPerPage, int $sortingValue, int $categoryId): false|array
     {
       
       require_once (dirname (__DIR__, 1) . '/controllers/ProductCategoriesController.php');
+      
       $productCategoriesObject = new ProductCategoriesController();
+      
       $isParentCategory = $productCategoriesObject->isParentCategory ($categoryId);
       $hasChildCategories = $productCategoriesObject->getTotalChildCategoriesByIdCategory ($categoryId);
       
       if (($hasChildCategories == 0 && $isParentCategory == 1) || ($hasChildCategories == 0 && $isParentCategory == 0)) {
-        return $this->model->calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue, $categoryId);
+        return $this->model->calculateTheDisplacementAndGetProducts ($displacement, $resultsPerPage, $sortingValue, $categoryId);
       } else {
-        echo 'test';
-        echo '<br>';
-        $categoriesIds = [];
-        $total = [];
-        $result = $productCategoriesObject->getChildCategoriesByIdCategory ($categoryId);
-        //implode (',',$result);
-        // print_r ($result);
-        $cats = [];
-        foreach ($result as $categoryData) {
-          $cats [] = $categoryData['product_category_id'];
+        
+        $childCategories = $productCategoriesObject->getChildCategories ($categoryId);
+     
+        $childCategoriesIds = [];
+        foreach ($childCategories as $categoryData) {
+          $childCategoriesIds [] = $categoryData['product_category_id'];
         }
         
-        // print_r ($cats);
-        //echo '<br>';
-        $final = implode (",", $cats);
-        echo $final;
-        
-        //echo $final;
-        // echo $categoryData['product_category_id'];
-        
-        // var_dump ($total);
-        //}
-        
-        //print_r ($total);
-        
-        $total = $this->model->calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue, $final, '1');
-        return $total;
+        return $this->model->calculateTheDisplacementAndGetProducts ($displacement, $resultsPerPage, $sortingValue, $childCategoriesIds, '1');
       }
-      
-      
-      //return $this->model->calculateTheDsiplacement ($displacement, $resultsPerPage, $sortingValue, $categoryID);
-      
-      
     }
-    
   }
