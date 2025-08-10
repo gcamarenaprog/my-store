@@ -741,6 +741,14 @@
      */
     public function calculateTheDisplacementAndGetProducts (int $displacement, int $resultsPerPage, int $sortingValue, int $categoryId): false|array
     {
+      echo '<br>';
+      echo $displacement;
+      echo '<br>';
+      echo $resultsPerPage;
+      echo '<br>';
+      echo $sortingValue;
+      echo '<br>';
+      echo $categoryId;
       
       require_once (dirname (__DIR__, 1) . '/controllers/ProductCategoriesController.php');
       
@@ -756,7 +764,6 @@
       if (($hasChildCategories == 0 && $isParentCategory == 1) || ($hasChildCategories == 0 && $isParentCategory == 0)) {
         return $this->model->calculateTheDisplacementAndGetProductsOfCategory ($displacement, $resultsPerPage, $sortingValue, $categoryId);
       } else {
-        
         $childCategories = $productCategoriesObject->getChildCategories ($categoryId);
         
         $childCategoriesIds = [];

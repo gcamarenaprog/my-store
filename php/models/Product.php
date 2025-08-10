@@ -114,9 +114,9 @@
           if ($sortingValue == 1) {
             $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_date_creation DESC  LIMIT $displacement, $resultsPerPage ";
           } elseif ($sortingValue == 2) {
-            $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_likes) ORDER BY product_date_creation DESC  LIMIT $displacement, $resultsPerPage ";
+            $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_date_creation DESC  LIMIT $displacement, $resultsPerPage ";
           } else {
-            $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_views) ORDER BY product_date_creation DESC  LIMIT $displacement, $resultsPerPage ";
+            $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_date_creation DESC  LIMIT $displacement, $resultsPerPage ";
           }
           
           

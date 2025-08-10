@@ -45,4 +45,6 @@
     # Template file of administration
     include 'public_html/views/admin/template-admin.php';
     
+  }else{
+    include 'public_html/views/store/template-store.php';
   }
