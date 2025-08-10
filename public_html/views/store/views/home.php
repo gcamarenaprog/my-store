@@ -9,26 +9,29 @@
    * Module:              Views
    * -------------------------------------------------------------------------------------------------------------------
    */
-  
+
 ?>
 
-<!-- Carousel /-->
+  <!-- Carousel /-->
 <?php include 'public_html/views/store/modules/carousel.php'; ?>
 
-<!-- Featured /-->
-<?php include 'public_html/views/store/modules/featured.php'; ?>
+  <!-- Most recent products /-->
+<?php include 'public_html/views/store/modules/most-recent-products.php'; ?>
 
-<!-- Categories /-->
+  <!-- Featured products /-->
+<?php include 'public_html/views/store/modules/characteristics.php'; ?>
+
+  <!-- Categories /-->
 <?php include 'public_html/views/store/modules/categories.php'; ?>
 
-<!-- Products /-->
+  <!-- Products /-->
 <?php include 'public_html/views/store/modules/featured-products.php'; ?>
 
-<!-- Offer /-->
+  <!-- Offer banners /-->
 <?php include 'public_html/views/store/modules/offer.php'; ?>
 
-<!-- Products /-->
-<?php include 'public_html/views/store/modules/recent-products.php'; ?>
+  <!-- Best seller products /-->
+<?php include 'public_html/views/store/modules/best-seller-products.php'; ?>
 
-<!-- Vendor /-->
+  <!-- Vendor /-->
 <?php include 'public_html/views/store/modules/vendor.php'; ?>
