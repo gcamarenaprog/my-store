@@ -23,7 +23,7 @@
   require_once (dirname (__DIR__, 4) . '/php/controllers/ProductCategoriesController.php');
   
   # Variables declaration and initialization.
-  $objectFunction = new Functions();
+  $functionObject = new Functions();
   $categoriesObject = new ProductCategoriesController();
   $productObject = new ProductController();
   
@@ -85,7 +85,7 @@
               <div class="d-flex align-items-center justify-content-center mt-2">
                 <h5>$<?php echo number_format ($product['product_price'], 2, '.', ','); ?></h5>
                 <h6 class="text-muted ml-2">
-                  <del>$<?php echo $product['product_price'] + $product['product_price'] * 0.05; ?></del>
+                  <del>$<?php echo number_format($product['product_price'] + $product['product_price'] * 0.05, 2, '.', ',');?></del>
                 </h6>
               </div>
 
@@ -94,7 +94,7 @@
 
               <!-- Likes /-->
               <div class="d-flex align-items-center justify-content-center mb-1">
-                <?php $objectFunction->printStarsWithScore ($product['product_likes']); ?>
+                <?php $functionObject->printStarsWithScore ($product['product_likes']); ?>
                 <small>(<?php echo $product['product_likes']; ?>)</small>
               </div>
             </div>
