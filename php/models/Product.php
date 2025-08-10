@@ -127,16 +127,16 @@
           if ($sortingValue == 1) {
             $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_date_creation DESC  LIMIT $displacement, $resultsPerPage ";
           } elseif ($sortingValue == 2) {
-            $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_date_creation DESC  LIMIT $displacement, $resultsPerPage ";
+            $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_likes DESC  LIMIT $displacement, $resultsPerPage ";
           } else {
-            $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_date_creation DESC  LIMIT $displacement, $resultsPerPage ";
+            $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_views DESC  LIMIT $displacement, $resultsPerPage ";
           }
-          
           
         } else {
           $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) LIMIT $displacement, $resultsPerPage ";
         }
       } else {
+        
         $arrayLength = count ($categoryId);
         $sentence = '';
         for ($i = 0; $i < $arrayLength; $i++) {
@@ -149,11 +149,11 @@
         if ($sortingValue == 1 || $sortingValue == 2 || $sortingValue == 3) {
           
           if ($sortingValue == 1) {
-            $sql = " SELECT * FROM {$this->table}  ORDER BY product_date_creation DESC  LIMIT $displacement, $resultsPerPage ";
+            $sql = " SELECT * FROM {$this->table} WHERE $sentence ORDER BY product_date_creation DESC  LIMIT $displacement, $resultsPerPage ";
           } elseif ($sortingValue == 2) {
-            $sql = " SELECT * FROM {$this->table}  ORDER BY product_likes DESC  LIMIT $displacement, $resultsPerPage ";
+            $sql = " SELECT * FROM {$this->table} WHERE $sentence ORDER BY product_likes DESC  LIMIT $displacement, $resultsPerPage ";
           } else {
-            $sql = " SELECT * FROM {$this->table}  ORDER BY product_views DESC  LIMIT $displacement, $resultsPerPage ";
+            $sql = " SELECT * FROM {$this->table} WHERE $sentence ORDER BY product_views DESC  LIMIT $displacement, $resultsPerPage ";
           }
           
         } else {

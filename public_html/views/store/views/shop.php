@@ -23,9 +23,9 @@
   # Get category Id
   $categoryID = $_GET['category'] ?? 0;
   
-  if($categoryID == 0){
+  if ($categoryID == 0) {
     $categoryName = 'Productos';
-  }else{
+  } else {
     $categoryName = $objectCategory->getCategoryNameById ($categoryID);
   }
   
@@ -47,7 +47,7 @@
   
   # Calculate the total number of pages
   $totalPages = ceil ($totalProducts / $resultsPerPage);
- 
+
 ?>
 
 
@@ -239,8 +239,9 @@
                 </button>
                 <div id="myDropdown" class="dropdown-menu dropdown-menu-right">
                   <a class="dropdown-item" href="#" onclick="showSelectedOption(9);">9</a>
+                  <a class="dropdown-item" href="#" onclick="showSelectedOption(12);">12</a>
+                  <a class="dropdown-item" href="#" onclick="showSelectedOption(15);">15</a>
                   <a class="dropdown-item" href="#" onclick="showSelectedOption(18);">18</a>
-                  <a class=" dropdown-item" href="#" onclick="showSelectedOption(27);">27</a>
                 </div>
               </div>
             </div>
@@ -269,7 +270,7 @@
 
                 <!-- Product data -->
                 <div class="text-center py-4">
-
+                  <?php echo $product['product_categories']; ?>
                   <!-- Product name -->
                   <a class="h6 text-decoration-none text-truncate"
                      onclick="viewProductDetailsAjax(<?php echo $product['product_id']; ?>)"
@@ -335,7 +336,8 @@
               <?php for ($i; $i <= $totalPages; $i++): ?>
                 <?php $activeClass = ($i == $currentPage) ? "active" : ""; ?>
                 <li class="page-item <?php echo $activeClass; ?>">
-                  <a class="page-link" href='?category=<?php echo $categoryID; ?>&page=<?php echo $i ?>'><?php echo $i; ?></a>
+                  <a class="page-link"
+                     href='?category=<?php echo $categoryID; ?>&page=<?php echo $i ?>'><?php echo $i; ?></a>
                 </li>
               <?php endfor; ?>
               

@@ -12,10 +12,11 @@
  */
 
 /** Document ready functions -----------------------------------------------------------------------------------------*/
-$(document).ready(function () {});
+$(document).ready(function () {
+});
 
 /**
- * Show number of products selected
+ * Show the number of products selected
  * @param number
  */
 function showSelectedOption(number) {
@@ -25,20 +26,24 @@ function showSelectedOption(number) {
       setCookie('showValue', '9');
       location.reload();
       break;
+    case 12:
+      setCookie('showValue', '12');
+      location.reload();
+      break;
+    case 15:
+      setCookie('showValue', '15');
+      location.reload();
+      break;
     case 18:
       setCookie('showValue', '18');
       location.reload();
       break;
-    case 27:
-      setCookie('showValue', '27');
-      location.reload();
-      break;
-  }
 
+  }
 }
 
 /**
- * Sorting selected option
+ * Sorting a selected option
  * @param number
  */
 function sortingSelectedOption(number) {
@@ -75,7 +80,7 @@ function viewProductDetailsAjax(product_id_view) {
     // Response data
     console.log(msg);
     window.location.href = 'product';
-  }).fail(function (jqXHR, textStatus, errorThrown) { // Function that is executed if something has gone wrong
+  }).fail(function (jqXHR, textStatus, errorThrown) { // Function that is executed if something has gone a wrong
     // Error message in console
     console.log("The following error occurred: " + textStatus + " " + errorThrown);
     // Error removal toast message
