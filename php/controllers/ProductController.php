@@ -419,9 +419,9 @@
      *
      * @return array|bool
      */
-    function getRecentProducts (): array|bool
+    function getRecentProductsList (): array|bool
     {
-      return $this->model->getRecentProducts ();
+      return $this->model->getRecentProductsList ();
     }
     
     /**

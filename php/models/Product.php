@@ -16,7 +16,7 @@
    * This class defines the product model class. This class inherits from the generic model class. Its methods are:
    *
    * - getCheaperProducts
-   * - getRecentProducts
+   * - getRecentProductsList
    * - getMaxScore
    * - getMinScore
    * - calculateTheDisplacementAndGetProductsOfCategory
@@ -58,9 +58,9 @@
      *
      * @return array|bool
      */
-    public function getRecentProducts (): array|bool
+    public function getRecentProductsList (): array|bool
     {
-      $sql = "SELECT * FROM {$this->table} ORDER BY product_id DESC LIMIT 10;";
+      $sql = "SELECT * FROM {$this->table} ORDER BY product_id DESC LIMIT 12;";
       $statement = $this->connectionPDO->prepare ($sql);
       $statement->execute ();
       return $statement->fetchAll ();
