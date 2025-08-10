@@ -5,7 +5,7 @@
    * Project description: Selection process skills assessment.
    * Version:             1.0.0
    * File type:           Template file
-   * File description:    Contains the template featured module.
+   * File description:    Contains the template characteristics module.
    * Module:              Template Store
    * -------------------------------------------------------------------------------------------------------------------
    */
