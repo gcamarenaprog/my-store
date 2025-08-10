@@ -23,11 +23,9 @@
   # Get category Id
   $categoryID = $_GET['category'] ?? 0;
   
-  //setcookie('categoryIdValue', $categoryID);
-  
-  if ($_COOKIE['categoryIdValue'] == 0) {
+  if($categoryID == 0){
     $categoryName = 'Productos';
-  } else {
+  }else{
     $categoryName = $objectCategory->getCategoryNameById ($categoryID);
   }
   
@@ -49,6 +47,9 @@
   
   # Calculate the total number of pages
   $totalPages = ceil ($totalProducts / $resultsPerPage);
+ 
+  
+
 
 ?>
 
@@ -317,7 +318,7 @@
               
               <?php if ($currentPage > 1) : ?>
                 <li class="page-item ">
-                  <a class="page-link" href='?page=<?php echo $currentPage - 1; ?>'>Anterior</span></a>
+                  <a class="page-link" href='?category=<?php echo $categoryID; ?>&page=<?php echo $currentPage - 1; ?>'>Anterior</span></a>
                 </li>
               <?php else: ?>
                 <li class="page-item disabled"><a class="page-link" href='#'>Anterior</span></a></li>
@@ -337,12 +338,12 @@
               <?php for ($i; $i <= $totalPages; $i++): ?>
                 <?php $activeClass = ($i == $currentPage) ? "active" : ""; ?>
                 <li class="page-item <?php echo $activeClass; ?>">
-                  <a class="page-link" href='?page=<?php echo $i ?>'><?php echo $i; ?></a>
+                  <a class="page-link" href='?category=<?php echo $categoryID; ?>&page=<?php echo $i ?>'><?php echo $i; ?></a>
                 </li>
               <?php endfor; ?>
               
               <?php if ($currentPage < $totalPages) : ?>
-                <a class="page-link" href='?page=<?php echo $currentPage + 1; ?>'>Siguiente</span></a>
+                <a class="page-link" href='?category=<?php echo $categoryID; ?>&page=<?php echo $currentPage + 1; ?>'>Siguiente</span></a>
               <?php else: ?>
                 <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
               <?php endif; ?>
@@ -368,14 +369,3 @@
 
 <!-- Custom JS Code -->
 <script src='public_html/js/js-shop.js'></script>
-
-<script>
-
-  /** Document ready functions -----------------------------------------------------------------------------------------*/
-  $(document).ready(function () {
-
-    setCookie('categoryIdValue', '<?php echo $categoryID; ?>')
-
-  });
-
-</script>
