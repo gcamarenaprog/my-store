@@ -48,9 +48,6 @@
   # Calculate the total number of pages
   $totalPages = ceil ($totalProducts / $resultsPerPage);
  
-  
-
-
 ?>
 
 

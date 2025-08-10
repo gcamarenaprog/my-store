@@ -19,13 +19,15 @@
    * - getRecentProducts
    * - getMaxScore
    * - getMinScore
-   * - calculateTheDisplacementAndGetProducts
+   * - calculateTheDisplacementAndGetProductsOfCategory
+   * - calculateTheDisplacementAndGetAllProducts
    */
   class Product extends Generic
   {
     
     protected string $table;
     protected string $field;
+    
     
     /**
      * = Product model construct. =
@@ -34,6 +36,7 @@
     {
       parent::__construct ('products', 'product_id');
     }
+    
     
     /**
      * = Get the cheapest product of a category. =
@@ -49,6 +52,7 @@
       return $statement->fetchAll ();
     }
     
+    
     /**
      * = Get recent products. =
      *
@@ -62,6 +66,7 @@
       return $statement->fetchAll ();
     }
     
+    
     /**
      * = Get mas score of the all products. =
      *
@@ -74,6 +79,7 @@
       $statement->execute ();
       return $statement->fetchAll ();
     }
+    
     
     /**
      * = Get min score of the all products. =
@@ -90,20 +96,30 @@
     
     
     /**
-     * = Calculate the displacement and get products. =
+     * = Calculate the displacement and get all products of a category. =
      *
      * @param int       $displacement
      * @param int       $resultsPerPage
      * @param int       $sortingValue
      * @param int|array $categoryId
      * @param int       $subcategories
-     * @return array|false
+     * @return false|array
      */
-    public function calculateTheDisplacementAndGetProducts (int $displacement, int $resultsPerPage, int $sortingValue = 0, int|array $categoryId, int $subcategories = 0): false|array
+    public function calculateTheDisplacementAndGetProductsOfCategory (int $displacement, int $resultsPerPage, int $sortingValue, int|array $categoryId, int $subcategories = 0): false|array
     {
       if ($subcategories == 0) {
+        
         if ($sortingValue == 1 || $sortingValue == 2 || $sortingValue == 3) {
-          $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_id DESC  LIMIT $displacement, $resultsPerPage ";
+          
+          if ($sortingValue == 1) {
+            $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_date_creation DESC  LIMIT $displacement, $resultsPerPage ";
+          } elseif ($sortingValue == 2) {
+            $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_likes) ORDER BY product_date_creation DESC  LIMIT $displacement, $resultsPerPage ";
+          } else {
+            $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_views) ORDER BY product_date_creation DESC  LIMIT $displacement, $resultsPerPage ";
+          }
+          
+          
         } else {
           $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) LIMIT $displacement, $resultsPerPage ";
         }
@@ -119,11 +135,48 @@
         
         if ($sortingValue == 1 || $sortingValue == 2 || $sortingValue == 3) {
           
-          $sql = " SELECT * FROM {$this->table} WHERE $sentence ORDER BY product_id DESC  LIMIT $displacement, $resultsPerPage ";
+          if ($sortingValue == 1) {
+            $sql = " SELECT * FROM {$this->table}  ORDER BY product_date_creation DESC  LIMIT $displacement, $resultsPerPage ";
+          } elseif ($sortingValue == 2) {
+            $sql = " SELECT * FROM {$this->table}  ORDER BY product_likes DESC  LIMIT $displacement, $resultsPerPage ";
+          } else {
+            $sql = " SELECT * FROM {$this->table}  ORDER BY product_views DESC  LIMIT $displacement, $resultsPerPage ";
+          }
           
         } else {
           $sql = " SELECT * FROM {$this->table} WHERE  $sentence LIMIT $displacement, $resultsPerPage ";
         }
+      }
+      
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchAll ();
+    }
+    
+    
+    /**
+     * = Calculate the displacement and get all products. =
+     *
+     * @param int $displacement
+     * @param int $resultsPerPage
+     * @param int $sortingValue
+     * @param int $categoryId
+     * @return array|false
+     */
+    public function calculateTheDisplacementAndGetAllProducts (int $displacement, int $resultsPerPage, int $sortingValue, int $categoryId): false|array
+    {
+      if ($sortingValue == 1 || $sortingValue == 2 || $sortingValue == 3) {
+        
+        if ($sortingValue == 1) {
+          $sql = " SELECT * FROM {$this->table}  ORDER BY product_date_creation DESC  LIMIT $displacement, $resultsPerPage ";
+        } elseif ($sortingValue == 2) {
+          $sql = " SELECT * FROM {$this->table}  ORDER BY product_likes DESC  LIMIT $displacement, $resultsPerPage ";
+        } else {
+          $sql = " SELECT * FROM {$this->table}  ORDER BY product_views DESC  LIMIT $displacement, $resultsPerPage ";
+        }
+        
+      } else {
+        $sql = " SELECT * FROM {$this->table} LIMIT $displacement, $resultsPerPage ";
       }
       
       $statement = $this->connectionPDO->prepare ($sql);

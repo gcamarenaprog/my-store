@@ -26,7 +26,7 @@ function showSelectedOption(number) {
       location.reload();
       break;
     case 18:
-      setCookie('showValue', '28');
+      setCookie('showValue', '18');
       location.reload();
       break;
     case 27:

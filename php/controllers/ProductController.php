@@ -390,7 +390,7 @@
    * - insertProduct
    * - getProductFormattedForDetailsView
    * - getProductsForProductList
-   * - calculateTheDisplacementAndGetProducts
+   * - calculateTheDisplacementAndGetProductsOfCategory
    */
   class ProductController
   {
@@ -739,29 +739,32 @@
      * @param int $categoryId
      * @return array|false
      */
-    public
-    function calculateTheDisplacementAndGetProducts (int $displacement, int $resultsPerPage, int $sortingValue, int $categoryId): false|array
+    public function calculateTheDisplacementAndGetProducts (int $displacement, int $resultsPerPage, int $sortingValue, int $categoryId): false|array
     {
       
       require_once (dirname (__DIR__, 1) . '/controllers/ProductCategoriesController.php');
       
       $productCategoriesObject = new ProductCategoriesController();
       
+      if ($categoryId == 0) {
+        return $this->model->calculateTheDisplacementAndGetAllProducts ($displacement, $resultsPerPage, $sortingValue, $categoryId);
+      }
+      
       $isParentCategory = $productCategoriesObject->isParentCategory ($categoryId);
       $hasChildCategories = $productCategoriesObject->getTotalChildCategoriesByIdCategory ($categoryId);
       
       if (($hasChildCategories == 0 && $isParentCategory == 1) || ($hasChildCategories == 0 && $isParentCategory == 0)) {
-        return $this->model->calculateTheDisplacementAndGetProducts ($displacement, $resultsPerPage, $sortingValue, $categoryId);
+        return $this->model->calculateTheDisplacementAndGetProductsOfCategory ($displacement, $resultsPerPage, $sortingValue, $categoryId);
       } else {
         
         $childCategories = $productCategoriesObject->getChildCategories ($categoryId);
-     
+        
         $childCategoriesIds = [];
         foreach ($childCategories as $categoryData) {
           $childCategoriesIds [] = $categoryData['product_category_id'];
         }
         
-        return $this->model->calculateTheDisplacementAndGetProducts ($displacement, $resultsPerPage, $sortingValue, $childCategoriesIds, '1');
+        return $this->model->calculateTheDisplacementAndGetProductsOfCategory ($displacement, $resultsPerPage, $sortingValue, $childCategoriesIds, '1');
       }
     }
   }
