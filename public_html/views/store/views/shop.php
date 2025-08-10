@@ -24,9 +24,10 @@
   $categoryID = $_GET['category'] ?? 0;
   
   if ($categoryID == 0) {
-    $categoryName = 'Productos';
+    $categoryNameBreadcrumb = 'Productos';
+    $categoryName = 'Categorías';
   } else {
-    $categoryName = $objectCategory->getCategoryNameById ($categoryID);
+    $categoryName = $categoryNameBreadcrumb = $objectCategory->getCategoryNameById ($categoryID);
   }
   
   # Get the order value
@@ -49,7 +50,11 @@
   $totalPages = ceil ($totalProducts / $resultsPerPage);
   
   # Get parent categories with subcategories
-  $parentsCategoriesAndSubcategoriesList = $objectCategory->getParentsCategoriesWithSubcategoriesByParentCategoryId ($categoryID);
+  if ($categoryID != 0) {
+    $parentsCategoriesAndSubcategoriesList = $objectCategory->getParentsCategoriesWithSubcategoriesByParentCategoryId ($categoryID);
+  } else {
+    $parentsCategoriesAndSubcategoriesList = $objectCategory->getParentsCategoriesWithSubcategories ();
+  }
   
   # Has child categories
   $hasChildCategories = $objectCategory->getTotalChildCategoriesByIdCategory ($categoryID);
@@ -64,7 +69,7 @@
       <nav class="breadcrumb bg-light mb-30">
         <a class="breadcrumb-item text-dark" href="store">Incio</a>
         <a class="breadcrumb-item text-dark" href="shop">Tienda</a>
-        <span class="breadcrumb-item active"><strong>Lista de <?php echo $categoryName; ?></strong></span>
+        <span class="breadcrumb-item active"><strong>Lista de <?php echo $categoryNameBreadcrumb; ?></strong></span>
       </nav>
     </div>
   </div>
@@ -88,7 +93,9 @@
           <?php foreach ($parentsCategoriesAndSubcategoriesList as $category): ?>
 
             <div class=" d-flex align-items-center justify-content-between mb-3">
-              <span class="font-weight-bold"><?php echo $category['product_category_name']; ?></span>
+              <a href="shop?category=<?php echo $category['product_category_id'] ?>"
+                 class="font-weight-bold"
+                 style="color: #70747c"><?php echo $category['product_category_name']; ?></a>
               <span class="badge border font-weight-normal"><?php echo $totalProducts; ?></span>
             </div>
             
