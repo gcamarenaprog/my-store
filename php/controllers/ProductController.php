@@ -741,15 +741,6 @@
      */
     public function calculateTheDisplacementAndGetProducts (int $displacement, int $resultsPerPage, int $sortingValue, int $categoryId): false|array
     {
-      echo '<br>';
-      echo $displacement;
-      echo '<br>';
-      echo $resultsPerPage;
-      echo '<br>';
-      echo $sortingValue;
-      echo '<br>';
-      echo $categoryId;
-      
       require_once (dirname (__DIR__, 1) . '/controllers/ProductCategoriesController.php');
       
       $productCategoriesObject = new ProductCategoriesController();
