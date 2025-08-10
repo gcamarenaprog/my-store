@@ -11,9 +11,9 @@
    */
   
   require_once (dirname (__DIR__, 4) . '/php/controllers/ProductCategoriesController.php');
-  $newObject = new ProductCategoriesController();
+  $productCategoriesControllerObject = new ProductCategoriesController();
   
-  $categories = $newObject->getAllParentCategoriesWithSubcategories ();
+  $categories = $productCategoriesControllerObject->getParentsCategoriesWithSubcategories ();
   
   $last = end ($categories);
 ?>
@@ -42,7 +42,7 @@
             
             <?php
             # Check if the category has child categories
-            $totalChildCategories = $newObject->countChildCategoriesOfCategory ($category['product_category_id']);
+            $totalChildCategories = $productCategoriesControllerObject->countChildCategoriesOfCategory ($category['product_category_id']);
             ?>
             
             <?php if ($totalChildCategories): // Print categories with child categories ?>
@@ -58,7 +58,7 @@
                 <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
                   <?php
                     if (!empty($category['subcategory'])) {
-                      echo $newObject->printSubcategories ($category['subcategory'], $pixels = 0);
+                      echo $productCategoriesControllerObject->printSubcategories ($category['subcategory'], $pixels = 0);
                     }
                   ?>
                 </div>
