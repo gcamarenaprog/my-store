@@ -21,30 +21,37 @@
   $url = explode ('/', URL);
   
   # Check if it contains page for store pagination
-  $jsonString = json_encode($url);
-  if (str_contains($jsonString, 'page')) {
+  $jsonString = json_encode ($url);
+  if (str_contains ($jsonString, 'page')) {
     $url[0] = 'shop';
   }
   
   # Check if it contains page for store pagination
-  $jsonString = json_encode($url);
-  if (str_contains($jsonString, 'category')) {
+  $jsonString = json_encode ($url);
+  if (str_contains ($jsonString, 'category')) {
     $url[0] = 'shop';
   }
   
   # If the user is logged in, the administration template is loaded
-  if ($url[0] == 'store' || $url[0] == 'contact' || $url[0] == 'shop' || $url[0] == 'product'  || $url[0] == '' || $url[0] == 'login') {
+  if ($url[0] == 'store' || $url[0] == 'contact' || $url[0] == 'shop' || $url[0] == 'product' || $url[0] == '' || $url[0] == 'login') {
     
     $return_value = match ($url[0]) {
       'login' => include 'login.php',
       default => include 'public_html/views/store/template-store.php',
     };
     
-  } elseif (isset($_SESSION['user_username']) || ($url[0] == 'admin')) {
+  } elseif (isset($_SESSION['user_username']) && ($url[0] == 'admin')) {
     
     # Template file of administration
     include 'public_html/views/admin/template-admin.php';
     
-  }else{
+  } elseif ($url[0] == 'admin') {
+    
+    # If you are not logged in, you will be redirected to the login screen
+    include 'login.php';
+    
+  } else {
+    
+    # Any other undeclared route redirects to the store's home screen
     include 'public_html/views/store/template-store.php';
   }

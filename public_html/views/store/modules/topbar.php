@@ -26,27 +26,23 @@
     </div>
     
     <!-- Sign in - Currency - Language Menus /-->
-    <div class="col-lg-6 text-center text-lg-right">
+    <div class="col-lg-6 text-center text-lg-right" >
       <div class="d-inline-flex align-items-center">
-        <div class="btn-group">
-          <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Mi Cuenta</button>
+        <div class="btn-group" id="buttonMyAccount">
+          <a href="#" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Mi Cuenta</a>
           <div class="dropdown-menu dropdown-menu-right">
             <button class="dropdown-item" type="button">Iniciar sesión</button>
           </div>
         </div>
         <div class="btn-group mx-2">
-          <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">MXN</button>
+          <a href="#" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">MXN</a>
           <div class="dropdown-menu dropdown-menu-right">
             <button class="dropdown-item" type="button">USD</button>
 
           </div>
         </div>
-        <div class="btn-group">
-          <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">ES</button>
-          <div class="dropdown-menu dropdown-menu-right">
-            <button class="dropdown-item" type="button">EN</button>
-          </div>
-        </div>
+        
+        
       </div>
       <div class="d-inline-flex align-items-center d-block d-lg-none">
         <a href="" class="btn px-0 ml-2">
@@ -93,3 +89,9 @@
   
 </div>
 <!-- Topbar End -->
+
+<script>
+  document.getElementById("buttonMyAccount").addEventListener("click", function(event){
+    event.preventDefault()
+  });
+</script>
