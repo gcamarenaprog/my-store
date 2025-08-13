@@ -10,7 +10,7 @@
    * -------------------------------------------------------------------------------------------------------------------
    */
   
-  # Files required
+  # Required files and libraries
   require_once (__DIR__ . '/install/config.php');
   require_once (__DIR__ . '/router.php');
   require_once (__DIR__ . '/php/includes/functions.php');
@@ -72,6 +72,7 @@
             <?php
             $error = $_GET['error'];
             $return_value = match ($error) {
+              'your-are-not-logged-in' => 'No ha iniciado sesión.',
               'empty-fields' => 'No puede haber campos vacíos.',
               'invalid-user-and-password' => 'Nombre o contraseña inválidos.',
               default => 'Error al iniciar sesión',
@@ -79,7 +80,7 @@
             ?>
             
             <!-- If exist any error, print the error message -->
-            <p class='text-danger'><b>Error: </b><?php echo $return_value; ?></p>
+            <p class='text-danger text-center'><b>Error: </b><?php echo $return_value; ?></p>
           
           <?php endif; ?>
           

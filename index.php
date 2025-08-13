@@ -21,7 +21,7 @@
   # Separate the URL into words
   $url = explode ('/', URL);
   
-  $storeUrls = ['store', 'shop', 'contact', 'product', 'login'];
+  $storeUrls = ['store', 'shop', 'contact', 'product', 'login', ''];
   
   // If you are not logged in, you will be redirected to the store template.
   if (in_array($url[0], $storeUrls)) {
