@@ -11,7 +11,7 @@
    */
   
   # Required files
-  require_once (dirname (__DIR__, 1) . '/includes/functions.php');
+  require_once (dirname (__DIR__, 1) . '/includes/Functions.php');
   require_once (dirname (__DIR__, 1) . '/models/Comment.php');
   
   /**
