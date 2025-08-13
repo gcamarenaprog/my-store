@@ -529,7 +529,7 @@
 <script src="public_html/js/js-functions.js"></script>
 
 <!-- Custom view JS Code /-->
-<script src="public_html/js/js-product-add.js"></script>
+<script src="public_html/js/admin/js-product-add.js"></script>
 
 <script>
 </script>
