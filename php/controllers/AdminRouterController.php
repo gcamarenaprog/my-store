@@ -20,7 +20,7 @@
   {
     
     /**
-     * Checks if the method being called exists, if not use the default method
+     * Selects the view based on the view name passed as a parameter.
      *
      * @param $nameOfView string
      * @return void
@@ -72,7 +72,6 @@
     {
       include 'public_html/views/admin/home.php';
     }
-    
     
     /**
      * Load the add product view
@@ -133,7 +132,6 @@
     {
       header ('Location: login.php');
     }
-    
     
     /**
      * Load the store view
