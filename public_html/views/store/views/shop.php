@@ -5,7 +5,7 @@
    * Project description: Selection process skills assessment.
    * Version:             1.0.0
    * File type:           View file
-   * File description:    This file show the shop screen.
+   * File description:    This file shows the shop section screen.
    * Module:              Views
    * -------------------------------------------------------------------------------------------------------------------
    */
