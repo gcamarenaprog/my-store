@@ -18,22 +18,16 @@
   require_once (dirname (__DIR__, 4) . '/php/controllers/ProductController.php');
   require_once (dirname (__DIR__, 4) . '/php/controllers/ProductCategoriesController.php');
   
-  $productObject = new ProductController();
-  $objectFunction = new Functions();
-  $objectCategory = new ProductCategoriesController();
+  # Declaration and initialization of variables
+  $functionsObject = new Functions();
+  $productControllerObject = new ProductController();
+  $categoryControllerObject = new ProductCategoriesController();
   
   # Get category Id
-  $categoryID = $_GET['category'] ?? 0;
-  
-  if ($categoryID == 0) {
-    $categoryNameBreadcrumb = 'Productos';
-    $categoryName = 'Categorías';
-  } else {
-    $categoryName = $categoryNameBreadcrumb = $objectCategory->getCategoryNameById ($categoryID);
-  }
+  $categoryId = $_GET['category'] ?? 0;
   
   # Get the order value
-  $sortingValue = $_COOKIE["sortingValue"] ?? '0';
+  $orderingValue = $_COOKIE["sortingValue"] ?? '0';
   
   # Get the current page (default, page 1)
   $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -43,40 +37,26 @@
   
   # Calculate the displacement and get all products of the category selected
   $displacement = ($currentPage - 1) * $resultsPerPage;
-  $productList = $productObject->calculateTheDisplacementAndGetProducts ($displacement, $resultsPerPage, $sortingValue, $categoryID);
+  $productList = $productControllerObject->getTheListOfProductsAndCalculateTheDisplacement ($displacement, $resultsPerPage, $orderingValue, $categoryId);
   
-  # Get the total number of results
-  $totalProducts = $objectCategory->getTotalProductsOfCategory ($categoryID);
+  # Get the total products of the category
+  $totalProductsInTheCategory = $productControllerObject->getTotalProductsOfTheCategory ($categoryId);
   
   # Calculate the total number of pages
-  $totalPages = ceil ($totalProducts / $resultsPerPage);
+  $totalPages = ceil ($totalProductsInTheCategory / $resultsPerPage);
   
-  # Get parent categories with subcategories
-  if ($categoryID != 0) {
-    $parentsCategoriesAndSubcategoriesList = $objectCategory->getParentsCategoriesWithSubcategoriesByParentCategoryId ($categoryID);
-  } else {
-    $parentsCategoriesAndSubcategoriesList = $objectCategory->getParentsCategoriesWithSubcategories ();
-  }
+  
   
   # Has child categories
   $hasChildCategories = $objectCategory->getTotalChildCategoriesByIdCategory ($categoryID);
 
 ?>
 
+<!-- Breadcrumbs /-->
+<?php include 'public_html/views/store/shop/shop-breadcrumbs.php'; ?>
 
-<!-- Breadcrumb / Start -->
-<div class="container-fluid">
-  <div class="row px-xl-5">
-    <div class="col-12">
-      <nav class="breadcrumb bg-light mb-30">
-        <a class="breadcrumb-item text-dark" href="store">Incio</a>
-        <a class="breadcrumb-item text-dark" href="shop">Tienda</a>
-        <span class="breadcrumb-item active"><strong>Lista de <?php echo $categoryNameBreadcrumb; ?></strong></span>
-      </nav>
-    </div>
-  </div>
-</div>
-<!-- Breadcrumb / End -->
+<!-- Featured products /-->
+<?php include 'public_html/views/store/shop/shop-featured-products.php'; ?>
 
 <!-- Shop / Start -->
 <div class="container-fluid">
@@ -85,41 +65,8 @@
     <!-- Shop Sidebar / Start -->
     <div class="col-lg-3 col-md-4">
 
-
-      <!-- Sub-categories / Start -->
-      <?php if ($hasChildCategories > 0): ?>
-        <h5 class="section-title position-relative text-uppercase mb-3"><span
-              class="bg-secondary pr-3"><?php echo $categoryName; ?></span></h5>
-        <div class="bg-light p-4 mb-30">
-          
-          <?php foreach ($parentsCategoriesAndSubcategoriesList as $category): ?>
-
-            <div class=" d-flex align-items-center justify-content-between mb-3">
-              <a href="shop?category=<?php echo $category['product_category_id'] ?>"
-                 class="font-weight-bold"
-                 style="color: #70747c"><?php echo $category['product_category_name']; ?></a>
-              <span class="badge border font-weight-normal"><?php echo $totalProducts; ?></span>
-            </div>
-            
-            <?php foreach ($category['subcategory'] as $item): ?>
-              
-              <?php
-              # Get the total number of results
-              $totalProducts = $objectCategory->getTotalProductsOfCategory ($item['product_category_id']);
-              ?>
-
-              <div class=" d-flex align-items-center justify-content-between mb-1 ml-3">
-                <a class="h6 text-decoration-none text-truncate"
-                   style="font-weight: normal; "
-                   href="shop?category=<?php echo $item['product_category_id'] ?>">- <?php echo $item['product_category_name']; ?></a>
-                <span class="badge border font-weight-normal"><?php echo $totalProducts; ?></span>
-              </div>
-            
-            <?php endforeach; ?>
-          <?php endforeach; ?>
-        </div>
-      <?php endif; ?>
-      <!-- Sub-categories/ End -->
+      <!-- Category and subcategories section /-->
+      <?php include 'public_html/views/store/shop/shop-categories.php'; ?>
 
 
       <!-- Price filter / Start -->
@@ -129,8 +76,8 @@
         <form>
           <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
             <input type="checkbox" class="custom-control-input" checked id="price-all">
-            <label class="custom-control-label" for="price-all">Sin precio</label>
-            <span class="badge border font-weight-normal"><?php echo $totalProducts; ?></span>
+            <label class="custom-control-label" for="price-all">Sin filtro</label>
+            <span class="badge border font-weight-normal"><?php echo $totalProductsInTheCategory; ?></span>
           </div>
           <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
             <input type="checkbox" class="custom-control-input" id="price-1">
@@ -179,7 +126,7 @@
           <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
             <input type="checkbox" class="custom-control-input" checked id="color-all">
             <label class="custom-control-label" for="price-all">Sin filtro</label>
-            <span class="badge border font-weight-normal"><?php echo $totalProducts; ?></span>
+            <span class="badge border font-weight-normal"><?php echo $totalProductsInTheCategory; ?></span>
           </div>
           <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
             <input type="checkbox" class="custom-control-input" id="color-1">
@@ -218,7 +165,7 @@
           <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
             <input type="checkbox" class="custom-control-input" checked id="size-all">
             <label class="custom-control-label" for="size-all">Sin filtro</label>
-            <span class="badge border font-weight-normal"><?php echo $totalProducts; ?></span>
+            <span class="badge border font-weight-normal"><?php echo $totalProductsInTheCategory; ?></span>
           </div>
           <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
             <input type="checkbox" class="custom-control-input" id="size-1">
@@ -263,11 +210,11 @@
     </div>
     <!-- Shop Sidebar End -->
 
-    <!-- Shop Product Start -->
+    <!-- Shop list product / Start -->
     <div class="col-lg-9 col-md-8">
       <div class="row pb-3">
 
-        <!-- Tools of product list / Start -->
+        <!-- Product list tool / Start -->
         <div class="col-12 pb-1">
           <div class="d-flex align-items-center justify-content-between mb-4">
             <div>
@@ -297,7 +244,7 @@
             </div>
           </div>
         </div>
-        <!-- Tools of product list / End -->
+        <!-- Product list tool / End -->
         
         <?php if ($productList): // There are products.?>
           
@@ -320,6 +267,7 @@
 
                 <!-- Product data -->
                 <div class="text-center py-4">
+
                   <!-- Product name -->
                   <a class="h6 text-decoration-none text-truncate"
                      onclick="viewProductDetailsAjax(<?php echo $product['product_id']; ?>)"
@@ -342,7 +290,7 @@
 
                   <!-- Product score -->
                   <div class="d-flex align-items-center justify-content-center mb-1">
-                    <?php $objectFunction->printStarsWithScore ($product['product_likes']); ?>
+                    <?php $functionsObject->printStarsWithScore ($product['product_likes']); ?>
                     <small>(<?php echo $product['product_likes']; ?>)</small>
                   </div>
 
@@ -369,7 +317,7 @@
               
               <?php if ($currentPage > 1) : ?>
                 <li class="page-item ">
-                  <a class="page-link" href='?category=<?php echo $categoryID; ?>&page=<?php echo $currentPage - 1; ?>'>Anterior</span></a>
+                  <a class="page-link" href='?category=<?php echo $categoryId; ?>&page=<?php echo $currentPage - 1; ?>'>Anterior</span></a>
                 </li>
               <?php else: ?>
                 <li class="page-item disabled"><a class="page-link" href='#'>Anterior</span></a></li>
@@ -390,12 +338,12 @@
                 <?php $activeClass = ($i == $currentPage) ? "active" : ""; ?>
                 <li class="page-item <?php echo $activeClass; ?>">
                   <a class="page-link"
-                     href='?category=<?php echo $categoryID; ?>&page=<?php echo $i ?>'><?php echo $i; ?></a>
+                     href='?category=<?php echo $categoryId; ?>&page=<?php echo $i ?>'><?php echo $i; ?></a>
                 </li>
               <?php endfor; ?>
               
               <?php if ($currentPage < $totalPages) : ?>
-                <a class="page-link" href='?category=<?php echo $categoryID; ?>&page=<?php echo $currentPage + 1; ?>'>Siguiente</span></a>
+                <a class="page-link" href='?category=<?php echo $categoryId; ?>&page=<?php echo $currentPage + 1; ?>'>Siguiente</span></a>
               <?php else: ?>
                 <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
               <?php endif; ?>
@@ -407,7 +355,7 @@
 
       </div>
     </div>
-    <!-- Shop Product End -->
+    <!-- Shop list product / End -->
 
   </div>
 </div>
