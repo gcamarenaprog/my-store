@@ -12,16 +12,22 @@
   
   /**
    * This class defines the global system functions.
+   *
+   * - silenceIsGolden
+   * - getRootUrl
+   * - cleanStringFromInput
+   * - showUserImage
+   * - dataValidationText
    */
   class Functions
   {
     
     /**
-     * Test function.
+     * = Test function. =
      *
      * @return void
      */
-    static function test ()
+    static function silenceIsGolden (): void
     {
       echo 'Silence is golden!';
     }
@@ -29,7 +35,34 @@
     # General Functions ------------------------------------------------------------------------------------------------
     
     /**
-     * Shows the user's image if it exists, otherwise shows a default image.
+     * = Get root URL =
+     * @return string
+     */
+    public function getRootUrl (): string
+    {
+      if (isset($_SERVER['HTTPS'])) {
+        $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+      } else {
+        $protocol = 'http';
+      }
+      return $protocol . "://" . $_SERVER['HTTP_HOST'];
+    }
+    
+    /**
+     * = Clean strings by cleaning them of whitespace, forward slashes, and special characters. =
+     *
+     * @param string $string
+     * @return string
+     */
+    static function cleanStringFromInput (string $string): string
+    {
+      $string = trim ($string); // Clean start and end string of blanks
+      $string = stripslashes ($string); // Remove slashes from a string with escaped quotes e.g. \'
+      return htmlspecialchars ($string); // Convert special characters to HTML entities
+    }
+    
+    /**
+     * = Shows the user's image if it exists, otherwise shows a default image. =
      *
      * @return void
      */
@@ -44,33 +77,16 @@
     }
     
     /**
-     * Clean strings by cleaning them of whitespace, forward slashes, and special characters.
-     *
-     * @param string $string String to clean.
-     *
-     * @return string
-     */
-    static function cleanStringFromInput (string $string): string
-    {
-      $string = trim ($string); // Clean start and end string of blanks
-      $string = stripslashes ($string); // Remove slashes from a string with escaped quotes e.g. \'
-      return htmlspecialchars ($string); // Convert special characters to HTML entities
-    }
-    
-    /**
-     * Validates whether a variable is null, empty, or has a string value.
+     * = Validates whether a variable is null, empty, or has a string value. =
      *
      * @param string $value   Value to evaluate in the function.
      * @param string $message Text string returned if null or empty.
-     *
      * @return string|null
      */
     function dataValidationText (string $value, string $message): string|null
     {
       if ($value == null) {
         return $message;
-      } elseif ($value == '1969-12-31 16:00:00') {
-        return null;
       } else {
         return $value;
       }
@@ -185,28 +201,32 @@
     # Session functions ------------------------------------------------------------------------------------------------
     
     /**
-     * This function initialize to $_SESSION variable with the user data in an
-     * associative array, the data add in the session of variable are:
+     * This function initializes the $_SESSION variable with the user's data.
      *
      * @param Array $dataUser Associative array with data user.
      *
      * @return void
      */
-    static function sessionsInitializeSessionVariable (array $dataUser): void
+    
+    /**
+     * This function initializes the $_SESSION variable with the user's data.
+     *
+     * @param array $dataUser
+     * @return void
+     */
+    static function initializeSessionVariableWithUserData (array $dataUser): void
     {
       $_SESSION['user_id'] = $dataUser['user_id'];
       $_SESSION['user_username'] = $dataUser['user_username'];
       $_SESSION['user_name'] = $dataUser['user_name'];
-      $_SESSION['user_lastname'] = $dataUser['user_last_name'];
+      $_SESSION['user_last_name'] = $dataUser['user_last_name'];
       $_SESSION['user_role'] = $dataUser['user_role'];
       $_SESSION['user_mail'] = $dataUser['user_mail'];
       $_SESSION['user_phone'] = $dataUser['user_phone'];
       $_SESSION['user_extra_information	'] = $dataUser['user_extra_information'];
-      $_SESSION['user_language'] = $dataUser['user_language'];
-      $_SESSION['user_status'] = $dataUser['user_status'];
       $_SESSION['user_image'] = $dataUser['user_image'];
       $_SESSION['user_date_last_change'] = $dataUser['user_date_last_change'];
-      $_SESSION['user_date'] = $dataUser['user_date'];
+      $_SESSION['user_date_creation'] = $dataUser['user_date_creation'];
     }
     
     /**
@@ -234,26 +254,14 @@
     }
     
     /**
-     * Get min score of all products
+     * = Gets the highest score of all products. =
      *
      * @return int
      */
-    static function getMinScore (): int
+    static function getsTheHighestScoreOfAllProducts (): int
     {
       $productObject = new ProductController();
-      $resMinLikes = $productObject->getMinScore ();
-      return $resMinLikes[0]['MIN(product_likes)'];
-    }
-    
-    /**
-     * Get max score of all products
-     *
-     * @return int
-     */
-    static function getMaxScore (): int
-    {
-      $productObject = new ProductController();
-      $resMaxLikes = $productObject->getMaxScore ();
+      $resMaxLikes = $productObject->getsTheHighestScoreOfAllProducts ();
       return $resMaxLikes[0]['MAX(product_likes)'];
     }
     
@@ -265,8 +273,8 @@
      */
     function printStarsWithScore ($productLikes): void
     {
-      $starValue = ($productLikes * 100) / $this->getMaxScore();
-      $starValue=  number_format ($starValue, 2, '.', ',');
+      $starValue = ($productLikes * 100) / $this->getsTheHighestScoreOfAllProducts ();
+      $starValue = number_format ($starValue, 2, '.', ',');
       
       if ($starValue < 20) {
         $count = 1;
