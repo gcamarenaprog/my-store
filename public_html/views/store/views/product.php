@@ -19,8 +19,7 @@
   $objectComments = new CommentController();
   $objectUser = new UserController();
   
-  # Get product id to details view it
-  if (isset($_SESSION['viewProductDetailsSessionFlag'])) {
+  if (isset($_SESSION['viewProductDetailsSessionFlag'])) { // Get the product ID to load the view
     
     # Get product id from session var
     $productId = $_SESSION['viewProductDetailsSessionFlag'];
@@ -31,24 +30,24 @@
     # Get product id from session flag var
     $productId = $_SESSION['viewProductDetailsSessionFlag'];
     
-    # Get comments
-    $resultComments = $objectComments->getAllCommentsOfProduct ($productId);
+    # Get comments of product
+    $commentsListOfTheProduct = $objectComments->getAllCommentsOfProduct ($productId);
     
     # Get total comments
     $totalCommentsOfTheProduct = $objectComments->getTotalCommentsOfProduct ($productId);
     
-    # Get score total of comments for this product
+    # Get the average review score for this product
     $countComments = 0;
-    $totalScore = 0;
-    foreach ($resultComments as $comment) {
-      $totalScore = $totalScore + $comment['comment_score'];
+    $sumOfScores = 0;
+    foreach ($commentsListOfTheProduct as $comment) {
+      $sumOfScores = $sumOfScores + $comment['comment_score'];
       $countComments++;
     }
-    $scoreAverage = $totalScore / $countComments;
+    $scoreAverage = $sumOfScores / $countComments;
     $scoreAverage = round ($scoreAverage);
     
     # Else redirect product view all screen
-  } else {
+  } else { // If the product ID is not obtained, it is redirected to the store screen.
     header ('Location: ' . 'shop');
   }
 
@@ -113,8 +112,24 @@
         <!-- Name /-->
         <h3><?php echo $productData['productName']; ?></h3>
 
-        <!-- Comments /-->
+        <!-- Views -->
         <div class="d-flex mb-1">
+          <div class="text-primary mr-2">
+            <small class="fas fa-eye"></small>
+          </div>
+          <small class="pt-1"><?php echo $productData['productViews']; ?> Visitas </small>
+        </div>
+
+        <!-- Likes -->
+        <div class="d-flex mb-1">
+          <div class="text-primary mr-2">
+            <small class="fas fa-heart"></small>
+          </div>
+          <small class="pt-1"><?php echo $productData['productLikes']; ?> Likes </small>
+        </div>
+        
+        <!-- Comments /-->
+        <div class="d-flex mb-3">
           <div class="text-primary mr-2">
             
             <?php for ($i = 1; $i <= $scoreAverage; $i++) : ?>
@@ -131,22 +146,6 @@
 
           </div>
           <small class="pt-1">(<?php echo $countComments; ?> Comentarios)</small>
-        </div>
-
-        <!-- Views -->
-        <div class="d-flex mb-1">
-          <div class="text-primary mr-2">
-            <small class="fas fa-eye"></small>
-          </div>
-          <small class="pt-1">(<?php echo $productData['productViews']; ?> Visitas) </small>
-        </div>
-
-        <!-- Likes -->
-        <div class="d-flex mb-3">
-          <div class="text-primary mr-2">
-            <small class="fas fa-heart"></small>
-          </div>
-          <small class="pt-1">(<?php echo $productData['productLikes']; ?> Likes) </small>
         </div>
 
         <!-- Description /-->
@@ -225,7 +224,7 @@
                 <h4 class="mb-4"><?php echo $totalCommentsOfTheProduct; ?>"<?php echo $productData['productName']; ?>
                   "</h4>
                 
-                <?php foreach ($resultComments as $comment): ?>
+                <?php foreach ($commentsListOfTheProduct as $comment): ?>
                   <?php
                   $username = $objectUser->getUserById ($comment['comment_user']);
                   $commentText = $comment['comment_text'];
