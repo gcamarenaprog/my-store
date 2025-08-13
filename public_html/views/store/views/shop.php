@@ -411,6 +411,9 @@
 </div>
 <!-- Shop / End -->
 
+<!-- Best seller products /-->
+<?php include 'public_html/views/store/shop/shop-best-seller-products.php'; ?>
+
 <!-- jQuery -->
 <script src='public_html/resources/admin/plugins/jquery/jquery.min.js'></script>
 
@@ -418,4 +421,4 @@
 <script src='public_html/js/js-functions.js'></script>
 
 <!-- Custom JS Code -->
-<script src='public_html/js/js-shop.js'></script>
+<script src='public_html/js/store/js-shop.js'></script>
