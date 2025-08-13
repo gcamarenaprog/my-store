@@ -325,9 +325,13 @@
 
                   <!-- Product prices -->
                   <div class="d-flex align-items-center justify-content-center mt-2">
+                    
+                    <!-- Price -->
                     <h5><?php echo number_format ($product['product_price'], 2, '.', ','); ?></h5>
+                    
+                    <!-- Discount price -->
                     <h6 class="text-muted ml-2">
-                      <del><?php echo $product['product_price'] + $product['product_price'] * 0.05; ?></del>
+                      <del><?php echo number_format ($product['product_price'] + $product['product_price'] * 0.05,  2, '.', ',') ?></del>
                     </h6>
                   </div>
 
