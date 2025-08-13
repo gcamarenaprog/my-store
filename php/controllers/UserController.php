@@ -11,7 +11,7 @@
    */
   
   # Required files
-  require_once (dirname (__DIR__, 1) . '/includes/functions.php');
+  require_once (dirname (__DIR__, 1) . '/includes/Functions.php');
   require_once (dirname (__DIR__, 1) . '/models/User.php');
   require_once (dirname (__DIR__, 1) . '/controllers/UserController.php');
   
@@ -20,7 +20,7 @@
    *
    * - getTotalUsers
    * - getUserById
-   * - verifyUserAndPassword
+   * - checkIfTheUserAndPasswordExist
    */
   class UserController
   {
@@ -53,16 +53,16 @@
     }
     
     /**
-     * = Verify if exists user and password. =
+     * = Check if the user and password exist in the database. =
      *
      * @param string $user
      * @param string $password
      *
-     * @return mixed
+     * @return array|bool
      */
-    function verifyUserAndPassword (string $user, string $password): mixed
+    function checkIfTheUserAndPasswordExist (string $user, string $password): array|bool
     {
-      return $this->model->verifyUserAndPassword ($user, $password);
+      return $this->model->checkIfTheUserAndPasswordExist ($user, $password);
     }
     
   }
