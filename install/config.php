@@ -7,6 +7,7 @@
    * File type:           Config file
    * File description:    Global system definitions, such as global variables and constants.
    * Module:              Core
+   * Revised:             13-08-2025
    * -------------------------------------------------------------------------------------------------------------------
    */
   
