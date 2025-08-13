@@ -73,7 +73,7 @@
     $data['product_category_date_last_change'] = $categoryData['product_category_date_last_change'];
     $data['product_category_date_creation'] = $categoryData['product_category_date_creation'];
     
-    $totalProducts = $objectProductCategory->getTotalProductsOfCategory ($categoryData['product_category_id']);
+    $totalProducts = $objectProductCategory->getTotalProductsOfTheCategory ($categoryData['product_category_id']);
     $data['product_category_number_of_products'] = $totalProducts;
     
     echo json_encode ($data);
@@ -148,15 +148,15 @@
    * - updateProductCategory
    * - getTotalProductCategories
    * - getTotalProductsCategoryByIdCategory
-   * - getTotalChildCategoriesByIdCategory
+   * - getTotalChildCategories
    * - getCategoriesList
    * - getCategoriesForCategoriesList
    * - getParentCategories
    * - getParentsCategoriesIds
    * - getParentsCategoriesWithSubcategories
    * - getAllSubcategories
-   * - getCategoryNameById
-   * - getCategoriesNamesByIdsWithSeparator
+   * - getCategoryName
+   * - getCategoryNamesListWithSeparator
    * - countChildCategoriesOfCategory
    * - printSubcategories
    */
@@ -249,9 +249,9 @@
      * @param $categoryId
      * @return mixed
      */
-    public function getTotalChildCategoriesByIdCategory ($categoryId): int
+    public function getTotalChildCategories ($categoryId): int
     {
-      return $this->model->getTotalChildCategoriesByIdCategory ($categoryId);
+      return $this->model->getTotalChildCategories ($categoryId);
     }
     
     /**
@@ -266,31 +266,20 @@
     }
     
     
-    /**
-     * Get total products of category Id
-     *
-     * @param $categoryID
-     * @return int
-     */
-    function getTotalProductsOfCategory ($categoryID): int
-    {
-      $isParentCategory = $this->isParentCategory ($categoryID);
-      $hasChildCategories = $this->getTotalChildCategoriesByIdCategory ($categoryID);
-      $totalProducts = 0;
-      if ($hasChildCategories == 0 && $isParentCategory == 1) {
-        $totalProducts = $this->model->getTotalProductsOfCategoryId ($categoryID);
-      } elseif ($hasChildCategories == 0 && $isParentCategory == 0) {
-        $totalProducts = $this->model->getTotalProductsOfCategoryId ($categoryID);
-      } else {
-        $productsInChildrenCategories = $this->model->getCategoryIdIfItIsChildOfTheCategoryId ($categoryID);
-        foreach ($productsInChildrenCategories as $categoryID) {
-          $productsInParentCategory = $this->model->getTotalProductsOfCategoryId ($categoryID['product_category_id']);
-          $totalProducts = $totalProducts + $productsInParentCategory;
-        }
-      }
-      return $totalProducts;
-    }
+  
     
+    
+    /**
+     * = Get category Id if is child of the category id
+     *
+     * @param $categoryId
+     * @return array
+     */
+    function getCategoryIdIfItIsChildOfTheCategoryId ($categoryId){
+      return $this->model->getCategoryIdIfItIsChildOfTheCategoryId ($categoryId);
+    }
+
+
     
     /**
      * = Is parent category. =
@@ -324,8 +313,8 @@
      */
     static function getCategoriesForCategoriesList (): void
     {
-      $categoriesObject = new ProductCategoriesController();
-      $result = $categoriesObject->getCategoriesList ();
+      $productCategoriesObject = new ProductCategoriesController();
+      $result = $productCategoriesObject->getCategoriesList ();
       
       foreach ($result as $row) {
         $data[] = array(
@@ -338,22 +327,22 @@
         );
       }
       $indexNumber = 1;
-      $categoriesArrayOrdered[] = array();
+      $orderedListOfCategories[] = array();
       
       # Sort the data for the DataTables
       foreach ($data as $index => $item) {
         
         # #. [0. COLUMN] ----------------------------------------------------------------------------------------------
-        $categoriesArrayOrdered[$index][0] = $indexNumber++;
+        $orderedListOfCategories[$index][0] = $indexNumber++;
         
         # No. [1. COLUMN] ----------------------------------------------------------------------------------------------
-        $categoriesArrayOrdered[$index][1] = $item['product_category_id'];
+        $orderedListOfCategories[$index][1] = $item['product_category_id'];
         
         # Tools [2. COLUMN] --------------------------------------------------------------------------------------------
-        $totalProducts = $categoriesObject->getTotalProductsOfCategory ($item['product_category_id']);
-        $totalChild = $categoriesObject->getTotalChildCategoriesByIdCategory ($item['product_category_id']);
+        $totalProducts = $productCategoriesObject->getTotalProductsOfTheCategory ($item['product_category_id']);
+        $totalChild = $productCategoriesObject->getTotalChildCategories ($item['product_category_id']);
         
-        $categoriesArrayOrdered[$index][2] = '
+        $orderedListOfCategories[$index][2] = '
           <div class="btn-group" style="padding: 10px;">
           
             <!-- View button /-->
@@ -386,63 +375,63 @@
         
         # Name [3. COLUMN] ---------------------------------------------------------------------------------------------
         if (!$item['product_category_name']) {
-          $categoriesArrayOrdered[$index][3] = 'No hay datos.';
+          $orderedListOfCategories[$index][3] = 'No hay datos.';
         } else {
-          $categoriesArrayOrdered[$index][3] = $item['product_category_name'];
+          $orderedListOfCategories[$index][3] = $item['product_category_name'];
         }
         
         # Description [4. COLUMN] --------------------------------------------------------------------------------------
         if (!$item['product_category_description']) {
-          $categoriesArrayOrdered[$index][4] = 'No hay datos.';
+          $orderedListOfCategories[$index][4] = 'No hay datos.';
         } else {
-          $categoriesArrayOrdered[$index][4] = $item['product_category_description'];
+          $orderedListOfCategories[$index][4] = $item['product_category_description'];
         }
         # Total products without subcategories [5. COLUMN] --------------------------------------------------------------------------------------
-        $totalProducts = $categoriesObject->getsTotalProductsWithoutChildCategoriesByCategoryId ($item['product_category_id']);
-        $categoriesArrayOrdered[$index][5] = $totalProducts;
+        $totalProducts = $productCategoriesObject->getsTotalProductsWithoutChildCategoriesByCategoryId ($item['product_category_id']);
+        $orderedListOfCategories[$index][5] = $totalProducts;
         
         # Total products with subcategories [6. COLUMN] ---------------------------------------------------------------------------------------------
-        $totalProducts = $categoriesObject->getTotalProductsOfCategory ($item['product_category_id']);
-        $categoriesArrayOrdered[$index][6] = $totalProducts;
+        $totalProducts = $productCategoriesObject->getTotalProductsOfTheCategory ($item['product_category_id']);
+        $orderedListOfCategories[$index][6] = $totalProducts;
         
         # Parent category [7. COLUMN] ---------------------------------------------------------------------------------------------
-        $parentCategoryName = $categoriesObject->getCategoryNameById ($item['product_category_parent']);
+        $parentCategoryName = $productCategoriesObject->getCategoryName ($item['product_category_parent']);
         if ($parentCategoryName) {
-          $categoriesArrayOrdered[$index][7] = $parentCategoryName;
+          $orderedListOfCategories[$index][7] = $parentCategoryName;
         } else {
-          $categoriesArrayOrdered[$index][7] = 'No tiene.';
+          $orderedListOfCategories[$index][7] = 'No tiene.';
         }
         
         # Child categories [8. COLUMN] ---------------------------------------------------------------------------------------------
-        $childCategories = $categoriesObject->getChildCategories ($item['product_category_id']);
-        $categoriesNames = [];
+        $childCategories = $productCategoriesObject->getChildCategories ($item['product_category_id']);
+        $categoryNames = [];
         foreach ($childCategories as $item) {
-          $categoriesNames[] = $item['product_category_name'];
+          $categoryNames[] = $item['product_category_name'];
         }
-        $categoriesNames = implode (', ', $categoriesNames);
+        $categoryNames = implode (', ', $categoryNames);
         if ($childCategories) {
-          $categoriesArrayOrdered[$index][8] = $categoriesNames;
+          $orderedListOfCategories[$index][8] = $categoryNames;
         } else {
-          $categoriesArrayOrdered[$index][8] = 'No tiene.';
+          $orderedListOfCategories[$index][8] = 'No tiene.';
         }
         
         # Date last change [9. COLUMN] ---------------------------------------------------------------------------------------------
         if (!$item['product_category_date_last_change']) {
-          $categoriesArrayOrdered[$index][9] = 'No hay datos.';
+          $orderedListOfCategories[$index][9] = 'No hay datos.';
         } else {
-          $categoriesArrayOrdered[$index][9] = $item['product_category_date_last_change'];
+          $orderedListOfCategories[$index][9] = $item['product_category_date_last_change'];
         }
         
         # Date creation [10. COLUMN] ---------------------------------------------------------------------------------------------
         if (!$item['product_category_date_creation']) {
-          $categoriesArrayOrdered[$index][10] = 'No hay datos.';
+          $orderedListOfCategories[$index][10] = 'No hay datos.';
         } else {
-          $categoriesArrayOrdered[$index][10] = $item['product_category_date_creation'];
+          $orderedListOfCategories[$index][10] = $item['product_category_date_creation'];
         }
       }
       
       # An array is created with the data ordered and prepared for the table
-      $new_array = array("data" => $categoriesArrayOrdered);
+      $new_array = array("data" => $orderedListOfCategories);
       
       # Print data Json
       echo json_encode ($new_array);
@@ -553,50 +542,49 @@
     
     /** Other methods ----------------------------------------------------------------------------------------------- */
     /**
-     * = Get category name by id. =
+     * = Get category name. =
      *
      * @param int $categoryId Category id
      * @return string
      */
-    public function getCategoryNameById (int $categoryId): string
+    public function getCategoryName (int $categoryId): string
     {
-      return $this->model->getCategoryNameById ($categoryId);
+      return $this->model->getCategoryName ($categoryId);
     }
     
     /**
-     * = Get categories names by ids with separator. =
+     * = Get a category names list with separator. =
      *
      * @param string $categoriesIds String with categories id numbers.
      * @param string $separator     Character to separate the list of categories.
      * @return string
      */
-    public function getCategoriesNamesByIdsWithSeparator (string $categoriesIds, string $separator = ','): string
+    public function getCategoryNamesListWithSeparator (string $categoriesIds, string $separator = ','): string
     {
-      
       if ($categoriesIds == 'no-data') {
-        $categoriesNames = 'No hay datos.';
+        $categoryNames = 'No hay datos.';
       } else {
         $categoriesOfProduct = explode (",", $categoriesIds);
-        $categoriesNames = '';
+        $categoryNames = '';
         $categoriesArraySize = count ($categoriesOfProduct);
         if ($categoriesArraySize != 1) {
           for ($index1 = 0; $index1 < $categoriesArraySize; $index1++) {
             $productId = $categoriesOfProduct[$index1];
             $productId = intval ($productId);
-            $categoryName = $this->getCategoryNameById ($productId);
+            $categoryName = $this->getCategoryName ($productId);
             if ($index1 == $categoriesArraySize - 1) {
-              $categoriesNames .= $categoryName;
+              $categoryNames .= $categoryName;
             } else {
-              $categoriesNames .= $categoryName . ' ' . $separator . ' ';
+              $categoryNames .= $categoryName . ' ' . $separator . ' ';
             }
           }
         } else {
           $productId = intval ($categoriesOfProduct[0]);
-          $categoryName = $this->getCategoryNameById ($productId);
-          $categoriesNames = $categoryName;
+          $categoryName = $this->getCategoryName ($productId);
+          $categoryNames = $categoryName;
         }
       }
-      return $categoriesNames;
+      return $categoryNames;
     }
     
     /**
