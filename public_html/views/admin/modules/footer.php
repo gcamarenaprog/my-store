@@ -7,14 +7,16 @@
    * File type:           Template file
    * File description:    Contains the template footer module.
    * Module:              Template
+   * Revised:             13-08-2025
    * -------------------------------------------------------------------------------------------------------------------
    */
   
 ?>
-<!-- /.content-wrapper -->
+
+<!-- Footer -->
 <footer class="main-footer">
   <strong>Copyright &copy; 2025.</strong>
-  All rights reserved.
+  Todos los derechos reservados.
   <div class="float-right d-none d-sm-inline-block">
     <b>Version</b> 1.0.0  </div>
 </footer>
