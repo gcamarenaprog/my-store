@@ -41,7 +41,7 @@
       <!-- Title -->
       <div class="col-sm-6">
         <h1>
-          Bienvenido <b> <?php echo $_SESSION['user_name'] . ' ' . $_SESSION['user_lastname']; ?></b>
+          Bienvenido <b> <?php echo $_SESSION['user_name'] . ' ' . $_SESSION['user_last_name']; ?></b>
         </h1>
       </div>
 
