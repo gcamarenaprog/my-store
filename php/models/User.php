@@ -15,7 +15,7 @@
   /**
    * This class defines the User model class
    *
-   * - verifyUserAndPassword
+   * - checkIfTheUserAndPasswordExist
    */
   class User extends Generic
   {
@@ -31,16 +31,16 @@
     /**
      * = Verify if exists user and password. =
      *
-     * @param string $user     <p>String with the username</p>
-     * @param string $password <p>String with the password</p>
-     * @return mixed
+     * @param string $user
+     * @param string $password
+     * @return array|bool
      */
-    public function verifyUserAndPassword  (string $user, string $password): mixed
+    public function checkIfTheUserAndPasswordExist  (string $user, string $password): array | bool
     {
       $sql = "SELECT * FROM " . $this->table . " WHERE user_username = '$user' AND user_password = '$password' ";
       $sth = $this->connectionPDO->prepare ($sql);
       $sth->execute ();
-      return $sth->fetch (PDO::FETCH_ASSOC);
+      return $sth->fetch ();
     }
     
   }
