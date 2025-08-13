@@ -11,7 +11,7 @@
    */
   
   # Required files
-  require_once (dirname (__DIR__, 1) . '/includes/functions.php');
+  require_once (dirname (__DIR__, 1) . '/includes/Functions.php');
   require_once (dirname (__DIR__, 1) . '/models/Product.php');
   require_once (dirname (__DIR__, 1) . '/controllers/ProductController.php');
   require_once (dirname (__DIR__, 1) . '/controllers/ProductCategoriesController.php');
@@ -24,36 +24,36 @@
   # = DELETE product via Ajax for DataTable =
   if (isset($_POST['product_delete'])) {
     
-    $productObject = new ProductController();
-    $productData = array();
+    $productControllerObject = new ProductController();
+    $product = array();
     
     $productID = $_POST['product_id'];
     
-    $productData['productId'] = $_POST['product_id'];
-    $productData['productName'] = $_POST['product_name'];
+    $product['productId'] = $_POST['product_id'];
+    $product['productName'] = $_POST['product_name'];
     
     # Content-Type: application/json
     header ('Content-Type: application/json');
     
     # Delete product by product id
-    $queryResult = $productObject->deleteProduct ($productID);
+    $wasDeleted = $productControllerObject->deleteProduct ($productID);
     
-    if ($queryResult) {
-      $productData['title'] = '¡Proceso correcto!';
-      $productData['message'] = 'El proceso se completó de manera exitosa.';
-      $productData['confirmButtonText'] = 'Aceptar';
-      $productData['icon'] = 'success';
-      $productData['confirmButtonColor'] = '#3085d6';
+    if ($wasDeleted) {
+      $product['title'] = '¡Proceso correcto!';
+      $product['message'] = 'El proceso se completó de manera exitosa.';
+      $product['confirmButtonText'] = 'Aceptar';
+      $product['icon'] = 'success';
+      $product['confirmButtonColor'] = '#3085d6';
       # JSON encode data
-      echo json_encode ($productData);
+      echo json_encode ($product);
     } else {
-      $productData['title'] = '¡Error en el proceso!';
-      $productData['message'] = 'El proceso no se completó correctamente.';
-      $productData['confirmButtonText'] = 'Aceptar';
-      $productData['icon'] = 'error';
-      $productData['confirmButtonColor'] = '#3085d6';
+      $product['title'] = '¡Error en el proceso!';
+      $product['message'] = 'El proceso no se completó correctamente.';
+      $product['confirmButtonText'] = 'Aceptar';
+      $product['icon'] = 'error';
+      $product['confirmButtonColor'] = '#3085d6';
       # JSON encode data
-      echo json_encode ($productData);
+      echo json_encode ($product);
     }
     
     
@@ -382,7 +382,7 @@
    * This class defines the product controller class.
    *
    * - getTotalProducts
-   * - getTotalProductsOfCategory
+   * - getTotalProductsOfTheCategory
    * - getAllProducts
    * - getProduct
    * - deleteProduct
@@ -449,12 +449,36 @@
     /**
      * = Get cheaper products list =
      *
-     * @param $categoryID
+     * @param $categoryId
      * @return array|bool
      */
-    function getCheaperProducts ($categoryID): array|bool
+    function getCheapestProductOfTheCategory ($categoryId): array|bool
     {
-      return $this->model->getCheaperProducts ($categoryID);
+      return $this->model->getCheapestProductInTheCategory ($categoryId);
+    }
+    
+    /**
+     * = Get cheaper products in a category =
+     *
+     * @param $categoryId
+     * @param $numberOfProducts
+     * @return array|bool
+     */
+    function getCheapestProductOfTheCategory ($categoryId, $numberOfProducts): array|bool
+    {
+      return $this->model->getCheaperProductsInCategory ($categoryId, $numberOfProducts);
+    }
+    
+    /**
+     * = Get best scored products in a category =
+     *
+     * @param $categoryId
+     * @param $numberOfProducts
+     * @return array|bool
+     */
+    function getBestScoredProductsInCategory ($categoryId, $numberOfProducts): array|bool
+    {
+      return $this->model->getBestScoredProductsInCategory ($categoryId, $numberOfProducts);
     }
     
     /**
@@ -524,7 +548,7 @@
       $productData['productPrice'] = number_format ($productData['product_price'], 2, '.', ',');
       $productData['productPriceClean'] = $objectFunctions->dataValidationText ($productData['product_price'], 'No hay datos');
       $productData['productQuantity'] = number_format ($productData['product_quantity'], 2, '.', ',');
-      $productData['productCategories'] = $objectCategoriesProduct->getCategoriesNamesByIdsWithSeparator ($productData['product_categories'], '/');
+      $productData['productCategories'] = $objectCategoriesProduct->getCategoryNamesListWithSeparator ($productData['product_categories'], '/');
       $productData['productBrand'] = $objectFunctions->dataValidationText ($productData['product_brand'], 'No hay datos');
       $productData['productModel'] = $objectFunctions->dataValidationText ($productData['product_model'], 'No hay datos');
       $productData['productViews'] = $objectFunctions->dataValidationText ($productData['product_views'], 'No hay datos');
@@ -659,7 +683,7 @@
         }
         
         # Categories [7. COLUMN] -----------------------------------------------------------------------------------------
-        $categoriesNames = $categoriesObject->getCategoriesNamesByIdsWithSeparator ($item['product_categories'], ',');
+        $categoriesNames = $categoriesObject->getCategoryNamesListWithSeparator ($item['product_categories'], ',');
         $productsArrayOrdered[$index][7] = $categoriesNames;
         
         # Brand [8. COLUMN] --------------------------------------------------------------------------------------------
@@ -721,23 +745,23 @@
     }
     
     /**
-     * = Get max score of the all products. =
+     * = Gets the highest score of all products. =
      *
      * @return array|false
      */
-    function getMaxScore (): false|array
+    function getsTheHighestScoreOfAllProducts (): false|array
     {
-      return $this->model->getMaxScore ();
+      return $this->model->getsTheHighestScoreOfAllProducts ();
     }
     
     /**
-     * = Get min score of the all products. =
+     * = Gets the minimum score of all products. =
      *
      * @return array|false
      */
-    function getMinScore (): false|array
+    function getsTheMinimumScoreOfAllProducts (): false|array
     {
-      return $this->model->getMinScore ();
+      return $this->model->getsTheMinimumScoreOfAllProducts ();
     }
     
     /**
@@ -749,7 +773,7 @@
      * @param int $categoryId
      * @return array|false
      */
-    public function calculateTheDisplacementAndGetProducts (int $displacement, int $resultsPerPage, int $sortingValue, int $categoryId): false|array
+    public function getTheListOfProductsAndCalculateTheDisplacement (int $displacement, int $resultsPerPage, int $sortingValue, int $categoryId): false|array
     {
       require_once (dirname (__DIR__, 1) . '/controllers/ProductCategoriesController.php');
 
@@ -760,7 +784,7 @@
       }
       
       $isParentCategory = $productCategoriesObject->isParentCategory ($categoryId);
-      $hasChildCategories = $productCategoriesObject->getTotalChildCategoriesByIdCategory ($categoryId);
+      $hasChildCategories = $productCategoriesObject->getTotalChildCategories ($categoryId);
 
       if (($hasChildCategories == 0 && $isParentCategory == 1) || ($hasChildCategories == 0 && $isParentCategory == 0)) {
         return $this->model->calculateTheDisplacementAndGetProductsOfCategory ($displacement, $resultsPerPage, $sortingValue, $categoryId);
@@ -774,5 +798,89 @@
         
         return $this->model->calculateTheDisplacementAndGetProductsOfCategory ($displacement, $resultsPerPage, $sortingValue, $childCategoriesIds, '1');
       }
+    }
+    
+    /**
+     * @param $categoryID
+     * @return int
+     */
+    function getTotalProductsOfCategoryId($categoryID): int
+    {
+      return $this->model->getTotalProductsOfCategoryId($categoryID);
+    }
+    
+    
+    /**
+     * = Get total products of the category. =
+     *
+     * @param $categoryID
+     * @return int
+     */
+    function getTotalProductsOfTheCategory ($categoryID): int
+    {
+      
+      require_once (dirname (__DIR__, 1) . '/controllers/ProductCategoriesController.php');
+      $productCategoriesController = new ProductCategoriesController();
+      
+      $isParentCategory = $productCategoriesController->isParentCategory ($categoryID);
+      $hasChildCategories = $productCategoriesController->getTotalChildCategories ($categoryID);
+      $totalProducts = 0;
+      if ($hasChildCategories == 0 && $isParentCategory == 1) {
+        $totalProducts = $this->getTotalProductsOfCategoryId ($categoryID);
+      } elseif ($hasChildCategories == 0 && $isParentCategory == 0) {
+        $totalProducts = $this->getTotalProductsOfCategoryId ($categoryID);
+      } else {
+        $productsInChildrenCategories = $productCategoriesController->getCategoryIdIfItIsChildOfTheCategoryId ($categoryID);
+        foreach ($productsInChildrenCategories as $categoryID) {
+          $productsInParentCategory = $this->getTotalProductsOfCategoryId ($categoryID['product_category_id']);
+          $totalProducts = $totalProducts + $productsInParentCategory;
+        }
+      }
+      return $totalProducts;
+    }
+    
+    
+    /**
+     * = Get total products of the category between two ranges price =
+     *
+     * @param $categoryId
+     * @param $rangePriceOne
+     * @param $rangePriceTwo
+     * @return int
+     */
+    function getTotalProductsOfTheCategoryBetweenRangesPrice ($categoryId, $rangePriceOne, $rangePriceTwo): int
+    {
+      require_once (dirname (__DIR__, 1) . '/controllers/ProductCategoriesController.php');
+      $productCategoriesController = new ProductCategoriesController();
+      
+      $isParentCategory = $productCategoriesController->isParentCategory ($categoryId);
+      $hasChildCategories = $productCategoriesController->getTotalChildCategories ($categoryId);
+      $totalProducts = 0;
+      if ($hasChildCategories == 0 && $isParentCategory == 1) {
+        $totalProducts = $this->getCountTotalProductsOfTheCategoryBetweenRangesPrice ($categoryId, $rangePriceOne, $rangePriceTwo);
+      } elseif ($hasChildCategories == 0 && $isParentCategory == 0) {
+        $totalProducts = $this->getCountTotalProductsOfTheCategoryBetweenRangesPrice ($categoryId, $rangePriceOne, $rangePriceTwo);
+      } else {
+        $productsInChildrenCategories = $productCategoriesController->getCategoryIdIfItIsChildOfTheCategoryId ($categoryId);
+        foreach ($productsInChildrenCategories as $categoryId) {
+          $productsInParentCategory = $this->getCountTotalProductsOfTheCategoryBetweenRangesPrice ($categoryId['product_category_id'], $rangePriceOne, $rangePriceTwo);
+          $totalProducts = $totalProducts + $productsInParentCategory;
+        }
+      }
+      return $totalProducts;
+    }
+    
+    
+    /**
+     * = Get count total products of the category between two ranges price =
+     *
+     * @param $categoryId
+     * @param $rangePriceOne
+     * @param $rangePriceTwo
+     * @return int
+     */
+    function getCountTotalProductsOfTheCategoryBetweenRangesPrice ($categoryId, $rangePriceOne, $rangePriceTwo): int
+    {
+      return $this->model->getCountTotalProductsOfTheCategoryBetweenRangesPrice($categoryId, $rangePriceOne, $rangePriceTwo);
     }
   }
