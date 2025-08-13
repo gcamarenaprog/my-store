@@ -446,19 +446,10 @@
       return $this->model->getAll ();
     }
     
-    /**
-     * = Get cheaper products list =
-     *
-     * @param $categoryId
-     * @return array|bool
-     */
-    function getCheapestProductOfTheCategory ($categoryId): array|bool
-    {
-      return $this->model->getCheapestProductInTheCategory ($categoryId);
-    }
+
     
     /**
-     * = Get cheaper products in a category =
+     * = Get a cheaper products list in a category =
      *
      * @param $categoryId
      * @param $numberOfProducts
@@ -466,7 +457,7 @@
      */
     function getCheapestProductOfTheCategory ($categoryId, $numberOfProducts): array|bool
     {
-      return $this->model->getCheaperProductsInCategory ($categoryId, $numberOfProducts);
+      return $this->model->getCheapestProductOfTheCategory ($categoryId, $numberOfProducts);
     }
     
     /**

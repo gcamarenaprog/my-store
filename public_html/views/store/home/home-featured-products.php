@@ -24,12 +24,12 @@
   
   # Variables declaration and initialization.
   $functionObject = new Functions();
-  $categoriesObject = new ProductCategoriesController();
-  $productObject = new ProductController();
+  $productCategoriesControllerObject = new ProductCategoriesController();
+  $productControllerObject = new ProductController();
   
   # Get parent categories.
   $arrayParentCategoriesIds = [];
-  $parentCategoriesIds = $categoriesObject->getParentsCategoriesIds (); // All parents category IDs are obtained.
+  $parentCategoriesIds = $productCategoriesControllerObject->getParentsCategoriesIds (); // All parents category IDs are obtained.
   
   # Create parents categories ids array
   foreach ($parentCategoriesIds as $item) {
@@ -59,7 +59,7 @@
       
       <?php
       # The cheapest product is selected from each selected category.
-      $productList = $productObject->getCheapestProductOfTheCategory ($categoryId); ?>
+      $productList = $productControllerObject->getCheapestProductOfTheCategory ($categoryId, '12'); ?>
       
       <?php if ($productList): // There are products. ?>
         

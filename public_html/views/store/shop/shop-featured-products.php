@@ -22,7 +22,7 @@
   $numberOfCards = 6;
   
   # Get a list of cheaper products.
-  $cheaperProductList = $productControllerObject->getCheaperProductsInCategory ($categoryId, $numberOfCards);
+  $cheaperProductList = $productControllerObject->getCheapestProductOfTheCategory ($categoryId, $numberOfCards);
 
 ?>
 

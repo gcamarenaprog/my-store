@@ -44,7 +44,7 @@
      * @param $numberOfProducts
      * @return array|bool
      */
-    public function getCheaperProductsInCategory ($categoryId, $numberOfProducts): array|bool
+    public function getCheapestProductOfTheCategory ($categoryId, $numberOfProducts): array|bool
     {
       if($categoryId == 0){
         $sql = " SELECT * FROM {$this->table} ORDER BY product_price DESC LIMIT $numberOfProducts ";
