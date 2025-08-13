@@ -12,26 +12,32 @@
 
 ?>
 
+  <!-- Breadcrumbs /-->
+<?php include 'public_html/views/store/home/home-breadcrumbs.php'; ?>
+
   <!-- Carousel /-->
-<?php include 'public_html/views/store/modules/carousel.php'; ?>
+<?php include 'public_html/views/store/home/home-carousel.php'; ?>
 
   <!-- Most recent products /-->
-<?php include 'public_html/views/store/modules/most-recent-products.php'; ?>
+<?php include 'public_html/views/store/home/home-most-recent-products.php'; ?>
 
   <!-- Featured products /-->
-<?php include 'public_html/views/store/modules/characteristics.php'; ?>
+<?php include 'public_html/views/store/home/home-characteristics.php'; ?>
 
   <!-- Categories /-->
-<?php include 'public_html/views/store/modules/categories.php'; ?>
+<?php include 'public_html/views/store/home/home-categories.php'; ?>
 
   <!-- Products /-->
-<?php include 'public_html/views/store/modules/featured-products.php'; ?>
+<?php include 'public_html/views/store/home/home-featured-products.php'; ?>
 
   <!-- Offer banners /-->
-<?php include 'public_html/views/store/modules/offer.php'; ?>
+<?php include 'public_html/views/store/home/home-offer.php'; ?>
 
   <!-- Best seller products /-->
-<?php include 'public_html/views/store/modules/best-seller-products.php'; ?>
+<?php include 'public_html/views/store/home/home-best-seller-products.php'; ?>
 
   <!-- Vendor /-->
-<?php include 'public_html/views/store/modules/vendor.php'; ?>
+<?php include 'public_html/views/store/home/home-vendor.php'; ?>
+
+<!-- Custom JS Code -->
+<script src='public_html/js/store/js-home.js'></script>
