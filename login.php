@@ -13,9 +13,7 @@
   
   # Required files and libraries
   require_once (__DIR__ . '/install/config.php');
-  require_once (__DIR__ . '/router.php');
-  require_once (__DIR__ . '/php/includes/functions.php');
-
+ 
 ?>
 
 <html lang='en'>
@@ -85,7 +83,7 @@
           <?php endif; ?>
 
           <!-- Success message /-->
-          <?php if (isset($_GET['ok'])) :; ?>
+          <?php if (isset($_GET['success'])) :; ?>
 
             <!-- If you log out successfully, print the success message. /-->
             <p class='text-blue'>Has cerrado sesión correctamente.</p>
