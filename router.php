@@ -8,7 +8,6 @@
    * File description:    Intermediary between the routes and the controller, extracts the parameters from the URL and
    *                      goes to call the controller and its corresponding view if it exists.
    * Module:              Core
-   * Revised:             13-08-2025
    * -------------------------------------------------------------------------------------------------------------------
    */
   
@@ -16,8 +15,8 @@
    * This class is intermediary between the routes and the controller, extracts the parameters from the URL and
    * goes to call the controller and its corresponding view if it exists.
    *
-   * - extractViewName
-   * - matchRoute
+   * - extractViewName ()
+   * - matchRoute ()
    */
   class Router
   {
@@ -28,11 +27,14 @@
      * Constructor of the Router class that executes the matchRouteAdministration or matchRouteCatalog view with the
      * template name as a parameter
      *
-     * @param $templateName String Selected template name: store or admin.
+     * @param $templateName String Selected template name.
      */
     public function __construct (string $templateName)
     {
+      # Extract view name from URL
       $this->extractViewName ();
+      
+      # Select view for routes
       $this->matchRoute ($templateName);
     }
     
@@ -45,15 +47,19 @@
     {
       # Separates the words corresponding to the name of the controller and the view into an array
       $url = explode ('/', URL);
-      
-      # Check if the URL contains the word 'page' or 'category' used to the shop section
       $jsonURL = json_encode ($url);
-      if (str_contains ($jsonURL, 'page') || str_contains ($jsonURL, 'category')) {
+      
+      # Check if it contains 'page' or 'category' for store pagination
+      $pageString = str_contains ($jsonURL, 'page') ? 1 : 0;
+      $categoryString = str_contains ($jsonURL, 'category') ? 1 : 0;
+      
+      if ($pageString || $categoryString) {
         $this->view = 'shop';
       } else {
         # If the view does not exist, it defaults to the 'Main' controller
-        $this->view = !empty($url[0]) ? $url[0] : 'admin';
+        $this->view = !empty($url[0]) ? $url[0] : 'store';
       }
+      
     }
     
     /**
@@ -65,12 +71,18 @@
      */
     public function matchRoute ($templateName): void
     {
-      # Separates the words corresponding to the name of the controller router and the view into an array
+      require_once (__DIR__ . '/php/includes/functions.php');
+      $functionsObject = new Functions();
+      
+      # Separates the words corresponding to the name of the controller and the view into an array
       $url = explode ('/', URL);
+      
+      # Get root URL
+      $rootUrl = $functionsObject->getRootUrl ();
       
       # Redirect to root if two or more parameters exist in the URL
       if (count ($url) > 1) {
-        header ('Location: /');
+        header ("Location: $rootUrl/store");
         exit();
       }
       
