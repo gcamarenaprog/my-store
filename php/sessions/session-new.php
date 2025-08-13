@@ -13,7 +13,7 @@
    */
   
   # Files required
-  require_once (dirname (__DIR__, 1) . '/includes/functions.php');
+  require_once (dirname (__DIR__, 1) . '/includes/Functions.php');
   require_once (dirname (__DIR__, 1) . '/controllers/UserController.php');
   
   # Declaration and initialization of variables

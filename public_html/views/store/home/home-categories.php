@@ -11,7 +11,7 @@
    */
   
   # Required files
-  require_once (dirname (__DIR__, 4) . '/php/includes/functions.php');
+  require_once (dirname (__DIR__, 4) . '/php/includes/Functions.php');
   require_once (dirname (__DIR__, 4) . '/php/controllers/ProductController.php');
   
   # Variables declaration and initialization
@@ -34,7 +34,7 @@
     
     <?php foreach ($categoriesList as $category): ?>
       
-      <?php $totalProductsOfCategory = $categoriesObject->getTotalProductsOfCategory ($category['product_category_id']); ?>
+      <?php $totalProductsOfCategory = $categoriesObject->getTotalProductsOfTheCategory ($category['product_category_id']); ?>
 
       <!-- Category card / Start -->
       <div class="col-lg-3 col-md-4 col-sm-6 pb-1">

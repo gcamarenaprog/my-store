@@ -12,7 +12,7 @@
    */
   
   # Required files
-  require_once (dirname (__DIR__, 4) . '/php/includes/functions.php');
+  require_once (dirname (__DIR__, 4) . '/php/includes/Functions.php');
   require_once (dirname (__DIR__, 4) . '/php/controllers/ProductController.php');
   require_once (dirname (__DIR__, 4) . '/php/controllers/ProductCategoriesController.php');
   

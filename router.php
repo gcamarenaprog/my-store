@@ -72,7 +72,7 @@
      */
     public function matchRoute ($templateName): void
     {
-      require_once (__DIR__ . '/php/includes/functions.php');
+      require_once (__DIR__ . '/php/includes/Functions.php');
       $functionsObject = new Functions();
       
       # Separates the words corresponding to the name of the controller and the view into an array

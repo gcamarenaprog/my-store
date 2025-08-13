@@ -14,7 +14,7 @@
   # Files are required from the current directory
   require_once (__DIR__ . '/install/config.php');
   require_once (__DIR__ . '/router.php');
-  require_once (__DIR__ . '/php/includes/functions.php');
+  require_once (__DIR__ . '/php/includes/Functions.php');
   
   session_start ();
   
