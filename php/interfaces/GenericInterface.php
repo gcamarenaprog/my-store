@@ -7,6 +7,7 @@
    * File type:           Interface file
    * File description:    Generic interface
    * Module:              Interfaces
+   * Revised:             13-08-2025
    * -------------------------------------------------------------------------------------------------------------------
    */
   
@@ -43,7 +44,6 @@
      * Get record by id.
      *
      * @param string $id User id number.
-     *
      * @return array|bool
      */
     public function getById (string $id): array|bool;
@@ -52,7 +52,6 @@
      * Generic method that deletes a record that matches the id passed as a parameter.
      *
      * @param string $id User id number.
-     *
      * @return int
      */
     public function deleteById (string $id): int;
@@ -62,7 +61,6 @@
      *
      * @param string $id   User id number.
      * @param string $data Data to update on record.
-     *
      * @return int
      */
     public function updateById (string $id, string $data): int;
@@ -72,7 +70,6 @@
      *
      * @param string $dataColumns Column name array.
      * @param string $data        Data to insert as a new record.
-     *
      * @return int
      */
     public function insert (string $dataColumns, string $data): int;
