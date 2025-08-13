@@ -5,8 +5,8 @@
    * Project description: Selection process skills assessment.
    * Version:             1.0.0
    * File type:           Template file
-   * File description:    Contains the store's featured products module, as a criterion, products with the lowest
-   *                      prices are selected.
+   * File description:    Contains the shop bestseller products module, as a criterion, products with the best scored
+   *                      are selected.
    * Module:              Template Store
    * Revised:             13-08-2025
    * -------------------------------------------------------------------------------------------------------------------
@@ -21,27 +21,30 @@
   $counterOfCards = 0;
   $numberOfCards = 6;
   
-  # Get a list of cheaper products.
-  $cheaperProductList = $productControllerObject->getCheaperProductsInCategory ($categoryId, $numberOfCards);
+  # Get a list of best-selling products.
+  $bestScoredProductsList = $productControllerObject->getBestScoredProductsInCategory ($categoryId, $numberOfCards);
 
 ?>
 
-<!-- Featured products / Start -->
+<!-- Best seller products / Start -->
 <div class="container-fluid">
   <div class="row px-xl-5">
 
     <!-- Title /-->
     <div class="col-lg-12 col-md-12 col-sm-12 pb-1">
-      <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Productos destacados</span>
+      <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Productos más vendidos</span>
       </h5>
     </div>
     
-    <?php if ($cheaperProductList): // There are products.?>
+    <?php
+    
+    ?>
+    
+    <?php if ($bestScoredProductsList): // There are products.?>
       
-      <?php foreach ($cheaperProductList as $product): ?>
+      <?php foreach ($bestScoredProductsList as $product): ?>
         
         <?php
-        
         # Only print the number selected of the cards
         if ($counterOfCards >= $numberOfCards) {
           break;
