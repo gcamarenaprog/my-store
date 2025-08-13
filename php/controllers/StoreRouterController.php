@@ -5,29 +5,27 @@
    * Project description: Selection process skills assessment.
    * Version:             1.0.0
    * File type:           Controller file.
-   * File description:    Main controller which calls its methods through the URL which is divided
-   *                      in two parameters: For example: https://localhost/controller/method
+   * File description:    Route controller for the store template, which invokes the select view method. This method
+   *                      takes the URL, splits it, and takes the first parameter to execute the view based on its name.
+   *                      For example: https://localhost/view
    * Module:              Controllers.
+   * Revised:             13-08-2025
    * -------------------------------------------------------------------------------------------------------------------
    */
   
   /**
    * This class defines the store controller class.
-   * Its methods are:
-   *
-   * - selectMethod
-   * - home
    */
   class StoreRouterController
   {
     
     /**
-     * Checks if the method being called exists, if not use the default method
+     * Selects the view based on the view name passed as a parameter.
      *
-     * @param $nameOfMethod string <p>Name of method to execute</p>
+     * @param $nameOfMethod string
      * @return void
      */
-    public function selectMethod (string $nameOfMethod): void
+    public function selectView (string $nameOfMethod): void
     {
       
       switch ($nameOfMethod) {
@@ -64,6 +62,16 @@
     }
     
     /**
+     * Load the shop view.
+     *
+     * @return void
+     */
+    public function shop (): void
+    {
+      include 'public_html/views/store/views/shop.php';
+    }
+    
+    /**
      * Load the contact view.
      *
      * @return void
@@ -74,18 +82,7 @@
     }
     
     /**
-     * Load the shop view.
-     *
-     * @return void
-     */
-    public function shop (): void
-    {
-      include 'public_html/views/store/views/shop.php';
-    }
-    
-    
-    /**
-     * Load the product view.
+     * Load the product details view.
      *
      * @return void
      */
