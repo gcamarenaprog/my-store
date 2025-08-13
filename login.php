@@ -86,7 +86,7 @@
           <?php if (isset($_GET['success'])) :; ?>
 
             <!-- If you log out successfully, print the success message. /-->
-            <p class='text-blue'>Has cerrado sesión correctamente.</p>
+            <p class='text-blue text-center'>Has cerrado sesión correctamente.</p>
           
           <?php endif; ?>
 
