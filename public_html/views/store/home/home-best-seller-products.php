@@ -12,7 +12,7 @@
    */
   
   # Required files
-  require_once (dirname (__DIR__, 4) . '/php/includes/functions.php');
+  require_once (dirname (__DIR__, 4) . '/php/includes/Functions.php');
   require_once (dirname (__DIR__, 4) . '/php/controllers/ProductController.php');
   require_once (dirname (__DIR__, 4) . '/php/controllers/ProductCategoriesController.php');
   
@@ -33,6 +33,8 @@
   <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Productos más vendidos</span>
   </h2>
   <div class="row px-xl-5">
+    
+    <?php if ($bestScoredProductsList): // There are products.?>
     
     <?php foreach ($bestScoredProductsList as $product): ?>
       
@@ -88,6 +90,14 @@
       
       <?php $counterOfCards++; ?>
     <?php endforeach; ?>
+    
+    <?php else: // No products. ?>
+      <div class="col-lg-12 h-auto  mb-3">
+        <div class=" bg-light p-30">
+          <h3 class="text-center">No hay resultados</h3>
+        </div>
+      </div>
+    <?php endif; ?>
 
   </div>
 </div>
