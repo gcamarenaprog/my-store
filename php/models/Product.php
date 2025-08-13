@@ -15,10 +15,10 @@
   /**
    * This class defines the product model class. This class inherits from the generic model class. Its methods are:
    *
-   * - getCheaperProducts
+   * - getCheapestProductInTheCategory
    * - getRecentProductsList
-   * - getMaxScore
-   * - getMinScore
+   * - getsTheHighestScoreOfAllProducts
+   * - getsTheMinimumScoreOfAllProducts
    * - calculateTheDisplacementAndGetProductsOfCategory
    * - calculateTheDisplacementAndGetAllProducts
    */
@@ -37,20 +37,119 @@
       parent::__construct ('products', 'product_id');
     }
     
-    
     /**
-     * = Get cheaper products list =
+     * = Get cheaper products in a category =
      *
      * @param $categoryId
+     * @param $numberOfProducts
      * @return array|bool
      */
-    public function getCheaperProducts ($categoryId): array|bool
+    public function getCheaperProductsInCategory ($categoryId, $numberOfProducts): array|bool
     {
-      $sql = " SELECT product_id, product_name, product_image, product_likes, product_price, product_views, MIN(product_price) FROM {$this->table} WHERE  product_categories LIKE '%$categoryId%' ";
+      if($categoryId == 0){
+        $sql = " SELECT * FROM {$this->table} ORDER BY product_price DESC LIMIT $numberOfProducts ";
+      }else{
+        $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_price DESC LIMIT $numberOfProducts ";
+      }
       $statement = $this->connectionPDO->prepare ($sql);
       $statement->execute ();
       return $statement->fetchAll ();
     }
+    
+    /**
+     * = Get best scored products in a category =
+     *
+     * @param $categoryId
+     * @param $numberOfProducts
+     * @return array|bool
+     */
+    public function getBestScoredProductsInCategory ($categoryId, $numberOfProducts): array|bool
+    {
+      if($categoryId == 0){
+        $sql = " SELECT * FROM {$this->table} ORDER BY product_likes DESC LIMIT $numberOfProducts ";
+      }else{
+        $sql = " SELECT * FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ORDER BY product_likes DESC LIMIT $numberOfProducts ";
+      }
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchAll ();
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * = Get total records. =
+     *
+     * @param $categoryId
+     * @return int
+     */
+    public function getTotalProductsOfCategoryId ($categoryId): int
+    {
+      $sql = " SELECT COUNT(product_categories) AS NumberOfProducts FROM {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchColumn ();
+    }
+    
+    
+    /**
+     * = Get count total products of the category between two ranges price =
+     *
+     * @param $categoryId
+     * @param $rangePriceOne
+     * @param $rangePriceTwo
+     * @return int
+     */
+    public function getCountTotalProductsOfTheCategoryBetweenRangesPrice ($categoryId, $rangePriceOne, $rangePriceTwo): int
+    {
+      $sql = " SELECT COUNT(product_categories) AS NumberOfProducts FROM {$this->table} WHERE FIND_IN_SET ('$categoryId',product_categories) AND TRUNCATE(product_price, 0) BETWEEN '$rangePriceOne' AND '$rangePriceTwo'; ";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchColumn ();
+    }
+    
+    
+
+    
+    /**
+     * = Gets total products on a category. =
+     *
+     * @param string $categoryId
+     * @return string
+     */
+    public function getsTotalProductsWithoutChildCategoriesByCategoryId (string $categoryId): string
+    {
+      $sql = " SELECT COUNT(product_categories) AS NumberOfProducts from {$this->table} WHERE  FIND_IN_SET ('$categoryId',product_categories) ";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchColumn ();
+    }
+    
+    
+    
+    
+    
+    /**
+     * = Get the cheapest product in the category =
+     *
+     * @param $categoryId
+     * @return array|bool
+     */
+    public function getCheapestProductInTheCategory ($categoryId): array|bool
+    {
+      $sql = " SELECT *, MIN(product_price) FROM {$this->table} WHERE  product_categories LIKE '%$categoryId%' ";
+      $statement = $this->connectionPDO->prepare ($sql);
+      $statement->execute ();
+      return $statement->fetchAll ();
+    }
+    
+
     
     
     /**
@@ -67,7 +166,7 @@
     }
     
     /**
-     * = Get a list of top-rated products. =
+     * = Gets a list of top-rated products. =
      *
      * @return array|bool
      */
@@ -81,11 +180,11 @@
     
     
     /**
-     * = Get mas score of the all products. =
+     * = Gets the highest score of all products. =
      *
      * @return false|array
      */
-    public function getMaxScore (): false|array
+    public function getsTheHighestScoreOfAllProducts (): false|array
     {
       $sql = " SELECT MAX(product_likes) FROM {$this->table}";
       $statement = $this->connectionPDO->prepare ($sql);
@@ -95,11 +194,11 @@
     
     
     /**
-     * = Get min score of the all products. =
+     * = Gets the minimum score of all products. =
      *
      * @return false|array
      */
-    public function getMinScore (): false|array
+    public function getsTheMinimumScoreOfAllProducts (): false|array
     {
       $sql = " SELECT  MIN(product_likes) FROM {$this->table}";
       $statement = $this->connectionPDO->prepare ($sql);
