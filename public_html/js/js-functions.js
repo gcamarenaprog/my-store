@@ -6,27 +6,27 @@
  * File type:           Script
  * File description:    This file has the global JavaScript functions of the project.
  * Module:              JavaScript
+ * Revised:             13-08-2025
  * ---------------------------------------------------------------------------------------------------------------------
  */
 
 /**
- * Set a new cookie and its value.
+ * = Sets a new cookie with its value and name =
  *
  * @param {String} cookie_name Name to be assigned to the new cookie.
  * @param {String} cookie_value Value to be assigned to the new cookie.
  */
-function setCookie(cookie_name, cookie_value) {
-  // Set a new cookie value
+function setNewCookie(cookie_name, cookie_value) {
   document.cookie = cookie_name + "=" + cookie_value;
 }
 
 /**
- * Get value of the cookie by the name cookie.
+ * = Get the value of the cookie by the name cookie =
  *
  * @param {String} name_cookie Name of the cookie.
  * @return {String} Value of the cookie.
  */
-function getCookieValue(name_cookie) {
+function getCookie(name_cookie) {
   const regex = new RegExp(`(^| )${name_cookie}=([^;]+)`)
   const match = document.cookie.match(regex)
   if (match) {
@@ -36,9 +36,8 @@ function getCookieValue(name_cookie) {
   }
 }
 
-
 /**
- * Launches a generic modal with the information passed to it, with accept button.
+ * = Launches a generic modal =
  *
  * @param {String} title Title of the modal.
  * @param {String} content HTML content of the modal.
@@ -62,8 +61,7 @@ function launchGenericModal(title, content, confirm_button_text, icon, confirm_b
 }
 
 /**
- * Image preload validations in form by: file extension | dimensions | file size, returns a modal with the message of
- * successful or failed processing.
+ * = Validation of image preloading in a form, returns a successful or failed process modal =
  *
  * @param file {files} this.files[0]
  * @param img {HTMLImageElement} new Image()
@@ -72,12 +70,12 @@ function launchGenericModal(title, content, confirm_button_text, icon, confirm_b
  * @param minimum_width {int} Minimum width dimensions in pixels for validation.
  * @param minimum_height {int} Minimum height dimensions in pixels for validation.
  * @param maximum_size
- * @param no_image_path {string} Default image path, if no valid file. For example:
+ * @param default_image_path {string} Default image path, if no valid file. For example:
  *   views/resources/dist/img/products/no_image.jpg
  * @param valid_extensions {string} Extensions valid array. For example: let ext = ('jpg, png, doc');
  * @return {boolean}
  */
-function imagePreloadValidationForm(file, img, image_id, custom_file_id, minimum_width, minimum_height, maximum_size, no_image_path, valid_extensions) {
+function validationOfImagePreloadingInForm(file, img, image_id, custom_file_id, minimum_width, minimum_height, maximum_size, default_image_path, valid_extensions) {
   if (file) {
     // Get the file extension
     let extension = file.name.replace(/^.*\./, '');
@@ -85,10 +83,10 @@ function imagePreloadValidationForm(file, img, image_id, custom_file_id, minimum
     if (!valid_extensions.includes(extension)) {
       let content_text = '<b>' + extension + '</b>' + ': Tipo de archivo no permitido.';
       // Throw an error modal when the file extension is bad
-      launchGenericModal('¡Error, tipo de archivo!', content_text,'Aceptar', 'error', undefined, undefined)
+      launchGenericModal('¡Error, tipo de archivo!', content_text, 'Aceptar', 'error', undefined, undefined)
       // Reset bsCustomFileInput
       bsCustomFileInput.destroy();
-      $(image_id).attr('src', no_image_path);
+      $(image_id).attr('src', default_image_path);
       $(custom_file_id).val('');
       bsCustomFileInput.init();
       file = null;
@@ -101,7 +99,7 @@ function imagePreloadValidationForm(file, img, image_id, custom_file_id, minimum
           launchGenericModal('¡Error, dimensiones de imagen!', contentText, 'Aceptar', 'error', undefined, undefined)
           // Reset bsCustomFileInput
           bsCustomFileInput.destroy();
-          $(image_id).attr('src', no_image_path);
+          $(image_id).attr('src', default_image_path);
           $(custom_file_id).val('');
           bsCustomFileInput.init();
           file = null;
@@ -116,7 +114,7 @@ function imagePreloadValidationForm(file, img, image_id, custom_file_id, minimum
             launchGenericModal('¡Error, tamaño de archivo!', text_content, 'Aceptar', 'error', undefined, undefined)
             // Reset bsCustomFileInput
             bsCustomFileInput.destroy();
-            $(image_id).attr('src', no_image_path);
+            $(image_id).attr('src', default_image_path);
             $(custom_file_id).val('');
             bsCustomFileInput.init();
             file = null;
@@ -130,7 +128,7 @@ function imagePreloadValidationForm(file, img, image_id, custom_file_id, minimum
   } else {
     // Reset bsCustomFileInput
     bsCustomFileInput.destroy();
-    $(image_id).attr('src', no_image_path);
+    $(image_id).attr('src', default_image_path);
     $(custom_file_id).val('');
     bsCustomFileInput.init();
   }
