@@ -5,9 +5,11 @@
    * Project description: Selection process skills assessment.
    * Version:             1.0.0
    * File type:           Controller file.
-   * File description:    Main controller which calls its methods through the URL which is divided
-   *                      in two parameters: For example: https://localhost/controller/method
+   * File description:    Route controller for the admin template, which invokes the select view method. This method
+   *                      takes the URL, splits it, and takes the first parameter to execute the view based on its name.
+   *                      For example: https://localhost/view
    * Module:              Controllers.
+   * Revised:             13-08-2025
    * -------------------------------------------------------------------------------------------------------------------
    */
   
@@ -20,45 +22,44 @@
     /**
      * Checks if the method being called exists, if not use the default method
      *
-     * @param $nameOfMethod string <p>Name of method to execute</p>
+     * @param $nameOfView string
      * @return void
      */
-    public function selectMethod (string $nameOfMethod): void
+    public function selectView (string $nameOfView): void
     {
       
-      switch ($nameOfMethod) {
+      switch ($nameOfView) {
         
-        case ($nameOfMethod === 'home'):
-        case ($nameOfMethod === 'admin'):
-          $this->admin ();
+        case ($nameOfView === 'admin'):
+          $this->home ();
           break;
         
-        case ($nameOfMethod === 'login'):
+        case ($nameOfView === 'login'):
           $this->login ();
           break;
         
-        case ($nameOfMethod === 'product-add'):
+        case ($nameOfView === 'product-add'):
           $this->productAdd ();
           break;
         
-        case ($nameOfMethod === 'product-categories'):
+        case ($nameOfView === 'product-categories'):
           $this->productCategories ();
           break;
         
-        case ($nameOfMethod === 'product-edit'):
+        case ($nameOfView === 'product-edit'):
           $this->productEdit ();
           break;
         
-        case ($nameOfMethod === 'product-list'):
+        case ($nameOfView === 'product-list'):
           $this->productList ();
           break;
         
-        case ($nameOfMethod === 'product-view'):
+        case ($nameOfView === 'product-view'):
           $this->productView ();
           break;
         
         default:
-          $this->admin ();
+          $this->store ();
       }
     }
     
@@ -68,16 +69,6 @@
      * @return void
      */
     public function home (): void
-    {
-      include 'public_html/views/admin/home.php';
-    }
-    
-    /**
-     * Load the home view
-     *
-     * @return void
-     */
-    public function admin (): void
     {
       include 'public_html/views/admin/home.php';
     }
@@ -94,7 +85,7 @@
     }
     
     /**
-     * Load the product category view
+     * Load the product categories view
      *
      * @return void
      */
@@ -124,7 +115,7 @@
     }
     
     /**
-     * Load the view to see the product
+     * Load the view product details
      *
      * @return void
      */
@@ -134,12 +125,23 @@
     }
     
     /**
-     * Load the home view
+     * Load the login view
      *
      * @return void
      */
     public function login (): void
     {
       header ('Location: login.php');
+    }
+    
+    
+    /**
+     * Load the store view
+     *
+     * @return void
+     */
+    public function store (): void
+    {
+      header ('Location: store');
     }
   }
