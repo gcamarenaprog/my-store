@@ -8,6 +8,7 @@
    * File description:    Intermediary between the routes and the controller, extracts the parameters from the URL and
    *                      goes to call the controller and its corresponding view if it exists.
    * Module:              Core
+   * Revised:             13-08-2025
    * -------------------------------------------------------------------------------------------------------------------
    */
   

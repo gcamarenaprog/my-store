@@ -7,6 +7,7 @@
    * File type:           Template file
    * File description:    Index file that is the starting point of the templates.
    * Module:              Core
+   * Revised:             13-08-2025
    * -------------------------------------------------------------------------------------------------------------------
    */
   
