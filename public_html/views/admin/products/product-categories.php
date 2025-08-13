@@ -695,7 +695,7 @@
 <script src="public_html/js/js-functions.js"></script>
 
 <!-- Custom JS Code /-->
-<script src="public_html/js/js-product-categories.js"></script>
+<script src="public_html/js/admin/js-product-categories.js"></script>
 
 <!-- jquery-validation /-->
 <script src="public_html/resources/admin/plugins/jquery-validation/jquery.validate.min.js"></script>
