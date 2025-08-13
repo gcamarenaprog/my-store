@@ -11,53 +11,48 @@
  *
  */
 
-/** Document ready functions -----------------------------------------------------------------------------------------*/
-$(document).ready(function () {
-});
-
 /**
- * Show the number of products selected
+ * Select the show products option from the store view select control.
  * @param number
  */
 function showSelectedOption(number) {
 
   switch (number) {
     case 9:
-      setCookie('showValue', '9');
+      setNewCookie('showValue', '9');
       location.reload();
       break;
     case 12:
-      setCookie('showValue', '12');
+      setNewCookie('showValue', '12');
       location.reload();
       break;
     case 15:
-      setCookie('showValue', '15');
+      setNewCookie('showValue', '15');
       location.reload();
       break;
     case 18:
-      setCookie('showValue', '18');
+      setNewCookie('showValue', '18');
       location.reload();
       break;
-
   }
 }
 
 /**
- * Sorting a selected option
+ * Select the sort products option from the store view select control.
  * @param number
  */
 function sortingSelectedOption(number) {
   switch (number) {
     case 1:
-      setCookie('sortingValue', '1');
+      setNewCookie('sortingValue', '1');
       location.reload();
       break;
     case 2:
-      setCookie('sortingValue', '2');
+      setNewCookie('sortingValue', '2');
       location.reload();
       break;
     case 3:
-      setCookie('sortingValue', '3');
+      setNewCookie('sortingValue', '3');
       location.reload();
       break;
   }
@@ -67,7 +62,7 @@ function sortingSelectedOption(number) {
  * View product details via Ajax.
  * @param product_id_view
  */
-function viewProductDetailsAjax(product_id_view) {
+function viewProductDetailsInShop(product_id_view) {
   // Function that sends and receives response with AJAX
   $.ajax({
     type: 'POST',

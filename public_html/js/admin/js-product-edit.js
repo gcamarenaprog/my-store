@@ -186,7 +186,7 @@ $("#customFile").on('change', function () {
   let no_image_path = 'public_html/resources/admin/dist/img/products/no_image.jpg';
   let maximum_size = 1500000; // 1,500,000 = 1.5 MB
   let valid_extensions = ('jpg, jpeg, png');
-  imagePreloadValidationForm(file, img, image_id, custom_file_id, minimum_width, minimum_height, maximum_size, no_image_path, valid_extensions);
+  validationOfImagePreloadingInForm(file, img, image_id, custom_file_id, minimum_width, minimum_height, maximum_size, no_image_path, valid_extensions);
 });
 
 /** Document ready functions -----------------------------------------------------------------------------------------*/
