@@ -12,7 +12,7 @@
   
   require_once ('php/controllers/ProductCategoriesController.php');
   require_once ('php/controllers/ProductController.php');
-  require_once ('php/includes/functions.php');
+  require_once ('php/includes/Functions.php');
   
   $objectCategoriesProduct = new ProductCategoriesController();
   $objectProduct = new ProductController();
@@ -307,7 +307,7 @@
                                     title="Categoría/s">
                                   Categoría/s<br>
                                   <small class="store-product-details-data-info">
-                                    <?php echo $productCategory; ?>
+                                    <?php echo $productCategories; ?>
                                   </small>
                                 </h4>
 
@@ -580,5 +580,5 @@
 <script src="public_html/js/js-functions.js"></script>
 
 <!-- Custom view JS Code -->
-<script src="public_html/js/js-product-view.js"></script>
+<script src="public_html/js/admin/js-product-view.js"></script>
 
