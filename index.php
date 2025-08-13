@@ -21,18 +21,6 @@
   # Separate the URL into words
   $url = explode ('/', URL);
   
-  # Check if the URL contains the word 'page' used to paginate the shop section
-  $jsonURL = json_encode ($url);
-  if (str_contains ($jsonURL, 'page')) {
-    $url[0] = 'shop';
-  }
-  
-  # Check if the URL contains the word 'category' used to paginate the shop section
-  $jsonURL = json_encode ($url);
-  if (str_contains ($jsonURL, 'category')) {
-    $url[0] = 'shop';
-  }
-  
   $storeUrls = ['store', 'shop', 'contact', 'product', 'login'];
   
   // If you are not logged in, you will be redirected to the store template.
