@@ -16,12 +16,12 @@
    * This class defines the product category model class. This class inherits from the generic model class. Its methods
    * are:
    *
-   * - getTotalChildCategoriesByIdCategory
+   * - getTotalChildCategories
    * - getCategoryIdIfItIsChildOfTheCategoryId
    * - isParentCategory
-   * - getTotalProductsOfCategory
+   * - getTotalProductsOfTheCategory
    * - getTotalProductsCategoryByIdCategory
-   * - getCategoryNameById
+   * - getCategoryName
    * - getParentCategories
    * - getAllSubcategories
    * - countChildCategoriesOfCategory
@@ -38,12 +38,12 @@
     }
     
     /**
-     * = Gets total child categories by ID category. =
+     * = Get total child categories. =
      *
      * @param string $categoryId
      * @return int
      */
-    public function getTotalChildCategoriesByIdCategory (string $categoryId): int
+    public function getTotalChildCategories (string $categoryId): int
     {
       $sql = " SELECT COUNT(product_category_parent) AS NumberOfChildCategories  from {$this->table} WHERE product_category_parent LIKE '%$categoryId%' ";
       $statement = $this->connectionPDO->prepare ($sql);
@@ -93,41 +93,15 @@
       return $statement->fetchColumn ();
     }
     
-    /**
-     * = Get total records. =
-     *
-     * @param $categoryId
-     * @return int
-     */
-    public function getTotalProductsOfCategoryId ($categoryId): int
-    {
-      $sql = " SELECT COUNT(product_categories) AS NumberOfProducts from products WHERE  FIND_IN_SET ('$categoryId',product_categories) ";
-      $statement = $this->connectionPDO->prepare ($sql);
-      $statement->execute ();
-      return $statement->fetchColumn ();
-    }
+
     
     /**
-     * = Gets total products on a category. =
-     *
-     * @param string $categoryId
-     * @return string
-     */
-    public function getsTotalProductsWithoutChildCategoriesByCategoryId (string $categoryId): string
-    {
-      $sql = " SELECT COUNT(product_categories) AS NumberOfProducts from products WHERE  FIND_IN_SET ('$categoryId',product_categories) ";
-      $statement = $this->connectionPDO->prepare ($sql);
-      $statement->execute ();
-      return $statement->fetchColumn ();
-    }
-    
-    /**
-     * = Get category name by category ID. =
+     * = Get category name. =
      *
      * @param string $categoryId Category id.
      * @return string
      */
-    public function getCategoryNameById (string $categoryId): string
+    public function getCategoryName (string $categoryId): string
     {
       $sql = " SELECT product_category_name FROM {$this->table} WHERE product_category_id ='$categoryId' ";
       $statement = $this->connectionPDO->prepare ($sql);
