@@ -65,17 +65,16 @@ function launchGenericModal(title, content, confirm_button_text, icon, confirm_b
  *
  * @param file {files} this.files[0]
  * @param img {HTMLImageElement} new Image()
- * @param image_dom_id {string} Image id.
- * @param custom_file_dom_id {string} Custom file id.
- * @param minimum_width {int} Minimum width dimensions in pixels for validation.
- * @param minimum_height {int} Minimum height dimensions in pixels for validation.
- * @param maximum_size
- * @param default_image_path {string} Default image path, if no valid file. For example:
- *   views/resources/dist/img/products/no_image.jpg
+ * @param image_element_id {string} Image element id.
+ * @param custom_file_control_id {string} Custom file control id.
+ * @param minimum_width {int} Minimum width dimensions in pixels.
+ * @param minimum_height {int} Minimum height dimensions in pixels.
+ * @param maximum_size {int} Maximum file size in bytes.
+ * @param default_image_path {string} Default image path, if no valid file.
  * @param valid_extensions {string} Extensions valid array. For example: let ext = ('jpg, png, doc');
  * @return {boolean}
  */
-function validationOfImagePreloadingInForm(file, img, image_dom_id, custom_file_dom_id, minimum_width, minimum_height, maximum_size, default_image_path, valid_extensions) {
+function validationOfImagePreloadingInForm(file, img, image_element_id, custom_file_control_id, minimum_width, minimum_height, maximum_size, default_image_path, valid_extensions) {
   if (file) {
     // Get the file extension
     let extension = file.name.replace(/^.*\./, '');
@@ -86,8 +85,8 @@ function validationOfImagePreloadingInForm(file, img, image_dom_id, custom_file_
       launchGenericModal('¡Error, tipo de archivo!', content_text, 'Aceptar', 'error', undefined, undefined)
       // Reset bsCustomFileInput
       bsCustomFileInput.destroy();
-      $(image_dom_id).attr('src', default_image_path);
-      $(custom_file_dom_id).val('');
+      $(image_element_id).attr('src', default_image_path);
+      $(custom_file_control_id).val('');
       bsCustomFileInput.init();
       file = null;
     } else {
@@ -99,8 +98,8 @@ function validationOfImagePreloadingInForm(file, img, image_dom_id, custom_file_
           launchGenericModal('¡Error, dimensiones de imagen!', contentText, 'Aceptar', 'error', undefined, undefined)
           // Reset bsCustomFileInput
           bsCustomFileInput.destroy();
-          $(image_dom_id).attr('src', default_image_path);
-          $(custom_file_dom_id).val('');
+          $(image_element_id).attr('src', default_image_path);
+          $(custom_file_control_id).val('');
           bsCustomFileInput.init();
           file = null;
         } else {
@@ -114,13 +113,13 @@ function validationOfImagePreloadingInForm(file, img, image_dom_id, custom_file_
             launchGenericModal('¡Error, tamaño de archivo!', text_content, 'Aceptar', 'error', undefined, undefined)
             // Reset bsCustomFileInput
             bsCustomFileInput.destroy();
-            $(image_dom_id).attr('src', default_image_path);
-            $(custom_file_dom_id).val('');
+            $(image_element_id).attr('src', default_image_path);
+            $(custom_file_control_id).val('');
             bsCustomFileInput.init();
             file = null;
           } else {
             // Add the src attribute to the image object with the selected image
-            $(image_dom_id).attr('src', URL.createObjectURL(file));
+            $(image_element_id).attr('src', URL.createObjectURL(file));
           }
         }
       }
@@ -128,8 +127,8 @@ function validationOfImagePreloadingInForm(file, img, image_dom_id, custom_file_
   } else {
     // Reset bsCustomFileInput
     bsCustomFileInput.destroy();
-    $(image_dom_id).attr('src', default_image_path);
-    $(custom_file_dom_id).val('');
+    $(image_element_id).attr('src', default_image_path);
+    $(custom_file_control_id).val('');
     bsCustomFileInput.init();
   }
   if (file) {
