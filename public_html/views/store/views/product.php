@@ -113,8 +113,8 @@
         <!-- Name /-->
         <h3><?php echo $productData['productName']; ?></h3>
 
-        <!-- Likes and views /-->
-        <div class="d-flex mb-3">
+        <!-- Comments /-->
+        <div class="d-flex mb-1">
           <div class="text-primary mr-2">
             
             <?php for ($i = 1; $i <= $scoreAverage; $i++) : ?>
@@ -130,8 +130,23 @@
             <?php endif; ?>
 
           </div>
-          <small class="pt-1">(<?php echo $countComments; ?> Comentarios) / <?php echo $productData['productViews']; ?>
-            Visitas</small>
+          <small class="pt-1">(<?php echo $countComments; ?> Comentarios)</small>
+        </div>
+
+        <!-- Views -->
+        <div class="d-flex mb-1">
+          <div class="text-primary mr-2">
+            <small class="fas fa-eye"></small>
+          </div>
+          <small class="pt-1">(<?php echo $productData['productViews']; ?> Visitas) </small>
+        </div>
+
+        <!-- Likes -->
+        <div class="d-flex mb-3">
+          <div class="text-primary mr-2">
+            <small class="fas fa-heart"></small>
+          </div>
+          <small class="pt-1">(<?php echo $productData['productLikes']; ?> Likes) </small>
         </div>
 
         <!-- Description /-->
