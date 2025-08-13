@@ -14,7 +14,7 @@
   $url = explode ('/', URL);
   $nameOfTheView = $url[0];
   $userName = $_SESSION['user_name'];
-  $userLastName = $_SESSION['user_lastname'];
+  $userLastName = $_SESSION['user_last_name'];
   $userFullName = $userName . ' ' . $userLastName;
 ?>
 
